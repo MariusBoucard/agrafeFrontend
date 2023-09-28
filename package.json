@@ -1,7 +1,7 @@
 {
   "name": "testvue3",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -9,12 +9,12 @@
   },
   "dependencies": {
     "@auth0/auth0-vue": "^2.3.1",
+    "axios": "^1.5.1",
     "core-js": "^3.8.3",
-    "mongoose": "^7.5.3",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "vue3-pdf": "^4.2.6",
-    "vuex": "^4.0.0"
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

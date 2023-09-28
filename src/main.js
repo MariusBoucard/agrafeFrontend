@@ -1,9 +1,9 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
+import store from './store/index'
 import { createAuth0 } from '@auth0/auth0-vue';
-createApp(App)
+const app = createApp(App)
 .use(store)
 .use(
     createAuth0({
@@ -16,4 +16,4 @@ createApp(App)
   )
   
 .use(router)
-.mount('#app')
+app.mount('#app')
