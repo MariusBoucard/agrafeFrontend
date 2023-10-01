@@ -1,57 +1,62 @@
 <template>
 <div class="container">
   <form @submit.prevent="submitForm" class="article-form">
-    <h2 class="form-title">Add an Article</h2>
+    <h2 class="form-title">Ajouter un article</h2>
 
     <div class="form-columns">
       <!-- Left column -->
       <div class="form-column">
         <div class="form-group">
-      <label for="titreFront">Title:</label>
+      <label for="titreFront">Titre de l'article :</label>
       <input type="text" id="titreFront" v-model="article.titreFront" required>
           </div>
-
-      <label for="description">Description:</label>
+          <div class="form-group">
+      <label for="description">Description :</label>
       <textarea id="description" v-model="article.description" required></textarea>
-
-      <label for="imageLogo">Image Upload:</label>
+            </div>
+            <div class="form-group">
+      <label for="imageLogo">Image de couverture:</label>
       <input type="file" id="imageLogo" accept="image/*" @change="handleImageUpload" required>
-
+      
+      </div>
+      <div class="form-group">
       <!-- Add a preview for the uploaded image (optional) -->
       <img v-if="imagePreview" :src="imagePreview" alt="Uploaded Image">
-
-      <label for="imageLogo">Pdf Article Upload:</label>
+        </div>
+        <div class="form-group">
+      <label for="imageLogo">Article en pdf :</label>
       <input type="file" id="articlePdf" accept="pdf/*" @change="handlePdfUpload" required>
-      
-      <!-- Add input fields for other attributes as needed -->
-      <label for="path">Article Path:</label>
-      <input type="text" id="path" v-model="article.path" required>
-
-      <label for="auteur">Author:</label>
+        </div>
+    </div>
+    <div class="form-column">
+      <div class="form-group">
+      <label for="auteur">Auteur :</label>
       <input type="text" id="auteur" v-model="article.auteur" required>
+        </div>
+        <div class="form-group">
 
-      <label for="numeroParu">Publication Number:</label>
-      <input type="text" id="numeroParu" v-model="article.numeroParu" required>
-      </div>
-      <div class="form-column">
-
-        <label for="date">Publication Date:</label>
+          <label for="numeroParu">Numéro du journal :</label>
+          <input type="text" id="numeroParu" v-model="article.numeroParu" required>
+        </div>
+        <div class="form-group">
+        <label for="date">Date de publication :</label>
         <input type="date" id="date" v-model="article.date" required>
-        
-        <label for="private">Is Private:</label>
-        <input type="checkbox" id="private" v-model="article.private">
-        
-      <label for="rubrique">Rubrique:</label>
-      <input type="text" id="rubrique" v-model="article.rubrique" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="rubrique" class="label">Rubrique:</label>
+          <!-- Replaced the input with a select -->
+          <select id="rubrique" v-model="article.rubrique" required>
+            <option v-for="rub in rubriques" :key="rub.id" :value="rub.id">{{rub.rubrique}}</option>
+            <!-- Add more options as needed -->
+          </select>
 
-      <label for="misEnLigne">Publication Status:</label>
-      <select id="misEnLigne" v-model="article.misEnLigne" required>
-        <option value="published">Published</option>
-        <option value="draft">Draft</option>
-      </select>
-      
+   </div>
+   <div class="form-group">
+
       <label for="fileType">File Type:</label>
       <input type="text" id="fileType" v-model="article.fileType" required>
+      </div>
     </div>
       </div>
       <button type="submit" class="submit-button">Submit</button>    </form>
@@ -60,6 +65,14 @@
 <script>
 import axiosInstance from '@/axios';
 export default{
+  mounted(){
+    axiosInstance.get('api/getrubriques').then(
+      response => {
+        console.log(response)
+        this.rubriques = response.data
+      }
+    ).catch(error => console.log(error ))
+  },
     data(){
         return {
       article: {
@@ -79,6 +92,7 @@ export default{
         // Initialize other attributes with empty values or default values
         // For example: auteur: "", numeroParu: "", date: "", ...
       },
+      rubriques : [],
       imagePreview: null, // Store the image preview URL
     };
     },
@@ -163,6 +177,9 @@ export default{
 </script>
 <style scoped>
 /* Container for the form */
+.article-form{
+  width : 100%;
+}
 .container {
   width: 100%;
   max-width: 800px; /* Adjust as needed */
@@ -184,8 +201,9 @@ export default{
 /* Form columns */
 .form-columns {
   display: flex;
+  width:100%;
   justify-content: space-between; /* Separate columns with space */
-  gap: 16px; /* Gap between columns */
+  gap: 16px;
 }
 
 /* Form column */
@@ -235,6 +253,7 @@ img {
   border-radius: 4px;
   color: white;
   font-size: 18px;
+  margin : 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }

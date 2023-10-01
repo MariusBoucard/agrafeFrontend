@@ -6,6 +6,7 @@
             <table>
       <thead>
         <tr>
+            <th>Supprimer</th>
           <th>Titre</th>
           <th>Description</th>
           <th>Auteur</th>
@@ -20,14 +21,16 @@
       </thead>
       <tbody>
         <tr v-for="(article, index) in articles" :key="index">
+            <td><button>Supp</button></td>
           <td>{{ article.titreFront }}</td>
           <td>{{ article.description }}</td>
           <td>{{ article.auteur }}</td>
           <td>{{ article.numero }}</td>
           <td>{{ article.date }}</td>
           <td>{{ article.prive }}</td>
-          <td>{{ article.rubrique }}</td>
+          <td>{{ rubriqueNameFromId( article.rubrique) }}</td>
           <td>{{ article.fileType }}</td>
+          <td><button>Modifier</button></td>
 
           <!-- Add more table cells for other attributes as needed -->
         </tr>
@@ -48,14 +51,25 @@ import axiosInstance from '../../axios.js';
 export default{
     data(){
         return {
-            articles : []
+            articles : [],
+            rubriques : []
         }
     },
     mounted(){
         this.setArticles()
     },
     methods : {
+        rubriqueNameFromId(id){
+            var found = this.rubriques.find(rub => rub.id === id)
+            if(found){
+                return found.rubrique
+            } else {
+                return "on a pas"
+            }
+        },
         setArticles(){
+            axiosInstance.get('/api/getrubriques').then(response => 
+            this.rubriques = response.data).catch(error => console.log(error))
             //Be carefull different routes admin
             axiosInstance.get('/api/getAllArticles').then(
                response => {
