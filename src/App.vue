@@ -2,17 +2,12 @@
   <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
-  </nav><button @click="log">fakelog</button>
+  </nav>
+    <!-- <button @click="log">fakelog</button>
   <button @click="login">Log in</button>
   <button @click="logout">Log out</button>
-  {{ isAuthenticated }}
-  {{ user }}
-  <pre>
-      <code>{{ user }}</code>
-      <code >
-        {{ isAuthenticatedComp }}
-      </code>
-    </pre>
+  {{ isAuthenticated }}  -->
+
   <router-view/>
 </template>
 <script>

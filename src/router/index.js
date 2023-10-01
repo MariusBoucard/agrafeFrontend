@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePute from '../components/HomePute.vue'
+import axios from 'axios';
 // import { isAuthenticated } from './Auth0'; // Import the isAuthenticated function
-import store from '../store/index.js'; // Import your Vuex store
 const routes = [
   {
     path: '/',
@@ -17,10 +17,24 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../components/AboutPute.vue')
   },
   {
+    path: '/login',
+    name: 'login',
+    component: () => import(/* webpackChunkName: "admin" */ '../components/loginComponent.vue'),
+    // meta: { requiresAuth: true } // Add a meta field to indicate authentication requirement
+  },
+
+  
+  {
     path: '/admin',
     name: 'admin',
-    component: () => import(/* webpackChunkName: "admin" */ '../components/AdminPute.vue'),
+    component: () => import(/* webpackChunkName: "admin" */ '../components/admin/adminHome.vue'),
     meta: { requiresAuth: true } // Add a meta field to indicate authentication requirement
+  },
+  {
+    path: '/admin/register',
+    name: 'admin/register',
+    component: () => import(/* webpackChunkName: "admin" */ '../components/admin/registerComponent.vue'),
+    // meta: { requiresAuth: true } // Add a meta field to indicate authentication requirement
   }
 ]
 
@@ -29,19 +43,29 @@ const router = createRouter({
   routes
 })
 
-// Navigation guard to check authentication
+
+// Global navigation guard
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = store.getters['auth/isAuthenticated'];
-    console.log(isAuthenticated)
-    console.log("ta mere")
-      if (to.matched.some((record) => record.meta.requiresAuth) && !isAuthenticated) {
-    // Redirect unauthenticated users to a login page or another route
-    next('/login');
+  // Check if the route requires authentication
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // Retrieve the token from localStorage or sessionStorage
+    const token = sessionStorage.getItem('token');
+
+    // Check if the token exists
+    if (!token) {
+      // Redirect to the login page or handle unauthorized access as needed
+      next('/login');
+    } else {
+      // Include the token in the request headers using Axios
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      next();
+    }
   } else {
-    console.log("ca pass ezzz")
+    // If the route does not require authentication, proceed to the route
     next();
   }
 });
+
 
 
 export default router

@@ -1,0 +1,79 @@
+<template>
+    <div> 
+        <NavbarComponent></NavbarComponent>
+        Bienvenu a la page admin
+        <div class="container">
+    <div class="left-column">
+        <MenuComponent @componentChanged="setComponent($event)"></MenuComponent>
+      <!-- Content for the left column -->
+    </div>
+    <div class="right-column">
+      <!-- Content for the right column -->
+      <RegisterComponent v-show="activeComponent.register">   </RegisterComponent>
+      <ArticlesComponent @componentChanged="setComponent($event)" v-show="activeComponent.article"></ArticlesComponent>
+      <CreateArticle v-show="activeComponent.createArticle"></CreateArticle>
+    </div>
+  </div>
+    </div>
+</template>
+<script>
+import ArticlesComponent from './articlesComponent.vue';
+import CreateArticle from './createArticle.vue';
+import MenuComponent from './menuComponent.vue';
+import NavbarComponent from './navbarComponent.vue';
+import RegisterComponent from './registerComponent.vue';
+
+export default{
+    components: { NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle },
+    data(){
+        return {
+            activeComponent: {
+                dashBoard: false,
+                register: false,
+                article: false,
+                archive: false,
+                newsletter: false,
+                news: false,
+                createArticle : false
+            }
+        }
+
+    }, methods : {
+        setComponent(compo){
+            for (const key in this.activeComponent) {
+                    this.activeComponent[key] = false;
+            }
+            this.activeComponent[compo] = true
+        
+        }
+    }
+    
+}
+</script>
+<style>
+/* Apply CSS reset to remove default padding and margin */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Create a container for the two columns */
+.container {
+  display: flex;
+}
+
+/* Style the left column */
+.left-column {
+  width: 10%;
+  background-color: #ccc; /* Add your desired background color */
+  /* You can also add padding, margin, or other styles as needed */
+}
+
+/* Style the right column */
+.right-column {
+  width: 90%;
+  background-color: #f0f0f0; /* Add your desired background color */
+  /* You can also add padding, margin, or other styles as needed */
+}
+</style>
