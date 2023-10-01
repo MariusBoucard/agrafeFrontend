@@ -6,6 +6,6 @@ import axios from 'axios';
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:3000/', // Replace with your API base URL
 });
-
+// Change this to your backend URL
 // Export the Axios instance to use it throughout your app
 export default axiosInstance;
