@@ -1,7 +1,38 @@
 <template>
     <div>
-        <form @submit.prevent="register">
-            <h2>Register</h2>
+        <div>
+            <div> 
+                <h1>Utilisateurs existant</h1>
+                <div class="tableDiv">
+                    <table>
+      <thead>
+        <tr>
+            <th>Supprimer</th>
+          <th>Nom utilisateur</th>
+          <th>Mail</th>
+          <th>Id</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(user, index) in users" :key="index">
+          <td><button @click.stop="deleteUser(user.id)">Supprimer</button></td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.mail }}</td>
+          <td>
+            {{ user.id }}
+          </td>
+          <td>{{ user.type }}</td>
+          
+        </tr>
+      </tbody>
+    </table>
+                </div>
+            </div>
+            <div>
+
+                <form @submit.prevent="register">
+            <h2>Inscrire un nouveau collaborateur</h2>
             <div>
                 <label for="username">Username:</label>
                 <input type="text" id="username" v-model="formData.username" required>
@@ -17,11 +48,26 @@
             <button type="submit">Enregistrer un utilisateur</button>
         </form>
 
+            </div>
+        </div>
+
+        
     </div>
 </template>
 <script>
 import axiosInstance from '../../axios.js';
 export default{
+    mounted(){
+        axiosInstance.get("/api/getAllUser").then(response =>
+        {
+            this.users = response.data
+        }).catch(error => 
+        {
+            this.users = null
+            console.log(error)
+
+        })
+    },
     data(){
         return {
             formData: {
@@ -29,6 +75,7 @@ export default{
                         mail : '',
                         password: '',
                     },
+                    users : []
         }
     },
     methods : {

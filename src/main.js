@@ -2,9 +2,11 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store/index'
+import ElementPlus from 'element-plus';
 import { createAuth0 } from '@auth0/auth0-vue';
 const app = createApp(App)
 .use(store)
+.use(ElementPlus)
 .use(
     createAuth0({
   domain: "dev-8xiktvmsg08in3i3.us.auth0.com",

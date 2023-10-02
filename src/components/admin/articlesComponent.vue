@@ -11,6 +11,7 @@
     <table>
       <thead>
         <tr>
+          <th>Supprimer</th>
           <th>Titre</th>
           <th>Description</th>
           <th>Image</th>
@@ -25,6 +26,7 @@
       </thead>
       <tbody>
         <tr v-for="(article, index) in articles" :key="index">
+          <td><button @click.stop="deleteArticle(article.id)">Supprimer</button></td>
           <td>{{ article.titreFront }}</td>
           <td>{{ article.description }}</td>
           <td>
@@ -70,6 +72,21 @@ export default{
             } else {
                 return "on a pas"
             }
+        },
+        deleteArticle(id){
+          console.log(id)
+          axiosInstance.delete(`/api/deleteArticle/${id}`).then(response => {
+            console.log(response)
+            this.$message({
+              message: 'Article deleted successfully',
+              type: 'success'
+            });
+            this.setArticles()
+          })
+          .catch(error => {
+            console.log(error)
+            this.$message.error('Error deleting article');
+          });
         },
         setArticles(){
             axiosInstance.get('/api/getrubriques').then(response => 
