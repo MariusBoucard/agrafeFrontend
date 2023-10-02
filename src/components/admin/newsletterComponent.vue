@@ -13,7 +13,7 @@
                 </thead>
                 <tbody>
         <tr v-for="(user, index) in users" :key="index">
-          <td><button @click.stop="deleteUser(user.id)">Supprimer</button></td>
+          <td><button  class="button" @click.stop="deleteNewsletter(user.id)">Supprimer</button></td>
           <td>{{ user.name }}</td>
           <td>{{ user.mail }}</td>
           <td>
@@ -26,7 +26,7 @@
         </div>
         <div class="registrationDiv">
             <form @submit.prevent="addNewsletter">
-                <h2>Ajouter mail à la newsLetter</h2>
+                <h2>Ajouter mail à la Newsletter</h2>
                 <div>
                     <label for="username">Username:</label>
                     <input type="text" id="username" v-model="formData.username" required>
@@ -56,14 +56,45 @@ export default{
     methods : {
         addNewsletter(){
             axiosInstance.post('/api/addNewsletter',{ user : this.formData})
-            .then(response => console.log(response))
-            .catch(error => console.log(error))
+            .then(response =>
+            {
+                this.$message({
+              message: 'Utilisateur ajouté à la newsletter',
+              type: 'success',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            });
+            console.log(response)
+        } 
+        )
+            .catch(error => 
+            this.$message({
+              message: error,
+              type: 'error',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            }))
         },
         setNewsletter(){
             axiosInstance.get('/api/getNewsletter').then(response => 
             this.users = response.data).catch(error => console.log(error))
             
         },
+        deleteNewsletter(id){
+            axiosInstance.delete(`/api/deleteNewsletter/${id}`).then(response => {
+            console.log(response)
+            this.$message({
+              message: 'Utilisateur supprimé de la newsletter',
+              type: 'success',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            });
+            this.setNewsletter()
+          })
+          .catch(error => {
+            console.log(error)
+            this.$message.error('Error lors de la suppression de l\'utilisateur');
+          });        }
     },
     mounted(){
         this.setNewsletter()
@@ -133,6 +164,14 @@ export default{
             border-radius: 5px;
         }
 
+        .button {
+  background-color: lightgreen;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 8px;
+}
         button[type="submit"] {
             background-color: #007bff;
             color: white;

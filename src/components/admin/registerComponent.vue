@@ -14,7 +14,7 @@
                 </thead>
                 <tbody>
         <tr v-for="(user, index) in users" :key="index">
-          <td><button @click.stop="deleteUser(user.id)">Supprimer</button></td>
+          <td><button class="button" @click.stop="deleteUser(user.id)">Supprimer</button></td>
           <td>{{ user.name }}</td>
           <td>{{ user.mail }}</td>
           <td>

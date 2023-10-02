@@ -1,10 +1,9 @@
 <template>
     <div> 
         <NavbarComponent></NavbarComponent>
-        Bienvenu a la page admin
         <div class="container">
     <div class="left-column">
-        <MenuComponent @componentChanged="setComponent($event)"></MenuComponent>
+        <MenuComponent :selectedComponent="activeComponent" @componentChanged="setComponent($event)"></MenuComponent>
       <!-- Content for the left column -->
     </div>
     <div class="right-column">
@@ -15,6 +14,8 @@
       <ArticlesComponent @componentChanged="setComponent($event)" @modifyArticle="modifyArticle($event)" v-if="activeComponent.article"></ArticlesComponent>
       <CreateArticle v-if="activeComponent.createArticle"></CreateArticle>
       <NewsletterComponent v-if="activeComponent.newsletter"></NewsletterComponent>
+      <newsComponent v-if="activeComponent.news" @componentChanged="setComponent($event)" @modifyNews="setComponent($event)"></newsComponent>
+      <CreateNewsComponent  v-if="activeComponent.createNews"></CreateNewsComponent>
     </div>
   </div>
     </div>
@@ -27,9 +28,11 @@ import NavbarComponent from './navbarComponent.vue';
 import RegisterComponent from './registerComponent.vue';
 import modifyArticle from './modifyArticle.vue';
 import NewsletterComponent from './newsletterComponent.vue';
+import newsComponent from './newsComponent.vue';
+import CreateNewsComponent from './createNewsComponent.vue';
 
 export default{
-    components: { NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle, modifyArticle, NewsletterComponent },
+    components: { newsComponent, NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle, modifyArticle, NewsletterComponent, CreateNewsComponent },
     data(){
         return {
             activeComponent: {
@@ -39,7 +42,9 @@ export default{
                 archive: false,
                 newsletter: false,
                 news: false,
-                createArticle : false
+                createArticle : false,
+                createNews : false,
+                modifyNews : false
             },
             articleId : ""
         }
