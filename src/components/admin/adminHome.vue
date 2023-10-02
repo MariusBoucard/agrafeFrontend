@@ -14,6 +14,7 @@
       <RegisterComponent v-if="activeComponent.register">   </RegisterComponent>
       <ArticlesComponent @componentChanged="setComponent($event)" @modifyArticle="modifyArticle($event)" v-if="activeComponent.article"></ArticlesComponent>
       <CreateArticle v-if="activeComponent.createArticle"></CreateArticle>
+      <NewsletterComponent v-if="activeComponent.newsletter"></NewsletterComponent>
     </div>
   </div>
     </div>
@@ -25,9 +26,10 @@ import MenuComponent from './menuComponent.vue';
 import NavbarComponent from './navbarComponent.vue';
 import RegisterComponent from './registerComponent.vue';
 import modifyArticle from './modifyArticle.vue';
+import NewsletterComponent from './newsletterComponent.vue';
 
 export default{
-    components: { NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle, modifyArticle },
+    components: { NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle, modifyArticle, NewsletterComponent },
     data(){
         return {
             activeComponent: {

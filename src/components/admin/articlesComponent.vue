@@ -27,7 +27,7 @@
       </thead>
       <tbody>
         <tr v-for="(article, index) in articles" :key="index">
-          <td><button @click.stop="deleteArticle(article.id)">Supprimer</button></td>
+          <td><button class="button" @click.stop="deleteArticle(article.id)">Supprimer</button></td>
           <td>{{ article.titreFront }}</td>
           <td>{{ article.description }}</td>
           <td>
@@ -39,7 +39,7 @@
           <td>{{ article.private }}</td>
           <td>{{ rubriqueNameFromId(article.rubrique) }}</td>
           <td>{{ article.fileType }}</td>
-          <td><button @click.stop="modifyArticle(article.id)">Modifier</button></td>
+          <td><button class="button" @click.stop="modifyArticle(article.id)">Modifier</button></td>
           <!-- Add more table cells for other attributes as needed -->
         </tr>
       </tbody>
@@ -167,6 +167,18 @@ h1 {
   cursor: pointer;
   font-size: 16px;
   border-radius: 8px;
+}
+/* Button styles */
+.button {
+  background-color: lightgreen;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 8px;
+}
+.button:hover{
+  background-color: #4caf50;
 }
 
 .add-article-button:hover {

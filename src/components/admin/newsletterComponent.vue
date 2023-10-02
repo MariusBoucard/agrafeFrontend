@@ -1,5 +1,5 @@
 <template>
-     <div class="container">
+  <div class="container">
         <div class="tableDiv">
             <h1>Utilisateurs existants</h1>
             <table>
@@ -9,7 +9,6 @@
                         <th>Nom utilisateur</th>
                         <th>Mail</th>
                         <th>Id</th>
-                        <th>Type</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -20,15 +19,14 @@
           <td>
             {{ user.id }}
           </td>
-          <td>{{ user.type }}</td>
           
         </tr>
       </tbody>
             </table>
         </div>
         <div class="registrationDiv">
-            <form @submit.prevent="register">
-                <h2>Inscrire un nouveau collaborateur admin</h2>
+            <form @submit.prevent="addNewsletter">
+                <h2>Ajouter mail à la newsLetter</h2>
                 <div>
                     <label for="username">Username:</label>
                     <input type="text" id="username" v-model="formData.username" required>
@@ -37,80 +35,45 @@
                     <label for="mail">Mail :</label>
                     <input type="email" id="mail" v-model="formData.mail" required>
                 </div>
-                <div>
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" v-model="formData.password" required>
-                </div>
-                <button type="submit">Enregistrer un utilisateur</button>
+                
+                <button type="submit">Ajouter à la newsletter</button>
             </form>
         </div>
     </div>
 </template>
 <script>
-import axiosInstance from '../../axios.js';
+import axiosInstance from '@/axios'
 export default{
-    mounted() {
-        console.log("mounted trigger")
-        this.setUser();
-    },
     data(){
         return {
-            formData: {
-                        username: '',
-                        mail : '',
-                        password: '',
-                    },
-                    users : []
+            formData : {
+                mail : '',
+                username:''
+            },
+            users : []
         }
     },
     methods : {
-        setUser(){
-            axiosInstance.get("/api/getAllUser").then(response =>
-        {
-            this.users = response.data
-        }).catch(error => 
-        {
-            this.users = null
-            console.log(error)
-
-        })
+        addNewsletter(){
+            axiosInstance.post('/api/addNewsletter',{ user : this.formData})
+            .then(response => console.log(response))
+            .catch(error => console.log(error))
         },
-        deleteUser(id){
-            axiosInstance.delete(`/api/deleteUser/${id}`).then(
-                response => {
-                    console.log(response)
-                    this.setUser()
-                }
-            ).catch(error => console.log(error))
+        setNewsletter(){
+            axiosInstance.get('/api/getNewsletter').then(response => 
+            this.users = response.data).catch(error => console.log(error))
+            
         },
-
-        register() {
-                    // Send a POST request with the form data to your backend API
-                    // You can use libraries like Axios or the native Fetch API for this
-                    // Example with Axios:
-                    axiosInstance.post('/api/registerAdmin  ', this.formData)
-                        .then(response => {
-                            // if (response.connected === true){
-                            //     this.locals
-                            // }
-                            console.log("on a recu une reponse",response)
-                                 this.setUser()
-
-                            // Handle the response from the server
-                        })
-                        .catch(error => {
-                            console.log("on a recu une erreur",error)
-
-                            // Handle any errors
-                        });
-                    console.log('Form data:', this.formData);
-                },
+    },
+    mounted(){
+        this.setNewsletter()
+        // Request to get the newsletterState
     }
 }
-
 </script>
-<style scoped>
-     .container {
+
+<style>
+ .container {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
@@ -183,4 +146,4 @@ export default{
         button[type="submit"]:hover {
             background-color: #0056b3;
         }
-</style>
+        </style>
