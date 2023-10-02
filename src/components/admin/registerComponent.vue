@@ -1,20 +1,18 @@
 <template>
-    <div>
-        <div>
-            <div> 
-                <h1>Utilisateurs existant</h1>
-                <div class="tableDiv">
-                    <table>
-      <thead>
-        <tr>
-            <th>Supprimer</th>
-          <th>Nom utilisateur</th>
-          <th>Mail</th>
-          <th>Id</th>
-          <th>Type</th>
-        </tr>
-      </thead>
-      <tbody>
+     <div class="container">
+        <div class="tableDiv">
+            <h1>Utilisateurs existants</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Supprimer</th>
+                        <th>Nom utilisateur</th>
+                        <th>Mail</th>
+                        <th>Id</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
         <tr v-for="(user, index) in users" :key="index">
           <td><button @click.stop="deleteUser(user.id)">Supprimer</button></td>
           <td>{{ user.name }}</td>
@@ -26,47 +24,34 @@
           
         </tr>
       </tbody>
-    </table>
-                </div>
-            </div>
-            <div>
-
-                <form @submit.prevent="register">
-            <h2>Inscrire un nouveau collaborateur</h2>
-            <div>
-                <label for="username">Username:</label>
-                <input type="text" id="username" v-model="formData.username" required>
-            </div>
-            <div>
-                <label for="password">Mail :</label>
-                <input type="mail" id="mail" v-model="formData.mail" required>
-            </div>
-            <div>
-                <label for="password">Password:</label>
-                <input type="password" id="password" v-model="formData.password" required>
-            </div>
-            <button type="submit">Enregistrer un utilisateur</button>
-        </form>
-
-            </div>
+            </table>
         </div>
-
-        
+        <div class="registrationDiv">
+            <form @submit.prevent="register">
+                <h2>Inscrire un nouveau collaborateur</h2>
+                <div>
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" v-model="formData.username" required>
+                </div>
+                <div>
+                    <label for="mail">Mail :</label>
+                    <input type="email" id="mail" v-model="formData.mail" required>
+                </div>
+                <div>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" v-model="formData.password" required>
+                </div>
+                <button type="submit">Enregistrer un utilisateur</button>
+            </form>
+        </div>
     </div>
 </template>
 <script>
 import axiosInstance from '../../axios.js';
 export default{
-    mounted(){
-        axiosInstance.get("/api/getAllUser").then(response =>
-        {
-            this.users = response.data
-        }).catch(error => 
-        {
-            this.users = null
-            console.log(error)
-
-        })
+    mounted() {
+        console.log("mounted trigger")
+        this.setUser();
     },
     data(){
         return {
@@ -79,6 +64,26 @@ export default{
         }
     },
     methods : {
+        setUser(){
+            axiosInstance.get("/api/getAllUser").then(response =>
+        {
+            this.users = response.data
+        }).catch(error => 
+        {
+            this.users = null
+            console.log(error)
+
+        })
+        },
+        deleteUser(id){
+            axiosInstance.delete(`/api/deleteUser/${id}`).then(
+                response => {
+                    console.log(response)
+                    this.setUser()
+                }
+            ).catch(error => console.log(error))
+        },
+
         register() {
                     // Send a POST request with the form data to your backend API
                     // You can use libraries like Axios or the native Fetch API for this
@@ -89,6 +94,8 @@ export default{
                             //     this.locals
                             // }
                             console.log("on a recu une reponse",response)
+                                 this.setUser()
+
                             // Handle the response from the server
                         })
                         .catch(error => {
@@ -103,5 +110,77 @@ export default{
 
 </script>
 <style>
+     .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+        }
 
+        .tableDiv {
+            width: 60%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .registrationDiv {
+            width: 35%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
 </style>

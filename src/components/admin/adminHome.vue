@@ -9,9 +9,9 @@
     </div>
     <div class="right-column">
       <!-- Content for the right column -->
-      <RegisterComponent v-show="activeComponent.register">   </RegisterComponent>
-      <ArticlesComponent @componentChanged="setComponent($event)" v-show="activeComponent.article"></ArticlesComponent>
-      <CreateArticle v-show="activeComponent.createArticle"></CreateArticle>
+      <RegisterComponent v-if="activeComponent.register">   </RegisterComponent>
+      <ArticlesComponent @componentChanged="setComponent($event)" v-if="activeComponent.article"></ArticlesComponent>
+      <CreateArticle v-if="activeComponent.createArticle"></CreateArticle>
     </div>
   </div>
     </div>
