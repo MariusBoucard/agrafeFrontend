@@ -58,6 +58,37 @@ import {  mapGetters, mapActions, mapMutations } from 'vuex';
 
 </script>
 <style>
+/* Container for the article page */
+.custom-el-message {
+  position: fixed !important;
+  top: 20px !important;
+  right: 20px !important;
+  background-color: #4CAF50 !important;
+  color: #fff !important;
+  padding: 10px 15px !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  z-index: 8 !important;
+  opacity: 1 !important;
+  transition: opacity 0.3s ease-in-out !important;
+}
+.el-icon {
+  /* Set the desired font size for the icon */
+  font-size: 5px; /* Adjust the size as needed */
+}
+.custom-el-message.success {
+  background-color: #4CAF50 !important;
+}
+
+.custom-el-message-enter-active,
+.custom-el-message-leave-active {
+  opacity: 1 !important;
+}
+
+.custom-el-message-enter,
+.custom-el-message-leave-to /* .el-message-leave-active in <2.1.8 */ {
+  opacity: 0 !important;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

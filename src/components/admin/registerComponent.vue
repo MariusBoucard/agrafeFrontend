@@ -28,7 +28,7 @@
         </div>
         <div class="registrationDiv">
             <form @submit.prevent="register">
-                <h2>Inscrire un nouveau collaborateur</h2>
+                <h2>Inscrire un nouveau collaborateur admin</h2>
                 <div>
                     <label for="username">Username:</label>
                     <input type="text" id="username" v-model="formData.username" required>

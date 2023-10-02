@@ -21,6 +21,7 @@
           <th>Prive</th>
           <th>Rubrique</th>
           <th>Type</th>
+          <th>Modifier</th>
           <!-- Add more table headers for other attributes as needed -->
         </tr>
       </thead>
@@ -38,6 +39,7 @@
           <td>{{ article.private }}</td>
           <td>{{ rubriqueNameFromId(article.rubrique) }}</td>
           <td>{{ article.fileType }}</td>
+          <td><button @click.stop="modifyArticle(article.id)">Modifier</button></td>
           <!-- Add more table cells for other attributes as needed -->
         </tr>
       </tbody>
@@ -65,6 +67,9 @@ export default{
         this.setArticles()
     },
     methods : {
+      modifyArticle(id){
+        this.$emit('modifyArticle',id)
+      },
         rubriqueNameFromId(id){
             var found = this.rubriques.find(rub => rub.id === id)
             if(found){
@@ -79,7 +84,9 @@ export default{
             console.log(response)
             this.$message({
               message: 'Article deleted successfully',
-              type: 'success'
+              type: 'success',
+              customClass: 'custom-el-message',
+              duration: 100000, // Set the duration to 3000 milliseconds (3 seconds)
             });
             this.setArticles()
           })
@@ -116,7 +123,7 @@ export default{
 }
 </script>
 <style scoped>
-/* Container for the article page */
+
 .container {
   width: 100%;
   display: block;

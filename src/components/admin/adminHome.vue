@@ -8,9 +8,11 @@
       <!-- Content for the left column -->
     </div>
     <div class="right-column">
+    <ModifyArticle></ModifyArticle>
       <!-- Content for the right column -->
+      <modifyArticle v-if="activeComponent.modifyArticle" :id="articleId"></modifyArticle>
       <RegisterComponent v-if="activeComponent.register">   </RegisterComponent>
-      <ArticlesComponent @componentChanged="setComponent($event)" v-if="activeComponent.article"></ArticlesComponent>
+      <ArticlesComponent @componentChanged="setComponent($event)" @modifyArticle="modifyArticle($event)" v-if="activeComponent.article"></ArticlesComponent>
       <CreateArticle v-if="activeComponent.createArticle"></CreateArticle>
     </div>
   </div>
@@ -22,9 +24,10 @@ import CreateArticle from './createArticle.vue';
 import MenuComponent from './menuComponent.vue';
 import NavbarComponent from './navbarComponent.vue';
 import RegisterComponent from './registerComponent.vue';
+import modifyArticle from './modifyArticle.vue';
 
 export default{
-    components: { NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle },
+    components: { NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle, modifyArticle },
     data(){
         return {
             activeComponent: {
@@ -35,10 +38,15 @@ export default{
                 newsletter: false,
                 news: false,
                 createArticle : false
-            }
+            },
+            articleId : ""
         }
 
     }, methods : {
+      modifyArticle(id){
+        this.articleId = id
+        this.setComponent("modifyArticle")
+      },
         setComponent(compo){
             for (const key in this.activeComponent) {
                     this.activeComponent[key] = false;
