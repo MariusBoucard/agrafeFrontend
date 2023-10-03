@@ -16,7 +16,7 @@
                 </div>
                 <div class="form-group">
           <label for="imageLogo">Image de couverture:</label>
-          <input type="file" id="imageLogo" accept="image/*" @change="handleImageUpload" required>
+          <input type="file" id="imageLogo" accept="image/*" @change="handleImageUpload">
           
           </div>
           <div class="form-group">
@@ -168,6 +168,7 @@
             },
           })
           .then(response => {
+            this.$emit("componentChanged","article")
 
               console.log(response)
           })  

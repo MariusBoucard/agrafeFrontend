@@ -92,8 +92,8 @@ export default {
             },
           })
             .then(() => {
-             
-        },
+                this.$emit('componentChanged','news')
+              },
         )
         .catch(error => {
           // Handle errors if the request fails

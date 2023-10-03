@@ -156,9 +156,14 @@ export default{
           headers: {
             'Content-Type': 'multipart/form-data',
       },
-    }).then(response => console.log(response)).catch(error => console.log(error))
+    }).then(response => {
+      console.log(response)
+      console.log("ta mereee")
+      this.$emit("componentChanged","article")
+    }).catch(error => console.log(error))
       // Handle the response from the backend
       console.log(response.data);
+
     })
     .catch(error => {
       // Handle errors if the request fails

@@ -9,13 +9,13 @@
     <div class="right-column">
       <DashboardComponent  v-if="activeComponent.dashboard"></DashboardComponent>
       <!-- Content for the right column -->
-      <modifyArticle v-if="activeComponent.modifyArticle" :id="articleId"></modifyArticle>
+      <modifyArticle v-if="activeComponent.modifyArticle" :id="articleId" @componentChanged="setComponent($event)"></modifyArticle>
       <RegisterComponent v-if="activeComponent.register">   </RegisterComponent>
       <ArticlesComponent @componentChanged="setComponent($event)" @modifyArticle="modifyArticle($event)" v-if="activeComponent.article"></ArticlesComponent>
-      <CreateArticle v-if="activeComponent.createArticle"></CreateArticle>
+      <CreateArticle v-if="activeComponent.createArticle" @componentChanged="setComponent($event)"></CreateArticle>
       <NewsletterComponent v-if="activeComponent.newsletter"></NewsletterComponent>
       <newsComponent v-if="activeComponent.news" @componentChanged="setComponent($event)" @modifyNews="setComponent($event)"></newsComponent>
-      <CreateNewsComponent  v-if="activeComponent.createNews"></CreateNewsComponent>
+      <CreateNewsComponent @componentChanged="setComponent($event)" v-if="activeComponent.createNews"></CreateNewsComponent>
       <rubriquesComponent v-if="activeComponent.rubrique"></rubriquesComponent>
     </div>
   </div>
