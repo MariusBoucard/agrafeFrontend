@@ -47,6 +47,8 @@
                 <span>News</span>
             </div>
         </li>
+        <hr style="margin-bottom: 10px;">
+
         <li>
             <div @click="setComponent('rubrique')" class="menu-item"  :class="getMenuItemClass('rubrique')">
                 <i class="el-icon-news"></i>

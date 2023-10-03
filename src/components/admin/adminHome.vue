@@ -84,14 +84,14 @@ export default{
 
 /* Style the left column */
 .left-column {
-  width: 10%;
+  width: 20%;
   background-color: #ccc; /* Add your desired background color */
   /* You can also add padding, margin, or other styles as needed */
 }
 
 /* Style the right column */
 .right-column {
-  width: 90%;
+  width: 80%;
   background-color: #f0f0f0; /* Add your desired background color */
   /* You can also add padding, margin, or other styles as needed */
 }

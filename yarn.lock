@@ -4374,6 +4374,11 @@
   dependencies:
     "yallist" "^4.0.0"
 
+"luxon@^3.4.3":
+  "integrity" "sha512-tFWBiv3h7z+T/tDaoxA8rqTxy1CHV6gHS//QdaH4pulbq/JuBSGgQspQQqcgnwdAx6pNI7cmvz5Sv/addzHmUg=="
+  "resolved" "https://registry.npmjs.org/luxon/-/luxon-3.4.3.tgz"
+  "version" "3.4.3"
+
 "magic-string@^0.30.0":
   "integrity" "sha512-B7xGbll2fG/VjP+SWg4sX3JynwIU0mjoTc6MPpKNuIvftk6u6vqhDnk1R80b8C2GBR6ywqy+1DcKBrevBg+bmw=="
   "resolved" "https://registry.npmjs.org/magic-string/-/magic-string-0.30.3.tgz"
