@@ -43,6 +43,40 @@
             <div class="column">
                 <!-- Content for the right column goes here -->
                 <h2>Archives</h2>
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Titre</th>
+                                <th>Description</th>
+                                <th>Cover</th>
+                                <th>Back</th>
+                                <th>Numero</th>
+                                <th>Date</th>
+                                <th>Lectures</th>
+                                <!-- Add more table headers for other attributes as needed -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(archive, index) in archives" :key="index">
+                                <td>{{ archive.titre }}</td>
+                                <td>{{ archive.description }}</td>
+                                <td>
+                                    <img style="max-width: 100%;"
+                                        :src="`${baseUrl}/save/saveArchive/cover/${archive.id}.png`">
+                                </td>
+                                <td>
+                                    <img style="max-width: 100%;"
+                                        :src="`${baseUrl}/save/saveArchive/back/${archive.id}.png`">
+                                </td>
+                                <td>{{archive.numero }}</td>
+                                <td>{{ archive.date }}</td>
+                                <td>{{ archive.lectures }}</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
             </div>
         </div>
@@ -58,6 +92,7 @@ export default {
         return {
             chart: null,
             articles: [],
+            archives : [],
             rubriques: [],
             viewData: {
                 labels: [], // Date labels
@@ -72,6 +107,7 @@ export default {
        await this.getChartData()
         this.createChart();
         this.setArticles()
+        this.setArchives()
     },
     methods: {
         rubriqueNameFromId(id) {
@@ -107,6 +143,17 @@ export default {
                 }
             ).catch(error => console.log(error))
         },
+        setArchives(){
+          
+          axiosInstance.get('/api/getAllArchives').then(
+             response => {
+                          this.archives = response.data
+                      })
+                      .catch(error => {
+                          console.log("on a recu une erreur",error)
+                      });
+          
+      },
         setArticles() {
             axiosInstance.get('/api/getrubriques').then(response =>
                 this.rubriques = response.data).catch(error => console.log(error))

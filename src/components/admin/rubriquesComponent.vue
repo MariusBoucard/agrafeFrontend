@@ -102,6 +102,7 @@ export default {
            )
         },
         addRubrique(){
+            console.log("addrubrique")
             axiosInstance.post('/api/addRubrique', { rubrique : this.rubrique}).then(
                 response => {
                     console.log(response)
