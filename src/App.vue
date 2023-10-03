@@ -1,6 +1,5 @@
 <template>
   <navbar-component v-if="showNavigationLinks" ></navbar-component>
-  {{ showNavigationLinks }}
 
   <router-view/>
 </template>

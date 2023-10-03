@@ -36,7 +36,14 @@
           <td>{{ article.auteur }}</td>
           <td>{{ article.numeroParu }}</td>
           <td>{{ article.date }}</td>
-          <td>{{ article.private }}</td>
+          <td class="vertical-align-middle">
+              <div class="content">
+                <p style="padding: 20px;">
+                  {{ isPrivate(article.private) }}
+                </p> 
+                <button class="button" @click.stop="privateArticle(article.id)">privé</button>
+              </div>
+            </td>
           <td>{{ rubriqueNameFromId(article.rubrique) }}</td>
           <td>{{ article.fileType }}</td>
           <td><button class="button" @click.stop="modifyArticle(article.id)">Modifier</button></td>
@@ -67,10 +74,27 @@ export default{
         this.setArticles()
     },
     methods : {
+      isPrivate(bo){
+      if(bo){
+        return "privé"
+      } else {
+        return "public"
+      }
+    },
+      privateArticle(id){
+        axiosInstance.post('/api/privateArticle',{ id : id}).then( response =>{
+          console.log(response)
+          this.setArticles()
+
+        }
+        ).catch(error => console.log(error))
+
+      },
       modifyArticle(id){
         this.$emit('modifyArticle',id)
       },
         rubriqueNameFromId(id){
+          console.log(this.rubriques)
             var found = this.rubriques.find(rub => rub.id === id)
             if(found){
                 return found.rubrique
@@ -86,7 +110,7 @@ export default{
               message: 'Article deleted successfully',
               type: 'success',
               customClass: 'custom-el-message',
-              duration: 100000, // Set the duration to 3000 milliseconds (3 seconds)
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
             });
             this.setArticles()
           })
@@ -96,8 +120,12 @@ export default{
           });
         },
         setArticles(){
-            axiosInstance.get('/api/getrubriques').then(response => 
-            this.rubriques = response.data).catch(error => console.log(error))
+            axiosInstance.get('/api/getrubriques').then(response => {
+
+              console.log(response.data)
+              this.rubriques = response.data
+            }
+            ).catch(error => console.log(error))
             //Be carefull different routes admin
             axiosInstance.get('/api/getAllArticles').then(
                response => {
@@ -123,6 +151,18 @@ export default{
 }
 </script>
 <style scoped>
+.vertical-align-middle {
+  
+  text-align: center;
+  vertical-align: middle;
+}
+
+.content {
+  display: block;
+}
+
+
+
 
 .container {
   width: 100%;

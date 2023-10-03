@@ -39,7 +39,7 @@ export default{
     data(){
         return {
             activeComponent: {
-                dashboard: false,
+                dashboard: true,
                 register: false,
                 article: false,
                 archive: false,
