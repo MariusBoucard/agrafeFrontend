@@ -7,7 +7,7 @@
       <!-- Content for the left column -->
     </div>
     <div class="right-column">
-    <ModifyArticle></ModifyArticle>
+      <DashboardComponent  v-if="activeComponent.dashboard"></DashboardComponent>
       <!-- Content for the right column -->
       <modifyArticle v-if="activeComponent.modifyArticle" :id="articleId"></modifyArticle>
       <RegisterComponent v-if="activeComponent.register">   </RegisterComponent>
@@ -32,13 +32,14 @@ import NewsletterComponent from './newsletterComponent.vue';
 import newsComponent from './newsComponent.vue';
 import CreateNewsComponent from './createNewsComponent.vue';
 import rubriquesComponent from './rubriquesComponent.vue';
+import DashboardComponent from './dashboardComponent.vue';
 
 export default{
-    components: { rubriquesComponent, newsComponent, NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle, modifyArticle, NewsletterComponent, CreateNewsComponent },
+    components: { rubriquesComponent, newsComponent, NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle, modifyArticle, NewsletterComponent, CreateNewsComponent, DashboardComponent },
     data(){
         return {
             activeComponent: {
-                dashBoard: false,
+                dashboard: false,
                 register: false,
                 article: false,
                 archive: false,
