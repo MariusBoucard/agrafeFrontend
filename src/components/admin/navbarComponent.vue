@@ -2,8 +2,8 @@
     <div class="navbar">
       <div class="navbar-content">
         <p class="navbar-title">Salut, bienvenue dans la page admin</p>
-        <button class="logout-button">Logout</button>
-      </div>
+        <router-link to="/" class="logout-button" @click="logout">Logout</router-link>
+            </div>
     </div>
   </template>
   
@@ -12,6 +12,11 @@
     data() {
       return {};
     },
+    methods : {
+      logout(){
+        sessionStorage.setItem('token', ''); // For session-only storage
+      }
+    }
   };
   </script>
   

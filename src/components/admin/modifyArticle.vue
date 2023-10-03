@@ -176,6 +176,8 @@
             // Handle errors if the request fails
             console.error(error);
           });
+        } else {
+          this.$emit("componentChanged","article")
         }
     }).catch(error => console.log(error))
       }

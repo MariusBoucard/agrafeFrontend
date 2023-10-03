@@ -17,6 +17,9 @@
       <newsComponent v-if="activeComponent.news" @componentChanged="setComponent($event)" @modifyNews="setComponent($event)"></newsComponent>
       <CreateNewsComponent @componentChanged="setComponent($event)" v-if="activeComponent.createNews"></CreateNewsComponent>
       <rubriquesComponent v-if="activeComponent.rubrique"></rubriquesComponent>
+
+      <ArchiveComponent v-if="activeComponent.archive" @componentChanged="setComponent($event)"></ArchiveComponent>
+      <createArchive v-if="activeComponent.createArchive" @componentChanged="setComponent($event)"></createArchive>
     </div>
   </div>
     </div>
@@ -33,9 +36,11 @@ import newsComponent from './newsComponent.vue';
 import CreateNewsComponent from './createNewsComponent.vue';
 import rubriquesComponent from './rubriquesComponent.vue';
 import DashboardComponent from './dashboardComponent.vue';
+import ArchiveComponent from './archiveComponent.vue';
+import createArchive from './createArchive.vue';
 
 export default{
-    components: { rubriquesComponent, newsComponent, NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle, modifyArticle, NewsletterComponent, CreateNewsComponent, DashboardComponent },
+    components: { createArchive, rubriquesComponent, newsComponent, NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle, modifyArticle, NewsletterComponent, CreateNewsComponent, DashboardComponent, ArchiveComponent },
     data(){
         return {
             activeComponent: {
@@ -43,6 +48,7 @@ export default{
                 register: false,
                 article: false,
                 archive: false,
+                createArchive : false,
                 newsletter: false,
                 news: false,
                 createArticle : false,

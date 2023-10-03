@@ -1,62 +1,39 @@
 <template>
 <div class="container">
   <form @submit.prevent="submitForm" class="article-form">
-    <h2 class="form-title">Ajouter un article</h2>
+    <h2 class="form-title">Ajouter une archive</h2>
 
     <div class="form-columns">
       <!-- Left column -->
       <div class="form-column">
         <div class="form-group">
-      <label for="titreFront">Titre de l'article :</label>
-      <input type="text" id="titreFront" v-model="article.titreFront" required>
-          </div>
+      <label for="titreFront">Titre de l'archive :</label>
+      <input type="text" id="titreFront" v-model="archive.titre" required>
+      </div>
           <div class="form-group">
       <label for="description">Description :</label>
-      <textarea id="description" v-model="article.description" required></textarea>
+      <textarea id="description" v-model="archive.description" required></textarea>
             </div>
-            <div class="form-group">
-      <label for="imageLogo">Image de couverture:</label>
-      <input type="file" id="imageLogo" accept="image/*" @change="handleImageUpload" required>
-      
-      </div>
-      <div class="form-group">
-      <!-- Add a preview for the uploaded image (optional) -->
-      <img v-if="imagePreview" :src="imagePreview" alt="Uploaded Image">
-        </div>
+
         <div class="form-group">
-      <label for="imageLogo">Article en pdf :</label>
+      <label for="imageLogo">Archive en pdf :</label>
       <input type="file" id="articlePdf" accept=".pdf" @change="handlePdfUpload" required>
         </div>
     </div>
     <div class="form-column">
-      <div class="form-group">
-      <label for="auteur">Auteur :</label>
-      <input type="text" id="auteur" v-model="article.auteur" required>
-        </div>
+      
         <div class="form-group">
 
           <label for="numeroParu">Numéro du journal :</label>
-          <input type="text" id="numeroParu" v-model="article.numeroParu" required>
+          <input type="text" id="numeroParu" v-model="archive.numero" required>
         </div>
         <div class="form-group">
         <label for="date">Date de publication :</label>
-        <input type="date" id="date" v-model="article.date" required>
+        <input type="date" id="date" v-model="archive.date" required>
         </div>
   
-        <div class="form-group">
-          <label for="rubrique" class="label">Rubrique:</label>
-          <!-- Replaced the input with a select -->
-          <select id="rubrique" v-model="article.rubrique" required>
-            <option v-for="rub in rubriques" :key="rub.id" :value="rub.id">{{rub.rubrique}}</option>
-            <!-- Add more options as needed -->
-          </select>
-
-   </div>
-   <div class="form-group">
-
-      <label for="fileType">File Type:</label>
-      <input type="text" id="fileType" v-model="article.fileType" required>
-      </div>
+        
+  
     </div>
       </div>
       <button type="submit" class="submit-button">Submit</button>    </form>
@@ -66,73 +43,41 @@
 import axiosInstance from '@/axios';
 export default{
   mounted(){
-    axiosInstance.get('api/getrubriques').then(
-      response => {
-        console.log(response)
-        this.rubriques = response.data
-      }
-    ).catch(error => console.log(error ))
+  
   },
     data(){
         return {
-      article: {
-        titreFront: "sdf",
+      archive : {
+        titre: "sdf",
         description: "fds",
-        imageLogo: "fsd",
-        path : "dsf",
-        auteur  :"sdf",
-        numeroParu :"fsd",
-        date : "fds",
-        private : "sfd",
-        // Attention, bien save l id de la rubrique
-        rubrique : "fds",
-        misEnLigne : "dfs",
-        articlePdf : "",
-        fileType : "fds",
+       numero : "",
+       date : "",
+       archivePdf : ""
         // Initialize other attributes with empty values or default values
         // For example: auteur: "", numeroParu: "", date: "", ...
       },
-      rubriques : [],
-      imagePreview: null, // Store the image preview URL
     };
     },
     methods : {
 
-    handleImageUpload(event) {
-      const file = event.target.files[0];
-
-      // Check if a file was selected
-      if (file) {
-        // Display a preview of the selected image (optional)
-        this.imagePreview = URL.createObjectURL(file);
-
-        // Assign the selected file to the article's imageLogo property
-        this.article.imageLogo = file;
-      } else {
-        // Clear the imagePreview and imageLogo if no file was selected
-        this.imagePreview = null;
-        this.article.imageLogo = null;
-      }
-    },
+  
     handlePdfUpload(event) {
       const file = event.target.files[0];
 
       // Check if a file was selected
       if (file) {
- 
-
         // Assign the selected file to the article's imageLogo property
-        this.article.articlePdf = file;
+        this.archive.archivePdf = file;
       } else {
         // Clear the imagePreview and imageLogo if no file was selected
-        this.article.articlePdf = null;
+        this.archive.archivePdf = null;
       }
     },
    
     submitForm() {
   // Create a FormData object to send the article data with the image
   
-  axiosInstance.post('/api/addArticle',{ article : this.article},)
+  axiosInstance.post('/api/addArchive',{ archive : this.archive},)
     .then(response => {
       // Handle the response from the backend
       console.log(response.data);
@@ -140,30 +85,16 @@ export default{
     const id = response.data
     const formData = new FormData();
     console.log(response.data)
-    formData.append('imageLogo', this.article.imageLogo);
-    formData.append('articleId', id ); // Add your string data here
-    axiosInstance.post('/api/uploadImage', formData, {
+    formData.append('archivePdf', this.archive.archivePdf);
+    formData.append('archiveId', id ); // Add your string data here
+    axiosInstance.post('/api/uploadPdfArchive', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     })
     .then(response => {
-      const formData = new FormData();
-        console.log(response.data)
-        formData.append('articlePdf', this.article.articlePdf);
-        formData.append('articleId', id ); // Add your string data here
-        axiosInstance.post('/api/uploadPdfArticle', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-      },
-    }).then(response => {
       console.log(response)
-      console.log("ta mereee")
-      this.$emit("componentChanged","article")
-    }).catch(error => console.log(error))
-      // Handle the response from the backend
-      console.log(response.data);
-
+      this.$emit('componentChanged','archive')
     })
     .catch(error => {
       // Handle errors if the request fails
