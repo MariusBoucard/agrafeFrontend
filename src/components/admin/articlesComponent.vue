@@ -71,6 +71,7 @@ export default{
         }
     },
     mounted(){
+      console.log("axios", axiosInstance.defaults.headers.common['Authorization'])
         this.setArticles()
     },
     methods : {

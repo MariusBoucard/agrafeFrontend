@@ -37,11 +37,13 @@ export default{
                             console.log("on a recu une reponse",response)
                             // Handle the response from the server
                             const token = response.data.token;
+                            axiosInstance.defaults.headers.common['Authorization'] = token;
                             sessionStorage.setItem('token', token); // For session-only storage
+                            console.log("token set")
+                            console.log(token)
+                            console.log(axiosInstance.defaults.headers.common['Authorization'])
                             if (response.data.connected === true){
-                           
-                        router.push('/admin'); // Replace '/dashboard' with the URL you want to redirect to
-                                
+                                 router.push('/admin'); // Replace '/dashboard' with the URL you want to redirect to
                             }
                         })
                         .catch(error => {

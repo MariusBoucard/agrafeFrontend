@@ -41,6 +41,7 @@ import createArchive from './createArchive.vue';
 
 export default{
     components: { createArchive, rubriquesComponent, newsComponent, NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle, modifyArticle, NewsletterComponent, CreateNewsComponent, DashboardComponent, ArchiveComponent },
+   
     data(){
         return {
             activeComponent: {
