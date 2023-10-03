@@ -1,12 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePute from '../components/HomePute.vue'
-import axios from 'axios';
+import axios from 'axios'
+import { useStore } from 'vuex'; // Import useStore from Vuex
 // import { isAuthenticated } from './Auth0'; // Import the isAuthenticated function
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomePute
+    component: HomePute,
+    meta: {        hideNavigationLinks: false } // Add a meta field to indicate authentication requirement
+
   },
   {
     path: '/about',
@@ -14,7 +17,8 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../components/AboutPute.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../components/AboutPute.vue'),
+    meta: {        hideNavigationLinks: false } // Add a meta field to indicate authentication requirement
   },
   {
     path: '/login',
@@ -28,7 +32,7 @@ const routes = [
     path: '/admin',
     name: 'admin',
     component: () => import(/* webpackChunkName: "admin" */ '../components/admin/adminHome.vue'),
-    meta: { requiresAuth: true } // Add a meta field to indicate authentication requirement
+    meta: { requiresAuth: true,       hideNavigationLinks: true } // Add a meta field to indicate authentication requirement
   },
   {
     path: '/admin/register',
@@ -46,6 +50,11 @@ const router = createRouter({
 
 // Global navigation guard
 router.beforeEach((to, from, next) => {
+  const store = useStore(); // Access the Vuex store
+  console.log(store)
+  // Set showNavigationLinks based on the hideNavigationLinks meta field
+  console.log(to.meta.hideNavigationLinks)
+  store.commit('app/toggleNavigationLinks', !to.meta.hideNavigationLinks);
   // Check if the route requires authentication
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // Retrieve the token from localStorage or sessionStorage
