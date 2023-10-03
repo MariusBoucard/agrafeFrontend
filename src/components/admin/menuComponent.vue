@@ -47,6 +47,12 @@
                 <span>News</span>
             </div>
         </li>
+        <li>
+            <div @click="setComponent('rubrique')" class="menu-item"  :class="getMenuItemClass('rubrique')">
+                <i class="el-icon-news"></i>
+                <span>Rubriques</span>
+            </div>
+        </li>
     </ul>
 </div>
 

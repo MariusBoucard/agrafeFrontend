@@ -16,6 +16,7 @@
       <NewsletterComponent v-if="activeComponent.newsletter"></NewsletterComponent>
       <newsComponent v-if="activeComponent.news" @componentChanged="setComponent($event)" @modifyNews="setComponent($event)"></newsComponent>
       <CreateNewsComponent  v-if="activeComponent.createNews"></CreateNewsComponent>
+      <rubriquesComponent v-if="activeComponent.rubrique"></rubriquesComponent>
     </div>
   </div>
     </div>
@@ -30,9 +31,10 @@ import modifyArticle from './modifyArticle.vue';
 import NewsletterComponent from './newsletterComponent.vue';
 import newsComponent from './newsComponent.vue';
 import CreateNewsComponent from './createNewsComponent.vue';
+import rubriquesComponent from './rubriquesComponent.vue';
 
 export default{
-    components: { newsComponent, NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle, modifyArticle, NewsletterComponent, CreateNewsComponent },
+    components: { rubriquesComponent, newsComponent, NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle, modifyArticle, NewsletterComponent, CreateNewsComponent },
     data(){
         return {
             activeComponent: {
@@ -44,7 +46,8 @@ export default{
                 news: false,
                 createArticle : false,
                 createNews : false,
-                modifyNews : false
+                modifyNews : false,
+                rubrique : false
             },
             articleId : ""
         }
