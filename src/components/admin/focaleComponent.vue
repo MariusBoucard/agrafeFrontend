@@ -4,7 +4,7 @@
         <div>
 
             <div class="header">
-                <h1>Voila la page des articles</h1>
+                <h1>Voila la page des focales</h1>
                 <button class="add-article-button" @click="createFocale()">Ajouter focale</button>
             </div>
         </div>
@@ -22,7 +22,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="(foc, index) in focales" :key="index">
-                        <td>{{ foc }}
+                        <td>
                             <button class="button" @click.stop="deleteFocale(foc.id)">Supprimer</button></td>
                         <td>{{ foc.titre }}</td>
                         <td>{{ foc.description }}</td>
