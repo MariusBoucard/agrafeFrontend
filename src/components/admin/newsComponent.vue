@@ -73,11 +73,15 @@ export default {
     },
     privateNews(id) {
       axiosInstance.post('/api/privateNews', { id: id }).then(
-        response => {
-          console.log(response)
+        () => {
           this.setNews()
         }
-      ).catch(error => console.log(error))
+      ).catch(() =>  this.$message({
+              message: 'Erreur lors du passage en privé',
+              type: 'error',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            }))
     },
     modifyNews(id) {
       this.$emit('modifyNews', id)
@@ -94,14 +98,23 @@ export default {
 
         this.setNews()
       })
-        .catch(error => {
-          console.log(error)
-          this.$message.error('Error deleting article');
-        });
+        .catch(() => {
+          this.$message({
+              message: 'Erreur lors de la suppression de la news',
+              type: 'error',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            })        });
     },
     setNews() {
       axiosInstance.get('/api/getAllNews').then(response =>
-        this.news = response.data).catch(error => console.log(error))
+        this.news = response.data).catch(() =>
+        this.$message({
+              message: 'Erreur récupération des news',
+              type: 'error',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            }))
     },
     createNews() {
       this.$emit("componentChanged", "createNews")

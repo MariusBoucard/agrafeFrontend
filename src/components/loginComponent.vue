@@ -3,11 +3,15 @@
         <form @submit.prevent="login">
             <h2>Login</h2>
             <div>
-                <label for="username">Username:</label>
+                <label for="username">Username :</label>
                 <input type="text" id="username" v-model="formData.username" required>
             </div>
             <div>
-                <label for="password">Password:</label>
+                <label for="password">Mail :</label>
+                <input type="mail" id="mail" v-model="formData.mail" required>
+            </div>
+            <div>
+                <label for="password">Password :</label>
                 <input type="password" id="password" v-model="formData.password" required>
             </div>
             <button type="submit">Login</button>
@@ -24,6 +28,7 @@ export default{
             formData: {
                         username: '',
                         password: '',
+                        mail : ''
                     },
         }
     },
@@ -34,24 +39,18 @@ export default{
                     // Example with Axios:
                     axiosInstance.post('/api/login', this.formData)
                         .then(response => {
-                            console.log("on a recu une reponse",response)
                             // Handle the response from the server
                             const token = response.data.token;
                             axiosInstance.defaults.headers.common['Authorization'] = token;
                             sessionStorage.setItem('token', token); // For session-only storage
-                            console.log("token set")
-                            console.log(token)
-                            console.log(axiosInstance.defaults.headers.common['Authorization'])
                             if (response.data.connected === true){
                                  router.push('/admin'); // Replace '/dashboard' with the URL you want to redirect to
                             }
                         })
                         .catch(error => {
-                            console.log("on a recu une erreur",error)
-
+                            console.log(error)
                             // Handle any errors
                         });
-                    console.log('Form data:', this.formData);
                 },
     }
 }

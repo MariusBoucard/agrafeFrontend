@@ -83,7 +83,6 @@ export default {
 
           const id = response.data
           const formData = new FormData();
-          console.log(response.data)
           formData.append('imageLogo', this.news.imageLogo);
           formData.append('newsId', id); // Add your string data here
           axiosInstance.post('/api/uploadImageNews', formData, {

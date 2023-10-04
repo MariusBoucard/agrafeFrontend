@@ -23,14 +23,11 @@ const state = {
   
   const actions = {
     setUser({ commit }, user) {
-      console.log("set user called")
       commit('SET_USER', user);
       commit('SET_AUTHENTICATED', Boolean(user));
     },
     setConnection({ commit }, con) {
-      console.log("cacaca", con);
       commit('SET_AUTHENTICATED', con);
-      console.log(state.isAuthenticated)
     },
     clearUser({ commit }) {
       commit('SET_USER', null);

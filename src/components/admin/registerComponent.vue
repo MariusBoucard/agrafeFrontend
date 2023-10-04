@@ -50,7 +50,6 @@
 import axiosInstance from '../../axios.js';
 export default{
     mounted() {
-        console.log("mounted trigger")
         this.setUser();
     },
     data(){
@@ -68,20 +67,36 @@ export default{
             axiosInstance.get("/api/getAllUser").then(response =>
         {
             this.users = response.data
-        }).catch(error => 
+        }).catch(() => 
+        
         {
             this.users = null
-            console.log(error)
-
+            this.$message({
+              message: 'On a pas réussi à récupérer les utilisateurs',
+              type: 'error',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            })
         })
         },
         deleteUser(id){
             axiosInstance.delete(`/api/deleteUser/${id}`).then(
-                response => {
-                    console.log(response)
+                () => {
+                    this.$message({
+              message: 'Utilisateur supprimé',
+              type: 'success',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            })
                     this.setUser()
                 }
-            ).catch(error => console.log(error))
+            ).catch(() => 
+             this.$message({
+              message: 'Erreur lors de la suppression de l`utilisateur',
+              type: 'error',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            }))
         },
 
         register() {
@@ -89,21 +104,27 @@ export default{
                     // You can use libraries like Axios or the native Fetch API for this
                     // Example with Axios:
                     axiosInstance.post('/api/registerAdmin  ', this.formData)
-                        .then(response => {
-                            // if (response.connected === true){
-                            //     this.locals
-                            // }
-                            console.log("on a recu une reponse",response)
+                        .then(() => {
+                            this.$message({
+                            message: 'Utilisateur ajouté !',
+                            type: 'success',
+                            customClass: 'custom-el-message',
+                            duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+                            })
                                  this.setUser()
 
                             // Handle the response from the server
                         })
-                        .catch(error => {
-                            console.log("on a recu une erreur",error)
+                        .catch(() => {
+                            this.$message({
+                            message: 'Erreur lors de l\'ajout de l\'utilisateur',
+                            type: 'error',
+                            customClass: 'custom-el-message',
+                            duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+                            })
 
                             // Handle any errors
                         });
-                    console.log('Form data:', this.formData);
                 },
     }
 }

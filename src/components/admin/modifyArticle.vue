@@ -71,19 +71,27 @@
       mounted(){
         axiosInstance.get('api/getrubriques').then(
           response => {
-            console.log(response)
             this.rubriques = response.data
           }
-        ).catch(error => console.log(error ))
-        console.log(baseUrl)
+        ).catch(() =>  this.$message({
+              message: 'Erreur lors de la récupération des rubriques',
+              type: 'error',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            }))
         axiosInstance.get('api/getArticle?id=' + this.id).then(
             response => 
             {
-              console.log(response)
               this.article = response.data
             }
 
-        ).catch(error => console.log(error))
+        ).catch(() => 
+        this.$message({
+              message: 'Erreur lors de la récupération des l\'article souhaité',
+              type: 'error',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            }))
       }, 
       props : {
         id : {required : true , type : String}
@@ -151,35 +159,48 @@
       // Create a FormData object to send the article data with the image
       
       axiosInstance.post('/api/modifyArticle',{ article : this.article},)
-        .then(response => {
+        .then(() => {
           // Handle the response from the backend
-          console.log(response.data);
-    
         const formData = new FormData();
-        console.log(response.data)
-        console.log(this.notModifiedImage,"image modifiee",this.article.id)
+        
         if(!this.notModifiedImage){
           formData.append('imageLogo', this.article.imageLogo);
           formData.append('articleId', this.article.id ); // Add your string data here
-          console.log("on est dans le upload")
           axiosInstance.post('/api/uploadImage', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           })
-          .then(response => {
+          .then(() => {
+            this.$message({
+              message: 'Article modifié mon sang',
+              type: 'success',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            })
             this.$emit("componentChanged","article")
 
-              console.log(response)
+
           })  
           .catch(error => {
             // Handle errors if the request fails
             console.error(error);
           });
         } else {
+          this.$message({
+              message: 'Article modifié mon sang',
+              type: 'success',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            })
           this.$emit("componentChanged","article")
         }
-    }).catch(error => console.log(error))
+    }).catch(() => this.$message({
+              message: 'Une erreur s`est produite',
+              type: 'error',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            }))
       }
         
     }}

@@ -56,7 +56,7 @@ export default{
     methods : {
         addNewsletter(){
             axiosInstance.post('/api/addNewsletter',{ user : this.formData})
-            .then(response =>
+            .then(() =>
             {
                 this.$message({
               message: 'Utilisateur ajouté à la newsletter',
@@ -64,7 +64,6 @@ export default{
               customClass: 'custom-el-message',
               duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
             });
-            console.log(response)
         } 
         )
             .catch(error => 
@@ -77,12 +76,11 @@ export default{
         },
         setNewsletter(){
             axiosInstance.get('/api/getNewsletter').then(response => 
-            this.users = response.data).catch(error => console.log(error))
+            this.users = response.data).catch(error => console.error(error))
             
         },
         deleteNewsletter(id){
-            axiosInstance.delete(`/api/deleteNewsletter/${id}`).then(response => {
-            console.log(response)
+            axiosInstance.delete(`/api/deleteNewsletter/${id}`).then(() => {
             this.$message({
               message: 'Utilisateur supprimé de la newsletter',
               type: 'success',
@@ -92,8 +90,7 @@ export default{
             this.setNewsletter()
           })
           .catch(error => {
-            console.log(error)
-            this.$message.error('Error lors de la suppression de l\'utilisateur');
+            console.error(error)
           });        }
     },
     mounted(){

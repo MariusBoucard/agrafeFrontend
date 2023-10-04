@@ -80,11 +80,9 @@ export default{
   axiosInstance.post('/api/addArchive',{ archive : this.archive},)
     .then(response => {
       // Handle the response from the backend
-      console.log(response.data);
 
     const id = response.data
     const formData = new FormData();
-    console.log(response.data)
     formData.append('archivePdf', this.archive.archivePdf);
     formData.append('archiveId', id ); // Add your string data here
     axiosInstance.post('/api/uploadPdfArchive', formData, {
@@ -92,8 +90,7 @@ export default{
         'Content-Type': 'multipart/form-data',
       },
     })
-    .then(response => {
-      console.log(response)
+    .then(() => {
       this.$emit('componentChanged','archive')
     })
     .catch(error => {

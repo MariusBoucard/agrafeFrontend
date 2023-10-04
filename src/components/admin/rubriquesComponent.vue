@@ -91,7 +91,7 @@ export default {
                 )
                 this.setRubriques()
             }
-            ). catch(error => console.log(error))
+            ). catch(error => console.error(error))
         },
         setRubriques(){
            axiosInstance.get('/api/getRubriques').then(response => {
@@ -102,13 +102,22 @@ export default {
            )
         },
         addRubrique(){
-            console.log("addrubrique")
             axiosInstance.post('/api/addRubrique', { rubrique : this.rubrique}).then(
-                response => {
-                    console.log(response)
+                () => {
+                    this.$message({
+                    message: 'Rubrique ajoutée !!',
+                    type: 'success',
+                    customClass: 'custom-el-message',
+                    duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+                    })
                     this.setRubriques()
                 } 
-            ).catch(error =>console.log(error))
+            ).catch(() => this.$message({
+              message: 'Erreur lors de l`ajout de la rubrique',
+              type: 'error',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            }))
         //On va pas supprimer de rubrique sinon ça risque de foutre la merde avec la retrocompatibilité
 
     }

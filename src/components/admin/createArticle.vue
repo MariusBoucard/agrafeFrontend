@@ -68,10 +68,14 @@ export default{
   mounted(){
     axiosInstance.get('api/getrubriques').then(
       response => {
-        console.log(response)
         this.rubriques = response.data
       }
-    ).catch(error => console.log(error ))
+    ).catch(() =>  this.$message({
+              message: 'Erreur récupération rubriques',
+              type: 'error',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            }))
   },
     data(){
         return {
@@ -135,11 +139,8 @@ export default{
   axiosInstance.post('/api/addArticle',{ article : this.article},)
     .then(response => {
       // Handle the response from the backend
-      console.log(response.data);
-
     const id = response.data
     const formData = new FormData();
-    console.log(response.data)
     formData.append('imageLogo', this.article.imageLogo);
     formData.append('articleId', id ); // Add your string data here
     axiosInstance.post('/api/uploadImage', formData, {
@@ -147,23 +148,18 @@ export default{
         'Content-Type': 'multipart/form-data',
       },
     })
-    .then(response => {
+    .then(() => {
       const formData = new FormData();
-        console.log(response.data)
         formData.append('articlePdf', this.article.articlePdf);
         formData.append('articleId', id ); // Add your string data here
         axiosInstance.post('/api/uploadPdfArticle', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
       },
-    }).then(response => {
-      console.log(response)
-      console.log("ta mereee")
+    }).then(() => {
       this.$emit("componentChanged","article")
     }).catch(error => console.log(error))
       // Handle the response from the backend
-      console.log(response.data);
-
     })
     .catch(error => {
       // Handle errors if the request fails

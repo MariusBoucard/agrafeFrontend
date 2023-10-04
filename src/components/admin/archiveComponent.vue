@@ -78,19 +78,15 @@ export default{
       }
     },
       privateArchive(id){
-        axiosInstance.post('/api/privateArchive',{ id : id}).then( response =>{
-          console.log(response)
+        axiosInstance.post('/api/privateArchive',{ id : id}).then( () =>{
           this.setArchives()
-
         }
         ).catch(error => console.log(error))
 
       },
 
         deleteArchive(id){
-          console.log(id)
-          axiosInstance.delete(`/api/deleteArchive/${id}`).then(response => {
-            console.log(response)
+          axiosInstance.delete(`/api/deleteArchive/${id}`).then(() => {
             this.$message({
               message: 'Article deleted successfully',
               type: 'success',
@@ -99,9 +95,13 @@ export default{
             });
             this.setArchives()
           })
-          .catch(error => {
-            console.log(error)
-            this.$message.error('Error deleting article');
+          .catch(() => {
+            this.$message({
+              message: 'Article deleted successfully',
+              type: 'error',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            });
           });
         },
         setArchives(){
@@ -110,9 +110,14 @@ export default{
                response => {
                             this.archives = response.data
                         })
-                        .catch(error => {
-                            console.log("on a recu une erreur",error)
-                        });
+                        .catch(() => {
+                          this.$message({
+                          message: 'Erreur lors de la recuperation des archives',
+                          type: 'error',
+                          customClass: 'custom-el-message',
+                          duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+                        });                       
+                       });
             
         },
         createArchive(){

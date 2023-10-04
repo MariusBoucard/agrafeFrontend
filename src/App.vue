@@ -21,10 +21,8 @@ import NavbarComponent from './components/navbarComponent.vue';
             handler: function (newUser) {
                 if (newUser) {
                     this.setConnection(true);
-                    console.log("connect");
                 }
                 else {
-                    console.log("whatt");
                     this.setConnection(false);
                 }
             }
@@ -40,7 +38,6 @@ import NavbarComponent from './components/navbarComponent.vue';
         ...mapActions('auth', ['setUser', 'clearUser', 'setConnection']),
         log() {
             this.$store.commit('auth/SET_AUTHENTICATED', true); // Set to true
-            console.log(this.isAuthenticated);
         },
         login() {
             this.$auth0.loginWithRedirect();

@@ -123,8 +123,6 @@ export default {
             await  axiosInstance.get('/api/getLectures').then(
                 response => {
                     const last6Days = response.data
-                    console.log("getChart data")
-                    console.log(response)
                     // Calculate the difference between lectures for consecutive days
                     const differences = [];
 
@@ -136,10 +134,8 @@ export default {
                     // Add the difference to the new array
                     differences.push({ date: currentDay.date, "difference" : difference });
                     }
-                    console.log(differences)
                     this.viewData.labels = differences.map(item => item.date);
                     this.viewData.data = differences.map(item => item.difference);
-                    console.log(this.viewData)
                 }
             ).catch(error => console.log(error))
         },
@@ -149,34 +145,41 @@ export default {
              response => {
                           this.archives = response.data
                       })
-                      .catch(error => {
-                          console.log("on a recu une erreur",error)
-                      });
+                      .catch(() => {
+                        this.$message({
+              message: 'Erreur récuperation des archives',
+              type: 'error',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            });                      });
           
       },
         setArticles() {
             axiosInstance.get('/api/getrubriques').then(response =>
-                this.rubriques = response.data).catch(error => console.log(error))
+                this.rubriques = response.data).catch(() =>
+                this.$message({
+              message: 'Erreur récupération rubriques',
+              type: 'error',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            }))
             //Be carefull different routes admin
             axiosInstance.get('/api/getAllArticles').then(
                 response => {
-                    // if (response.connected === true){
-                    //     this.locals
-                    // }
-                    console.log("on a recu une reponse", response)
                     this.articles = response.data
-                    console.log(this.articles)
-                    // Handle the response from the server
                 })
-                .catch(error => {
-                    console.log("on a recu une erreur", error)
-
+                .catch(() => {
+                    this.$message({
+              message: 'Erreur lors de la récupération des articles',
+              type: 'error',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            });
                     // Handle any errors
                 });
 
         },
         createChart() {
-            console.log(this.viewData)
             const ctx = this.$refs.lineChart.getContext('2d');
 
             this.chart = new Chart(ctx, {
