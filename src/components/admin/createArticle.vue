@@ -157,6 +157,12 @@ export default{
             'Content-Type': 'multipart/form-data',
       },
     }).then(() => {
+      this.$message({
+              message: 'Article Bien ajouté!!',
+              type: 'success',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            })
       this.$emit("componentChanged","article")
     }).catch(error => console.log(error))
       // Handle the response from the backend

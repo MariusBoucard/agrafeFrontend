@@ -3,7 +3,6 @@
     }
     const mutations =  {
       toggleNavigationLinks(state,newValue) {
-        console.log('oueeee')
         state.showNavigationLinks = newValue;
       },
     }
