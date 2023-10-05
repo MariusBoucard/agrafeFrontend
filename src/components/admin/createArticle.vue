@@ -53,6 +53,20 @@
 
    </div>
    <div class="form-group">
+          <label for="rubrique" class="label">Rang article :</label>
+          <p>Ce paramètre est utile pour la page d'accueil, l'article le plus recent de rang 1 est mis en avant et ceux de rang 2 et 3 un peu moins</p>
+          <!-- Replaced the input with a select -->
+          <select id="rang" v-model="article.rangArticle" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+
+            <option value="3">3</option>
+
+            <!-- Add more options as needed -->
+          </select>
+
+   </div>
+   <div class="form-group">
 
       <label for="fileType">File Type:</label>
       <input type="text" id="fileType" v-model="article.fileType" required>
@@ -85,6 +99,7 @@ export default{
         imageLogo: "fsd",
         path : "dsf",
         auteur  :"sdf",
+        rangArticle : 1,
         numeroParu :"fsd",
         date : "fds",
         private : "sfd",

@@ -31,7 +31,14 @@
         <label for="date">Date de publication :</label>
         <input type="date" id="date" v-model="archive.date" required>
         </div>
-  
+        <div class="form-group">
+        <label for="date">Auteur dessin 4 ême de couverture :</label>
+        <input type="test" id="text" v-model="archive.auteurBack" required>
+        </div>
+        <div class="form-group">
+        <label for="date">Copyright dessin 4 ême de couverture :</label>
+        <input type="test" id="text" v-model="archive.copyrightBack" required>
+        </div>
         
   
     </div>
@@ -52,9 +59,9 @@ export default{
         description: "fds",
        numero : "",
        date : "",
-       archivePdf : ""
-        // Initialize other attributes with empty values or default values
-        // For example: auteur: "", numeroParu: "", date: "", ...
+       archivePdf : "",
+       auteurBack : "",
+       copyrightBack : ""
       },
     };
     },
