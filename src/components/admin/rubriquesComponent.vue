@@ -47,6 +47,8 @@
                 
                 <!-- Add more options as needed -->
             </select>
+            <label for="description">Nom de rubrique :</label>
+            <input type="text" id="description" v-model="rubrique.rubrique" required>
 
             <label for="description">Description:</label>
             <input type="text" id="description" v-model="rubrique.description" required>
@@ -83,8 +85,8 @@ export default {
     },
     methods : {
         modifyRubrique(){
-            const name = this.rubriques.find(a => a.id === this.rubrique.id)
-            this.rubrique.rubrique = name.rubrique
+            // const name = this.rubriques.find(a => a.id === this.rubrique.id)
+            // this.rubrique.rubrique = name.rubrique
             axiosInstance.post('/api/modifyRubrique',{rubrique : this.rubrique}).then(
                 () => {this.$message(
                     {message : "Rubrique modifiée"}

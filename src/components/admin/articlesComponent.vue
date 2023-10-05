@@ -46,7 +46,9 @@
             </td>
             <td>{{ rubriqueNameFromId(article.rubrique) }}</td>
             <td>{{ article.fileType }}</td>
-            <td><button class="button" @click.stop="modifyArticle(article.id)">Modifier</button></td>
+            <td>
+              <!-- <button class="button" @click.stop="modifyArticle(article.id)">Modifier</button> -->
+            </td>
             <!-- Add more table cells for other attributes as needed -->
           </tr>
         </tbody>
