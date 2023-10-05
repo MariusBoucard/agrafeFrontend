@@ -33,11 +33,11 @@
         </div>
         <div class="form-group">
         <label for="date">Auteur dessin 4 ême de couverture :</label>
-        <input type="test" id="text" v-model="archive.auteurBack" required>
+        <input type="text" id="text" v-model="archive.auteurBack" required>
         </div>
         <div class="form-group">
         <label for="date">Copyright dessin 4 ême de couverture :</label>
-        <input type="test" id="text" v-model="archive.copyrightBack" required>
+        <input type="text" id="text" v-model="archive.copyrightBack" required>
         </div>
         
   
@@ -167,13 +167,17 @@ export default{
 input[type="text"],
 textarea,
 input[type="file"],
+input[type="date"],
 select {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
 }
-
+input[type="date"],
+textarea{
+  margin-bottom: 10px;
+}
 /* Checkbox styles */
 input[type="checkbox"] {
   margin-right: 8px;

@@ -282,11 +282,7 @@ export default {
     flex-direction: column;
 }
 
-/* Label styles */
-.label {
-    font-weight: bold;
-    color: black;
-}
+
 
 /* Input and textarea styles */
 input[type="text"],
