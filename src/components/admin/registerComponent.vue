@@ -8,7 +8,7 @@
                         <th>Supprimer</th>
                         <th>Nom utilisateur</th>
                         <th>Mail</th>
-                        <th>Id</th>
+                        <!-- <th>Id</th> -->
                         <th>Type</th>
                     </tr>
                 </thead>
@@ -17,9 +17,9 @@
           <td><button class="button" @click.stop="deleteUser(user.id)">Supprimer</button></td>
           <td>{{ user.name }}</td>
           <td>{{ user.mail }}</td>
-          <td>
+          <!-- <td>
             {{ user.id }}
-          </td>
+          </td> -->
           <td>{{ user.type }}</td>
           
         </tr>
