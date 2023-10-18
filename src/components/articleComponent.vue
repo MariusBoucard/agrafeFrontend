@@ -1,7 +1,10 @@
 <template>
     <div>
         <div v-for="article in articles" :key="article.id">
-            <articleWidget ></articleWidget>
+            <articleWidget 
+                :article="article"
+                :rubriques="rubriques"
+            ></articleWidget>
         </div>
     </div>
 </template>
@@ -15,14 +18,22 @@ export default{
     mounted(){
         axiosInstance.get('/api/getrecentarticle').then(response => {
             this.articles = response.data
+            console.log("got")
            }
            ).catch(error => 
+           this.$message(error)
+           )
+
+        axiosInstance.get('/api/getrubriques').then(response => {
+            this.rubriques = response.data
+        }).catch(error => 
            this.$message(error)
            )
     },
     data () {
         return {
-            articles : []
+            articles : [],
+            rubriques : []
         }
     }
 }
