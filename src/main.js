@@ -4,6 +4,8 @@ import router from './router'
 import store from './store/index'
 import ElementPlus from 'element-plus';
 import { createAuth0 } from '@auth0/auth0-vue';
+
+import './assets/css/general.css'; // Import your global CSS file here
 const app = createApp(App)
 .use(store)
 .use(ElementPlus)

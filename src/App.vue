@@ -82,13 +82,36 @@ import NavbarComponent from './components/navbarComponent.vue';
 .custom-el-message-leave-to /* .el-message-leave-active in <2.1.8 */ {
   opacity: 0 !important;
 }
+
+@font-face {
+    font-family: 'agrafe';
+    src: url('./assets/font/ELEPHNT.TTF') format('ttf');
+    /* Add additional formats if necessary */
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'agrafeit';
+    src: url('./assets/font/ELEPHNTI.TTF') format('ttf');
+    /* Add additional formats if necessary */
+    font-weight: normal;
+    font-style: normal;
+  }
+
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'agrafeit' !important ; 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
 }
+
+body{
+  font-family: 'agrafeit' !important ; 
+  margin: 0;
+}
+
 
 nav {
   padding: 30px;
