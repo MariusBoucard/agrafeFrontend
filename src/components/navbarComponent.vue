@@ -1,45 +1,47 @@
 <template>
     <div class="navbar">
         <p class="title">Journal associatif étudiant</p>
+        <router-link  to="/">
+
         <div class="imgDiv">
             <img src="../assets/logos/logo_entier_white.svg" alt="Logo de l'agrafe">
                 </div>
 
+            </router-link>
         <div class="innerNav">
-
             <div class="inner">
 
                 <nav>
                     <ul>
                         <li>
-                            <a href="/">
+                            <a class="link" href="/">
                                 <router-link class="routerLink" to="/">Articles</router-link>
                             </a>
                         </li>
                     </ul>
                     <ul>
-                        <li><a href="/">
+                        <li><a class="link" href="/">
                                 <router-link class="routerLink" to="/">Archives</router-link>
                             </a>
                         </li>
 
                     </ul>
                     <ul>
-                        <li><a href="/">
+                        <li><a class="link" href="/">
                                 <router-link class="routerLink" to="/">L'actu</router-link>
                             </a>
                         </li>
 
                     </ul>
                     <ul>
-                        <li><a href="/">
+                        <li><a class="link" href="/">
                                 <router-link class="routerLink" to="/">Newsletter</router-link>
                             </a>
                         </li>
 
                     </ul>
                     <ul>
-                        <li><a href="/">
+                        <li><a class="link" href="/">
                                 <router-link class="routerLink" to="/">À propos</router-link>
                             </a>
                         </li>
@@ -75,7 +77,9 @@ nav {
 .routerLink{
     color : black
 }
-
+.routerLink:hover{
+    color : rgb(255, 255, 255)
+}
 ul {
     list-style: none;
     /* Remove list bullet points */
@@ -102,7 +106,7 @@ a {
     margin: auto;
 }
 /* Style for when links are hovered over */
-a:hover {
+.link:hover {
     color: #ffffff !important;
     background-color: #000000;
     border-radius: 5px;
