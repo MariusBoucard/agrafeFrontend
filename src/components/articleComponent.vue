@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-for="article in articles" :key="article.id">
+        <div class="articleWidget" v-for="article in articles" :key="article.id">
             <articleWidget 
                 :article="article"
                 :rubriques="rubriques"
@@ -21,14 +21,23 @@ export default{
             console.log("got")
            }
            ).catch(error => 
-           this.$message(error)
+           this.$message({
+              message: error,
+              type: 'error',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            })
            )
 
         axiosInstance.get('/api/getrubriques').then(response => {
             this.rubriques = response.data
         }).catch(error => 
-           this.$message(error)
-           )
+        this.$message({
+              message: error,
+              type: 'error',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            })           )
     },
     data () {
         return {
@@ -41,5 +50,7 @@ export default{
 </script>
 <style scoped>
 
-
+.articleWidget{
+    margin-bottom: 30px;
+}
 </style>

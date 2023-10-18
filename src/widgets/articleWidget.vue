@@ -19,12 +19,15 @@
                 {{ article.titreFront }}
             </p>
       </div>
-      <div>
-        <p>
+      <div style="margin-bottom: 20px;">
+        <div class="descriptionDiv">
+            <p>
             {{ article.description }}
-        </p>
-          <a>Lire l'article</a>
-
+            </p>
+        </div>
+        <div class="lienDiv">
+            <a href="caca" class="lienArticle">Lire l'article</a>
+        </div>
       </div>
     </div>
   </div>
@@ -89,9 +92,11 @@ export default {
 <style>
 .blackDiv{
     background-color: black;
+    width:90%;
     color:white;
-    padding: 10px;
-    
+    padding-top: 10px;
+    padding-bottom: 10px;
+
     margin-top: 10px;
 }
 .card {
@@ -103,30 +108,50 @@ export default {
   display: grid;
   grid-template-columns: 30% 70%; /* Define the grid columns */
   width: 100%; /* Ensure it takes up the full width of the card */
+  border:1px solid rgb(163, 163, 163);
 }
 
 .left-column {
-  border: 1px solid #ccc; /* Add a border for separation */
 }
 
 .right-column {
-      border: 1px solid #ccc; /* Add a border for separation */
 }
 .haut{
     width:100%;
     display: flex;
 }
 .rubrique{
-    color:grey;
+    color:rgb(153, 153, 153);
+    font-family: "Bahnschrift", sans-serif;
+
 }
 .auteur{
     padding-left: 10px;
+    font-family: "Bahnschrift", sans-serif;
 
     color: black;
 }
 .titre{
+    font-family: "Berlin Sans FB", sans-serif;
     padding-left: 10px;
+    font-weight: 1000;
+    color: black;
+}
+.descriptionDiv{
+    width:90%;
+}
+.descriptionDiv > p {
+    text-align: left;
+    font-family: "Bahnschrift", sans-serif;
+    color:black;
 
-    color:red
+}
+.lienDiv{
+    text-align: left;
+}
+.lienArticle {
+  font-family: "Bahnschrift", sans-serif;
+  color:grey;
+  /* Additional styles for your links (e.g., color, text-decoration, etc.) */
 }
 </style>

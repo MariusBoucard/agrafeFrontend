@@ -2,10 +2,12 @@
   <navbar-component v-if="showNavigationLinks" ></navbar-component>
 
   <router-view/>
-</template>
+  <footer-component></footer-component>
+  </template>
 <script>
 import {  mapGetters, mapActions, mapMutations } from 'vuex';
 import NavbarComponent from './components/navbarComponent.vue';
+import FooterComponent from './components/footerComponent.vue';
 // import { auth0, isAuthenticated } from './router/Auth0.js'; // Adjust the path to your Auth0.js file
  export default {
     computed: {
@@ -46,7 +48,7 @@ import NavbarComponent from './components/navbarComponent.vue';
             this.$auth0.logout({ logoutParams: { returnTo: window.location.origin } });
         }
     },
-    components: { NavbarComponent }
+    components: { NavbarComponent, FooterComponent }
 };
 
 </script>
@@ -85,7 +87,7 @@ import NavbarComponent from './components/navbarComponent.vue';
 
 @font-face {
     font-family: 'agrafe';
-    src: url('./assets/font/ELEPHNT.TTF') format('ttf');
+    src: url('./assets/font/ELEPHNT.TTF') format('truetype');
     /* Add additional formats if necessary */
     font-weight: normal;
     font-style: normal;
@@ -100,7 +102,7 @@ import NavbarComponent from './components/navbarComponent.vue';
 
 
 #app {
-  font-family: 'agrafeit' !important ; 
+  font-family: 'agrafe' !important ; 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -108,7 +110,7 @@ import NavbarComponent from './components/navbarComponent.vue';
 }
 
 body{
-  font-family: 'agrafeit' !important ; 
+  font-family: 'Elephant' !important ; 
   margin: 0;
 }
 
