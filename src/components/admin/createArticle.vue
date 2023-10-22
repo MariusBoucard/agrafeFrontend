@@ -16,7 +16,7 @@
           </div>
           <div class="form-group">
             <label for="imageLogo">Image de couverture:</label>
-            <input type="file" id="imageLogo" accept="image/*" @change="handleImageUpload" required>
+            <input type="file" id="imageLogo" accept="image/*" @change="handleImageUpload">
 
           </div>
           <div class="form-group">
@@ -52,7 +52,7 @@
           <div class="form-group">
             <label for="rubrique" title="Ce paramètre est utile pour la page d'accueil,
 l'article le plus recent de rang 1 est mis en avant et ceux
-de rang 2 et 3 un peu moins">Rang article :</label>
+de rang 2 et 3 un peu moins, en vrai ça dépend si vous voulez l'utiliser ou non">Rang article :</label>
             <p></p>
             <!-- Replaced the input with a select -->
             <select id="rang" v-model="article.rangArticle" required>
@@ -281,8 +281,13 @@ export default {
       axiosInstance.post('/api/addArticle', { article: this.article },)
         .then(response => {
           const id = response.data
+
+          // TODO Gestion de flot pour pouvoir lancer ou pas le logo de l'article // les differentes images indépendamment
           const formData = new FormData();
+          if (this.article.imageLogo) {
+
           formData.append('imageLogo', this.article.imageLogo);
+          }
           formData.append('articleId', id); // Add your string data here
           axiosInstance.post('/api/uploadImage', formData, {
             headers: {

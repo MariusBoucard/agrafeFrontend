@@ -119,6 +119,7 @@ export default {
     setArticles() {
       axiosInstance.get('/api/getrubriques').then(response => {
         this.rubriques = response.data
+        console.log("on a get les ruvriques")
       }
       ).catch(() =>
         this.$message({
@@ -130,6 +131,7 @@ export default {
       //Be carefull different routes admin
       axiosInstance.get('/api/getAllArticles').then(
         response => {
+          console.log("on a get les articles",response.data)
 
           this.articles = response.data
         })
