@@ -35,6 +35,15 @@
             <label for="rubRoute">Rubrique Route:</label>
             <input type="text" id="rubRoute" v-model="rubrique.rubRoute" required>
 
+            <label for="rubRoute">Informations :</label>
+            <input type="text" id="information" v-model="rubrique.information" required>
+
+            <label for="rubRoute">Nombre sec minimum :</label>
+            <input type="number" id="secMin" v-model="rubrique.nombreSecMin" required>
+
+            <label for="rubRoute">Nombre sec maximum :</label>
+            <input type="number" id="secMin" v-model="rubrique.nombreSecMax" required>
+
             <button type="submit">Ajouter la rubrique</button>
         </form>
             </div>
@@ -55,6 +64,14 @@
 
             <label for="rubRoute">Rubrique Route:</label>
             <input type="text" id="rubRoute" v-model="rubrique.rubRoute" required>
+            <label for="rubRoute">Informations :</label>
+            <input type="text" id="information" v-model="rubrique.information" required>
+
+            <label for="rubRoute">Nombre sec minimum :</label>
+            <input type="number" id="secMin" v-model="rubrique.nombreSecMin" required>
+
+            <label for="rubRoute">Nombre sec maximum :</label>
+            <input type="number" id="secMin" v-model="rubrique.nombreSecMax" required>
 
             <button type="submit">Modifier la rubrique</button>
         </form>
@@ -79,7 +96,10 @@ export default {
                 "id" : "",
                 "rubrique" : "",
                 "description" : "",
-                "rubRoute" : ""
+                "rubRoute" : "",
+                "information" : "",
+                "nombreSecMin" : 0,
+                "nombreSecMax" : 10000
             }
         }
     },
@@ -126,7 +146,7 @@ export default {
     }
 }
 </script>
-<style>
+<style scoped>
   /* Style for the container div */
 .container {
     display: flex;
@@ -149,4 +169,10 @@ export default {
     margin-right: 0;
 }
 
+input[type="number"], select{
+    padding : 10px;
+    margin-bottom: 10px;
+    border : 1px solid #ccc;
+    border-radius: 5px ;
+}
 </style>

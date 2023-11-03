@@ -39,6 +39,13 @@ const routes = [
     name: 'admin/register',
     component: () => import(/* webpackChunkName: "admin" */ '../components/admin/registerComponent.vue'),
     // meta: { requiresAuth: true } // Add a meta field to indicate authentication requirement
+  },
+
+  {
+    path: '/proposerArticle',
+    name: 'proposerArticle',
+    component: () => import( '../views/proposerArticleView.vue'),
+    // meta: { requiresAuth: true } // Add a meta field to indicate authentication requirement
   }
 ]
 
