@@ -56,7 +56,8 @@
                             <form>
                                 <div class="form-group">
                                     <label class="form-label" for="author">Auteur</label>
-                                    <input type="text" class="form-control form-input" id="author" v-model="newArticle.auteur" placeholder="Auteur">
+                                    <input type="text" class="form-control form-input" id="author"
+                                        v-model="newArticle.auteur" placeholder="Auteur">
                                     <small class="form-text text-muted form-helper">Indique le nom sous lequel tu souhaites
                                         signer cet article</small>
                                 </div>
@@ -69,8 +70,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="content">Sous-titre</label>
-                                    <input type="text" class="form-control form-input" v-model="newArticle['sous-titre']" id="content"
-                                        placeholder="Sous-titre">
+                                    <input type="text" class="form-control form-input" v-model="newArticle['sous-titre']"
+                                        id="content" placeholder="Sous-titre">
                                     <small class="form-text text-muted form-helper">Pour faciliter la mise en page, le titre
                                         ne doit pas excéder 60 signes espaces compris.</small>
                                 </div>
@@ -86,29 +87,36 @@
                                             [1]</li>
                                         <li>Mettre en gras les citations que vous voudres valoriser dans l'article.</li>
                                     </ul>
-                                    <textarea class="form-control form-textarea" v-model="newArticle.article" @input="limitTextArea" id="content" rows="3"></textarea>
+                                    <textarea class="form-control form-textarea" v-model="newArticle.article"
+                                        @input="limitTextArea" id="content" rows="3"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="content">Notes de bas de page</label>
                                     <ul>
-                                        <li>Formaliser chaque note de bas de page par sa mention entre crochet : [1], [2], etc.</li>
-                                        <li>Le texte de l'article, notes de bas de page et sources comprises ne doit pas depasser {{
-                                            getNbCaract(newArticle.rubriqueId) }} signes.</li>
+                                        <li>Formaliser chaque note de bas de page par sa mention entre crochet : [1], [2],
+                                            etc.</li>
+                                        <li>Le texte de l'article, notes de bas de page et sources comprises ne doit pas
+                                            depasser {{
+                                                getNbCaract(newArticle.rubriqueId) }} signes.</li>
                                         <li>Formaliser les notres de bas de pages dans le texte entre crochets comme ceci :
                                             [1]</li>
                                     </ul>
-                                    <textarea class="form-control form-textarea" v-model="newArticle.notesBasPage" @input="limitTextArea" id="content" rows="3"></textarea>
+                                    <textarea class="form-control form-textarea" v-model="newArticle.notesBasPage"
+                                        @input="limitTextArea" id="content" rows="3"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="content">Sources</label>
                                     <ul>
                                         <li>Nom Prénom, titre de l'ouvrage, date de parution, n° de page éventuel</li>
-                                        <li>Nom Prénom, "titre de l'article", titre du journal, site web, média, date de parution, n° de page éventuel</li>
-                                        <li>Pour les sites web, mettre seulement la base du lien et non tout le lien. Par exemple, mettre lemonde.fr et non https://www.lemonde.fr/</li>
+                                        <li>Nom Prénom, "titre de l'article", titre du journal, site web, média, date de
+                                            parution, n° de page éventuel</li>
+                                        <li>Pour les sites web, mettre seulement la base du lien et non tout le lien. Par
+                                            exemple, mettre lemonde.fr et non https://www.lemonde.fr/</li>
                                     </ul>
-                                    <textarea class="form-control form-textarea" v-model="newArticle.sources" @input="limitTextArea" id="content" rows="3"></textarea>
+                                    <textarea class="form-control form-textarea" v-model="newArticle.sources"
+                                        @input="limitTextArea" id="content" rows="3"></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="button" @click="sendArticle()" class="btn btn-primary">Submit</button>
                             </form>
                         </div>
                     </div>
@@ -128,10 +136,13 @@
 import ContactComponent from '@/widgets/contactComponent.vue'
 import BackcoverWidget from '@/widgets/backcoverWidget.vue'
 import axiosInstance from '@/axios'
+
 export default {
     components: {
         ContactComponent,
-        BackcoverWidget
+        BackcoverWidget,
+
+
     },
     name: 'ComponentName',
     data() {
@@ -139,18 +150,54 @@ export default {
             rubriques: [],
             newArticle: {
                 rubriqueId: "",
-                auteur : "",
-                titre : "",
-                "sous-titre" : "",
-                article : "caca",
-                notesBasPage : "",
-                sources : "",
+                auteur: "",
+                titre: "",
+                "sous-titre": "",
+                article: "caca",
+                notesBasPage: "",
+                sources: "",
             },
+            YOUR_SECRET_KEY: "6LdFZPQoAAAAAPRETSD9-IuqspvBnx0dVTOs2tvM",
+            SITE_KEY: "6LdFZPQoAAAAACJCmlbaF62tWu6dMkkiJgNV4pPk",
+            captchaResponse: "",
             rubriquesShown: true
             // Your component's data goes here
         }
     },
     methods: {
+        async recaptcha() {
+            // (optional) Wait until recaptcha has been loaded.
+            await this.$recaptchaLoaded()
+
+            // Execute reCAPTCHA with action "login".
+            const token = await this.$recaptcha('login')
+            console.log(token)
+            this.captchaResponse = token
+            // Now you can send `token` to your server for verification
+            // and proceed with the form submission if the verification is successful
+        },
+        async sendArticle() {
+
+            this.testCaptcha()
+        },
+
+        async testCaptcha() {
+            await this.recaptcha()
+            await axiosInstance.post('/verifyRecaptcha', { captcha : this.captchaResponse })
+    .then(response => {
+      if (response.data.success) {
+        console.log('Success!')
+        // The reCAPTCHA was verified successfully. Continue processing the form.
+      } else {
+        console.log('Failed!')
+        // The reCAPTCHA verification failed. Send an error response.
+      }
+    })
+    .catch(error => {
+      console.error('Error verifying reCAPTCHA:', error);
+    });
+           
+        },
         setRubriques() {
             axiosInstance.get('/api/getRubriques').then(response => {
                 this.rubriques = response.data
@@ -175,8 +222,15 @@ export default {
         },
         limitTextArea() {
             const rubrique = this.rubriques.find(a => a.id === this.newArticle.rubriqueId)
-            if (this.newArticle.article.length > rubrique.nombreSecMax) {
-                this.newArticle.article = this.newArticle.article.substring(0, rubrique.nombreSecMax)
+            if (this.newArticle.article.length +this.newArticle.sources.length + this.newArticle.notesBasPage.length > rubrique.nombreSecMax) {
+                // ON prend le plus long et le charcut psk c'est marrant
+                if (this.newArticle.article.length > this.newArticle.sources.length && this.newArticle.article.length > this.newArticle.notesBasPage.length) {
+                    this.newArticle.article = this.newArticle.article.substring(0, rubrique.nombreSecMax- this.newArticle.sources.length - this.newArticle.notesBasPage.length)
+                } else if (this.newArticle.sources.length > this.newArticle.article.length && this.newArticle.sources.length > this.newArticle.notesBasPage.length) {
+                    this.newArticle.sources = this.newArticle.sources.substring(0, rubrique.nombreSecMax-this.newArticle.article.length - this.newArticle.notesBasPage.length)
+                } else {
+                    this.newArticle.notesBasPage = this.newArticle.notesBasPage.substring(0, rubrique.nombreSecMax-this.newArticle.article.length - this.newArticle.sources.length)
+                }
             }
         }
 
@@ -314,12 +368,14 @@ a {
     color: #afafaf;
     font-family: "Berlin Sans FB", sans-serif;
 }
-.form-group > ul {
-    color : #afafaf;
+
+.form-group>ul {
+    color: #afafaf;
     font-family: "Berlin Sans FB", sans-serif;
 }
-.form-textarea{
-    width:100%;
+
+.form-textarea {
+    width: 100%;
     border: 1px solid #ced4da;
     min-height: 100px;
 }
