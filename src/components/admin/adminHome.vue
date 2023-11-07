@@ -22,6 +22,7 @@
       <createArchive v-if="activeComponent.createArchive" @componentChanged="setComponent($event)"></createArchive>
       <FocalComponent v-if="activeComponent.focal" @componentChanged="setComponent($event)"></FocalComponent>
       <CreateFocalComponent v-if="activeComponent.createFocal" @componentChanged="setComponent($event)"></CreateFocalComponent>
+      <propositionArticleComponent v-if="activeComponent.propalArticle" @componentChanged="setComponent($event)"></propositionArticleComponent>
     </div>
   </div>
     </div>
@@ -42,9 +43,9 @@ import ArchiveComponent from './archiveComponent.vue';
 import createArchive from './createArchive.vue';
 import FocalComponent from './focaleComponent.vue';
 import CreateFocalComponent from './createFocaleComponent.vue';
-
+import propositionArticleComponent from './propositionArticleComponent.vue';
 export default{
-    components: { createArchive, rubriquesComponent, newsComponent, NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle, modifyArticle, NewsletterComponent, CreateNewsComponent, DashboardComponent, ArchiveComponent, FocalComponent, CreateFocalComponent },
+    components: { propositionArticleComponent, createArchive, rubriquesComponent, newsComponent, NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle, modifyArticle, NewsletterComponent, CreateNewsComponent, DashboardComponent, ArchiveComponent, FocalComponent, CreateFocalComponent },
    
     data(){
         return {
@@ -61,7 +62,8 @@ export default{
                 modifyNews : false,
                 rubrique : false,
                 focal : false,
-                createFocal : false
+                createFocal : false,
+                propalArticle : false
             },
             articleId : ""
         }

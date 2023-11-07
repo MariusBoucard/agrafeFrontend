@@ -121,48 +121,57 @@
                                     <label class="form-label" for="content">Images</label>
                                     <p>Les images doivent faire 300x300 ppp.</p>
                                     <p>Elles seront imprimées en noir et blanc</p>
-                                    <p>Elles seront intégrées dans l'article seulement si l'espace le permet. Si vous souhaitez absolument que l'image apparaisse
+                                    <p>Elles seront intégrées dans l'article seulement si l'espace le permet. Si vous
+                                        souhaitez absolument que l'image apparaisse
                                         dans l'article, il faut reduire le nombre de signes de l'article.</p>
-                                    
-                                    <p>Ici, vous pouvez également télécharger vos fichiers zip pour la rubrique focale ou dessin.</p>
+
+                                    <p>Ici, vous pouvez également télécharger vos fichiers zip pour la rubrique focale ou
+                                        dessin.</p>
                                     <div class="file-input-container" for="fileInput">
                                         <label for="fileInput" class="file-input-label">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6" style="height: 40px; width: 40px;">
-                                                <path fill-rule="evenodd" d="M10.5 3.75a6 6 0 00-5.98 6.496A5.25 5.25 0 006.75 20.25H18a4.5 4.5 0 002.206-8.423 3.75 3.75 0 00-4.133-4.303A6.001 6.001 0 0010.5 3.75zm2.25 6a.75.75 0 00-1.5 0v4.94l-1.72-1.72a.75.75 0 00-1.06 1.06l3 3a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06l-1.72 1.72V9.75z" clip-rule="evenodd" />
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                                class="w-6 h-6" style="height: 40px; width: 40px;">
+                                                <path fill-rule="evenodd"
+                                                    d="M10.5 3.75a6 6 0 00-5.98 6.496A5.25 5.25 0 006.75 20.25H18a4.5 4.5 0 002.206-8.423 3.75 3.75 0 00-4.133-4.303A6.001 6.001 0 0010.5 3.75zm2.25 6a.75.75 0 00-1.5 0v4.94l-1.72-1.72a.75.75 0 00-1.06 1.06l3 3a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06l-1.72 1.72V9.75z"
+                                                    clip-rule="evenodd" />
                                             </svg>
                                             <div class="file-input-text">
                                                 <h3>Déposez vos fichiers ici</h3>
-                                                <p>ou <span style="color: rgb(0, 255, 42);"> sélectionnez les depuis votre ordinateur</span></p>
+                                                <p>ou <span style="color: rgb(0, 255, 42);"> sélectionnez les depuis votre
+                                                        ordinateur</span></p>
                                             </div>
                                         </label>
-                                        <input hidden type="file" id="fileInput" accept=".pdf,.png,.jpg,.zip" @change="handleFileUpload" multiple>
+                                        <input hidden type="file" id="fileInput" accept=".pdf,.png,.jpg,.zip"
+                                            @change="handleFileUpload" multiple>
                                     </div>
                                     <ul class="file-list">
                                         <li v-for="(file, index) in files" :key="index">{{ file.name }}</li>
                                     </ul>
 
-                        
-                            
-                                    
+
+
+
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="content">Contact</label>
-                                    <p>Je mets mon adresse mail et/ou mon numéro de téléphone si la rédaction a besoin de me joindre</p>
-                                    <textarea class="form-control form-textarea" v-model="newArticle.contact"
-                                         id="content" rows="3"></textarea>
+                                    <p>Je mets mon adresse mail et/ou mon numéro de téléphone si la rédaction a besoin de me
+                                        joindre</p>
+                                    <textarea class="form-control form-textarea" v-model="newArticle.contact" id="content"
+                                        rows="3"></textarea>
                                 </div>
-                         
+
 
                                 <div class="form-group">
                                     <label class="form-label" for="content">Commentaires</label>
                                     <textarea class="form-control form-textarea" v-model="newArticle.commentaire"
-                                       id="content" rows="3"></textarea>
+                                        id="content" rows="3"></textarea>
                                 </div>
 
                                 <div class="text-center">
-                                    <button type="button" @click="sendArticle()" class="submit-button">Envoyer l'article</button>
+                                    <button type="button" @click="sendArticle()" class="submit-button">Envoyer
+                                        l'article</button>
                                 </div>
-                                 </form>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -201,10 +210,10 @@ export default {
                 article: "",
                 notesBasPage: "",
                 sources: "",
-                contact : "",
-                commentaire : ""
+                contact: "",
+                commentaire: ""
             },
-            files : [],
+            files: [],
             YOUR_SECRET_KEY: "6LdFZPQoAAAAAPRETSD9-IuqspvBnx0dVTOs2tvM",
             SITE_KEY: "6LdFZPQoAAAAACJCmlbaF62tWu6dMkkiJgNV4pPk",
             captchaResponse: "",
@@ -213,12 +222,33 @@ export default {
         }
     },
     methods: {
-    handleFileUpload(evt){
-        const files = evt.target.files;
-        for (let i = 0; i < files.length; i++) {
-            this.files.push(files[i]);
-        }
-    },
+        handleFileUpload(evt) {
+            const MAX_SIZE_MB = 50; // Set your maximum size in MB here
+            const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024; // Convert to bytes
+            const files = evt.target.files;
+            const MAX_FILES = 30; // Set your maximum number of files here
+
+            if (this.files.length + files.length > MAX_FILES) {
+                alert(`Le nombre de fichier maximum est défini à ${MAX_FILES} fichiers.`);
+                return;
+            }
+
+            let totalSize = this.files.reduce((total, file) => total + file.size, 0); // Total size of currently uploaded files
+
+            for (let i = 0; i < files.length; i++) {
+                totalSize += files[i].size;
+            }
+
+            if (totalSize > MAX_SIZE_BYTES) {
+                alert(`La taille totale des fichiers ne doit pas faire plus de ${MAX_SIZE_MB} MB.`);
+                return;
+            }
+
+
+            for (let i = 0; i < files.length; i++) {
+                this.files.push(files[i]);
+            }
+        },
         async recaptcha() {
             // (optional) Wait until recaptcha has been loaded.
             await this.$recaptchaLoaded()
@@ -233,24 +263,63 @@ export default {
         async sendArticle() {
 
             this.testCaptcha()
+            axiosInstance
+        .post('/api/proposerArticle',{article :  this.newArticle})
+        .then(response => {
+          // Handle the response from the backend if needed
+          console.log('Backend response:', response.data);
+          const id = response.data
+          this.sendFilesToBackend(id)
+        })
+        .catch(error => {
+          // Handle errors if the request fails
+          alert("Article non envoyé, trop d'articles sont déjà en attente, réessaye plus tard !")
+          console.error('Error sending data to the backend:', error);
+        });
         },
+        sendFilesToBackend(id) {
+    const formData = new FormData();
 
+    formData.append(`generalId`, id);
+    // Append each JSON object and its associated image to the FormData
+    this.files.forEach((imageObj) => {
+      // Append the image File objects with unique names, e.g., 'image0', 'image1', etc.
+        console.log(imageObj)
+      formData.append(`files`, imageObj);
+          });
+          console.log(formData)
+          for (const [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+    }
+
+    // Send the FormData object with JSON objects and images to the backend using Axios
+    axiosInstance
+      .post('/api/uploadFilesProposer', formData)
+      .then(response => {
+        // Handle the response from the backend if needed
+        console.log('Backend response:', response.data);
+      })
+      .catch(error => {
+        // Handle errors if the request fails
+        console.error('Error sending data to the backend:', error);
+      });
+  },
         async testCaptcha() {
             await this.recaptcha()
-            await axiosInstance.post('/verifyRecaptcha', { captcha : this.captchaResponse })
-    .then(response => {
-      if (response.data.success) {
-        console.log('Success!')
-        // The reCAPTCHA was verified successfully. Continue processing the form.
-      } else {
-        console.log('Failed!')
-        // The reCAPTCHA verification failed. Send an error response.
-      }
-    })
-    .catch(error => {
-      console.error('Error verifying reCAPTCHA:', error);
-    });
-           
+            await axiosInstance.post('/verifyRecaptcha', { captcha: this.captchaResponse })
+                .then(response => {
+                    if (response.data.success) {
+                        console.log('Success!')
+                        // The reCAPTCHA was verified successfully. Continue processing the form.
+                    } else {
+                        console.log('Failed!')
+                        // The reCAPTCHA verification failed. Send an error response.
+                    }
+                })
+                .catch(error => {
+                    console.error('Error verifying reCAPTCHA:', error);
+                });
+
         },
         setRubriques() {
             axiosInstance.get('/api/getRubriques').then(response => {
@@ -276,14 +345,14 @@ export default {
         },
         limitTextArea() {
             const rubrique = this.rubriques.find(a => a.id === this.newArticle.rubriqueId)
-            if (this.newArticle.article.length +this.newArticle.sources.length + this.newArticle.notesBasPage.length > rubrique.nombreSecMax) {
+            if (this.newArticle.article.length + this.newArticle.sources.length + this.newArticle.notesBasPage.length > rubrique.nombreSecMax) {
                 // ON prend le plus long et le charcut psk c'est marrant
                 if (this.newArticle.article.length > this.newArticle.sources.length && this.newArticle.article.length > this.newArticle.notesBasPage.length) {
-                    this.newArticle.article = this.newArticle.article.substring(0, rubrique.nombreSecMax- this.newArticle.sources.length - this.newArticle.notesBasPage.length)
+                    this.newArticle.article = this.newArticle.article.substring(0, rubrique.nombreSecMax - this.newArticle.sources.length - this.newArticle.notesBasPage.length)
                 } else if (this.newArticle.sources.length > this.newArticle.article.length && this.newArticle.sources.length > this.newArticle.notesBasPage.length) {
-                    this.newArticle.sources = this.newArticle.sources.substring(0, rubrique.nombreSecMax-this.newArticle.article.length - this.newArticle.notesBasPage.length)
+                    this.newArticle.sources = this.newArticle.sources.substring(0, rubrique.nombreSecMax - this.newArticle.article.length - this.newArticle.notesBasPage.length)
                 } else {
-                    this.newArticle.notesBasPage = this.newArticle.notesBasPage.substring(0, rubrique.nombreSecMax-this.newArticle.article.length - this.newArticle.sources.length)
+                    this.newArticle.notesBasPage = this.newArticle.notesBasPage.substring(0, rubrique.nombreSecMax - this.newArticle.article.length - this.newArticle.sources.length)
                 }
             }
         }
@@ -358,18 +427,20 @@ a {
     background-color: white;
 }
 
-.submit-button{
-    padding : 10px;
+.submit-button {
+    padding: 10px;
     margin: 20px;
     background-color: black;
     border-radius: 5px;
     border: none;
-    color:white;
+    color: white;
 }
-.submit-button:hover{
+
+.submit-button:hover {
     background-color: #afafaf;
     color: black;
 }
+
 .baseView {
     width: 90%;
     margin: auto;
@@ -390,7 +461,8 @@ a {
 }
 
 .infos {}
-.text-center{
+
+.text-center {
     text-align: center;
 }
 
@@ -448,45 +520,46 @@ a {
     border: 1px solid #ced4da;
     min-height: 100px;
 }
+
 .file-input-container {
-                                        position: relative;
-                                        width: 100%;
-                                        height: 200px;
-                                        border: 2px dashed #ccc;
-                                        border-radius: 5px;
-                                        display: flex;
-                                        justify-content: center;
-                                        align-items: center;
-                                        flex-direction: column;
-                                    }
+    position: relative;
+    width: 100%;
+    height: 200px;
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
 
-                                    .file-input-label {
-                                        display: flex;
-                                        justify-content: center;
-                                        align-items: center;
-                                        flex-direction: column;
-                                        cursor: pointer;
-                                    }
+.file-input-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+}
 
-                                    .file-input-label i {
-                                        font-size: 50px;
-                                        margin-bottom: 10px;
-                                    }
+.file-input-label i {
+    font-size: 50px;
+    margin-bottom: 10px;
+}
 
-                                    .file-input-text {
-                                        text-align: center;
-                                    }
+.file-input-text {
+    text-align: center;
+}
 
-                                    .file-input-text h3 {
-                                        margin: 0;
-                                        font-size: 20px;
-                                    }
+.file-input-text h3 {
+    margin: 0;
+    font-size: 20px;
+}
 
-                                    .file-input-text p {
-                                        margin: 0;
-                                        font-size: 16px;
-                                        color: #666;
-                                    }
-                                   
+.file-input-text p {
+    margin: 0;
+    font-size: 16px;
+    color: #666;
+}
+
 
 /* Your component's styles go here */</style>
