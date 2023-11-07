@@ -116,8 +116,53 @@
                                     <textarea class="form-control form-textarea" v-model="newArticle.sources"
                                         @input="limitTextArea" id="content" rows="3"></textarea>
                                 </div>
-                                <button type="button" @click="sendArticle()" class="btn btn-primary">Submit</button>
-                            </form>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="content">Images</label>
+                                    <p>Les images doivent faire 300x300 ppp.</p>
+                                    <p>Elles seront imprimées en noir et blanc</p>
+                                    <p>Elles seront intégrées dans l'article seulement si l'espace le permet. Si vous souhaitez absolument que l'image apparaisse
+                                        dans l'article, il faut reduire le nombre de signes de l'article.</p>
+                                    
+                                    <p>Ici, vous pouvez également télécharger vos fichiers zip pour la rubrique focale ou dessin.</p>
+                                    <div class="file-input-container" for="fileInput">
+                                        <label for="fileInput" class="file-input-label">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6" style="height: 40px; width: 40px;">
+                                                <path fill-rule="evenodd" d="M10.5 3.75a6 6 0 00-5.98 6.496A5.25 5.25 0 006.75 20.25H18a4.5 4.5 0 002.206-8.423 3.75 3.75 0 00-4.133-4.303A6.001 6.001 0 0010.5 3.75zm2.25 6a.75.75 0 00-1.5 0v4.94l-1.72-1.72a.75.75 0 00-1.06 1.06l3 3a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06l-1.72 1.72V9.75z" clip-rule="evenodd" />
+                                            </svg>
+                                            <div class="file-input-text">
+                                                <h3>Déposez vos fichiers ici</h3>
+                                                <p>ou <span style="color: rgb(0, 255, 42);"> sélectionnez les depuis votre ordinateur</span></p>
+                                            </div>
+                                        </label>
+                                        <input hidden type="file" id="fileInput" accept=".pdf,.png,.jpg,.zip" @change="handleFileUpload" multiple>
+                                    </div>
+                                    <ul class="file-list">
+                                        <li v-for="(file, index) in files" :key="index">{{ file.name }}</li>
+                                    </ul>
+
+                        
+                            
+                                    
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="content">Contact</label>
+                                    <p>Je mets mon adresse mail et/ou mon numéro de téléphone si la rédaction a besoin de me joindre</p>
+                                    <textarea class="form-control form-textarea" v-model="newArticle.contact"
+                                         id="content" rows="3"></textarea>
+                                </div>
+                         
+
+                                <div class="form-group">
+                                    <label class="form-label" for="content">Commentaires</label>
+                                    <textarea class="form-control form-textarea" v-model="newArticle.commentaire"
+                                       id="content" rows="3"></textarea>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="button" @click="sendArticle()" class="submit-button">Envoyer l'article</button>
+                                </div>
+                                 </form>
                         </div>
                     </div>
                 </div>
@@ -153,10 +198,13 @@ export default {
                 auteur: "",
                 titre: "",
                 "sous-titre": "",
-                article: "caca",
+                article: "",
                 notesBasPage: "",
                 sources: "",
+                contact : "",
+                commentaire : ""
             },
+            files : [],
             YOUR_SECRET_KEY: "6LdFZPQoAAAAAPRETSD9-IuqspvBnx0dVTOs2tvM",
             SITE_KEY: "6LdFZPQoAAAAACJCmlbaF62tWu6dMkkiJgNV4pPk",
             captchaResponse: "",
@@ -165,6 +213,12 @@ export default {
         }
     },
     methods: {
+    handleFileUpload(evt){
+        const files = evt.target.files;
+        for (let i = 0; i < files.length; i++) {
+            this.files.push(files[i]);
+        }
+    },
         async recaptcha() {
             // (optional) Wait until recaptcha has been loaded.
             await this.$recaptchaLoaded()
@@ -304,6 +358,18 @@ a {
     background-color: white;
 }
 
+.submit-button{
+    padding : 10px;
+    margin: 20px;
+    background-color: black;
+    border-radius: 5px;
+    border: none;
+    color:white;
+}
+.submit-button:hover{
+    background-color: #afafaf;
+    color: black;
+}
 .baseView {
     width: 90%;
     margin: auto;
@@ -324,6 +390,9 @@ a {
 }
 
 .infos {}
+.text-center{
+    text-align: center;
+}
 
 .rubriqueTitre {
     color: black;
@@ -379,5 +448,45 @@ a {
     border: 1px solid #ced4da;
     min-height: 100px;
 }
+.file-input-container {
+                                        position: relative;
+                                        width: 100%;
+                                        height: 200px;
+                                        border: 2px dashed #ccc;
+                                        border-radius: 5px;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        flex-direction: column;
+                                    }
+
+                                    .file-input-label {
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        flex-direction: column;
+                                        cursor: pointer;
+                                    }
+
+                                    .file-input-label i {
+                                        font-size: 50px;
+                                        margin-bottom: 10px;
+                                    }
+
+                                    .file-input-text {
+                                        text-align: center;
+                                    }
+
+                                    .file-input-text h3 {
+                                        margin: 0;
+                                        font-size: 20px;
+                                    }
+
+                                    .file-input-text p {
+                                        margin: 0;
+                                        font-size: 16px;
+                                        color: #666;
+                                    }
+                                   
 
 /* Your component's styles go here */</style>
