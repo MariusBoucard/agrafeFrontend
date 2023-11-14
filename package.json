@@ -20,7 +20,8 @@
     "vue-recaptcha-v3": "^2.0.1",
     "vue-router": "^4.0.3",
     "vue3-pdf": "^4.2.6",
-    "vuex": "^4.1.0"
+    "vuex": "^4.1.0",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

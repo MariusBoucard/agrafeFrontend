@@ -1,56 +1,56 @@
 <template>
-  <navbar-component v-if="showNavigationLinks" ></navbar-component>
+  <navbar-component v-if="showNavigationLinks"></navbar-component>
 
-  <router-view/>
+  <router-view />
   <footer-component></footer-component>
-  </template>
+</template>
 <script>
-import {  mapGetters, mapActions, mapMutations } from 'vuex';
-import NavbarComponent from './components/navbarComponent.vue';
-import FooterComponent from './components/footerComponent.vue';
+import { mapGetters, mapActions, mapMutations } from "vuex";
+import NavbarComponent from "./components/navbarComponent.vue";
+import FooterComponent from "./components/footerComponent.vue";
 // import { auth0, isAuthenticated } from './router/Auth0.js'; // Adjust the path to your Auth0.js file
- export default {
-    computed: {
-        ...mapGetters('auth', ['isAuthenticated']),
-        ...mapGetters('app',['showNavigationLinks']),
-        // Use computed property to check if the user is authenticated
-        isAuthenticatedComp() {
-            return this.$auth0.isAuthenticated;
-        },
+export default {
+  computed: {
+    ...mapGetters("auth", ["isAuthenticated"]),
+    ...mapGetters("app", ["showNavigationLinks"]),
+    // Use computed property to check if the user is authenticated
+    isAuthenticatedComp() {
+      return this.$auth0.isAuthenticated;
     },
-    watch: {
-        user: {
-            handler: function (newUser) {
-                if (newUser) {
-                    this.setConnection(true);
-                }
-                else {
-                    this.setConnection(false);
-                }
-            }
+  },
+  watch: {
+    user: {
+      handler: function (newUser) {
+        if (newUser) {
+          this.setConnection(true);
+        } else {
+          this.setConnection(false);
         }
+      },
     },
-    data: function () {
-        return {
-            user: this.$auth0.user,
-        };
+  },
+  data: function () {
+    return {
+      user: this.$auth0.user,
+    };
+  },
+  methods: {
+    ...mapMutations("auth", ["SET_AUTHENTICATED"]),
+    ...mapActions("auth", ["setUser", "clearUser", "setConnection"]),
+    log() {
+      this.$store.commit("auth/SET_AUTHENTICATED", true); // Set to true
     },
-    methods: {
-        ...mapMutations('auth', ['SET_AUTHENTICATED']),
-        ...mapActions('auth', ['setUser', 'clearUser', 'setConnection']),
-        log() {
-            this.$store.commit('auth/SET_AUTHENTICATED', true); // Set to true
-        },
-        login() {
-            this.$auth0.loginWithRedirect();
-        },
-        logout() {
-            this.$auth0.logout({ logoutParams: { returnTo: window.location.origin } });
-        }
+    login() {
+      this.$auth0.loginWithRedirect();
     },
-    components: { NavbarComponent, FooterComponent }
+    logout() {
+      this.$auth0.logout({
+        logoutParams: { returnTo: window.location.origin },
+      });
+    },
+  },
+  components: { NavbarComponent, FooterComponent },
 };
-
 </script>
 <style>
 /* Container for the article page */
@@ -58,7 +58,7 @@ import FooterComponent from './components/footerComponent.vue';
   position: fixed !important;
   top: 20px !important;
   right: 20px !important;
-  background-color: #4CAF50 !important;
+  background-color: #4caf50 !important;
   color: #fff !important;
   padding: 10px 15px !important;
   border-radius: 4px !important;
@@ -72,7 +72,7 @@ import FooterComponent from './components/footerComponent.vue';
   font-size: 5px; /* Adjust the size as needed */
 }
 .custom-el-message.success {
-  background-color: #4CAF50 !important;
+  background-color: #4caf50 !important;
 }
 
 .custom-el-message-enter-active,
@@ -86,34 +86,32 @@ import FooterComponent from './components/footerComponent.vue';
 }
 
 @font-face {
-    font-family: 'agrafe';
-    src: url('./assets/font/ELEPHNT.TTF') format('truetype');
-    /* Add additional formats if necessary */
-    font-weight: normal;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'agrafeit';
-    src: url('./assets/font/ELEPHNTI.TTF') format('ttf');
-    /* Add additional formats if necessary */
-    font-weight: normal;
-    font-style: normal;
-  }
-
+  font-family: "agrafe";
+  src: url("./assets/font/ELEPHNT.TTF") format("truetype");
+  /* Add additional formats if necessary */
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "agrafeit";
+  src: url("./assets/font/ELEPHNTI.TTF") format("ttf");
+  /* Add additional formats if necessary */
+  font-weight: normal;
+  font-style: normal;
+}
 
 #app {
-  font-family: 'agrafe' !important ; 
+  font-family: "agrafe" !important ;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
 }
 
-body{
-  font-family: 'Elephant' !important ; 
+body {
+  font-family: "Elephant" !important ;
   margin: 0;
 }
-
 
 nav {
   padding: 30px;

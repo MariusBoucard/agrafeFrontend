@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import menuView from '../views/menuView.vue'
+import ArticleView from '../views/ArticleView.vue'
 import axios from 'axios'
 import { useStore } from 'vuex'; // Import useStore from Vuex
 // import { isAuthenticated } from './Auth0'; // Import the isAuthenticated function
@@ -10,6 +11,12 @@ const routes = [
     component: menuView,
     meta: {        hideNavigationLinks: false } // Add a meta field to indicate authentication requirement
 
+  },
+  {
+    path: '/articles',
+    name: 'articles',
+    component: ArticleView,
+    meta: {        hideNavigationLinks: false } // Add a meta field to indicate authentication requirement
   },
   {
     path: '/about',
