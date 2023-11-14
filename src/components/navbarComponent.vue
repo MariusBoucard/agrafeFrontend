@@ -13,15 +13,17 @@
       <div class="inner">
         <nav>
           <ul>
-            <li class="dropdown" @mouseover="toggleArticles">
-              <a class="link" href="/"> Articles </a>
+            <li class="dropdown" @mouseenter="toggleArticles" @mouseleave="toggleArticles">
+              <a class="link-articles" href="#"> <router-link class="routerLink" :to="`/articles`">
+                  Articles
+                </router-link> </a>
               <div v-if="activeMenu" class="dropdown-content">
                 <router-link
                   class="routerLink"
                   v-for="rubrique in rubriques"
-                  :to="`/articles`" 
+                  :to="`/articles/${rubrique.id}`" 
                   :key="rubrique.id"
-                > <!--elems pas encore filtrés-->
+                > <!--elems pas encore filtrés, faire la route necessaire-->
                   {{ rubrique.rubrique }}
                 </router-link>
               </div>
@@ -164,6 +166,12 @@ a {
 }
 
 /*dropdown styles*/
+.link-article:hover {
+  color: #000000 !important;
+  background-color: #ffffff;
+  border-radius: 5px;
+}
+
 .dropdown {
   position: relative;
   display: inline-block;
@@ -172,21 +180,22 @@ a {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  background-color: #000000;
+  min-width: 102px; /*à modif pour que ça fit automatiquement la taille du lien*/
+  box-shadow: 0px 8px 16px 0px rgba(12, 12, 12, 0.2);
   z-index: 1;
 }
 
 .dropdown-content a {
-  color: black;
+  color: white;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
 }
 
 .dropdown-content a:hover {
-  background-color: #f1f1f1;
+  background-color: #ffffff;
+  color: black;
 }
 
 .dropdown:hover .dropdown-content {
