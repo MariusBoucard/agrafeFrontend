@@ -118,6 +118,7 @@ de rang 2 et 3 un peu moins, en vrai ça dépend si vous voulez l'utiliser ou no
                   <option value="chapeau">Chapeau</option>
                   <option value="paragraphe">Paragraphe</option>
                   <option value="image">Image</option>
+                  <option value="notesBasPage">Notes de bas de page</option>
                   <!-- Add more options as needed -->
                 </select>
               </div>

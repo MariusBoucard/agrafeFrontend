@@ -15,13 +15,13 @@
                     <ul>
                         <li>
                             <a class="link" href="/">
-                                <router-link class="routerLink" to="/">Articles</router-link>
+                                <router-link class="routerLink" to="/articles">Articles</router-link>
                             </a>
                         </li>
                     </ul>
                     <ul>
                         <li><a class="link" href="/">
-                                <router-link class="routerLink" to="/">Archives</router-link>
+                                <router-link class="routerLink" to="/archives">Archives</router-link>
                             </a>
                         </li>
 
@@ -43,6 +43,13 @@
                     <ul>
                         <li><a class="link" href="/">
                                 <router-link class="routerLink" to="/">À propos</router-link>
+                            </a>
+                        </li>
+
+                    </ul>
+                    <ul>
+                        <li><a class="link" href="/">
+                                <router-link class="routerLink" to="/proposerArticle">Proposer un article</router-link>
                             </a>
                         </li>
 
