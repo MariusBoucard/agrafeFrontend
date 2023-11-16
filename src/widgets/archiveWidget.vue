@@ -28,14 +28,56 @@ export default{
         this.baseUrl2 = baseUrl
     },
     methods : {
-        formatDate(date){
-            let dateObject = new Date(date)
-            let month = dateObject.getMonth() + 1
-            let day = dateObject.getDate()
-            let year = dateObject.getFullYear()
-            return day + '/' + month + '/' + year
-    }
-        }}
+       
+    formatDate(date){
+            const year = date.slice(0,4)
+            const month = date.slice(5,7)
+            
+            const ret = this.monthToDate(month)
+            return ret+". "+year
+        },
+        getRubrique(rubId){
+            const found = this.rubriques.find(rub => rub.id === rubId)
+            if(found){
+                return found.rubrique
+            }
+        },
+        monthToDate(month){
+            console.log(typeof month)
+
+            switch (month) {
+            case '1':
+            return 'Jan';
+            case '2':
+            return 'Fev';
+            case '3':
+            return 'Mar';
+            case '4':
+            return 'Avr';
+            case '5':
+            return 'Mai';
+            case '6':
+            return 'Juin';
+            case '7':
+            return 'Juil';
+            case '8':
+            return 'Août';
+            case '9':
+            return 'Sep';
+            case '10':
+            return 'Oct';
+            case '11':
+            return 'Nov';
+            case '12':
+            return 'Dec';
+            default:
+            return 'Unknown';
+        }
+        }
+        
+
+}}
+
 </script>
 <style scoped>
 .outsideDiv{
