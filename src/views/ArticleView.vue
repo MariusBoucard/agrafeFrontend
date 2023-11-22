@@ -7,6 +7,18 @@
           v-for="article in articles"
           :key="article.id"
         >
+        <!--
+        <select v-model="selectedRubrique">
+          <option v-for="rubrique in rubriques" :key="rubrique.id" :value="rubrique.id">
+            {{ rubrique.name }}
+          </option>
+        </select>
+
+        <div
+          class="articleWidget"
+          v-for="article in filteredArticles"
+          :key="article.id"
+        >  -->
           <articleWidget :article="article" :rubriques="rubriques">
           </articleWidget>
         </div>
