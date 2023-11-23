@@ -1,37 +1,37 @@
 <template>
-    <div class="baseView">
-      <div class="menuGrid">
-        <div class="leftColumn">
-          <ArticleComponent></ArticleComponent>
-        </div>
-        <div class="rightColumn">
-          <ContactComponent></ContactComponent>
-          <BackcoverWidget></BackcoverWidget>
-        </div>
+  <div class="baseView">
+    <div class="menuGrid">
+      <div class="leftColumn">
+        <ArticleComponent></ArticleComponent>
+      </div>
+      <div class="rightColumn">
+        <ContactComponent></ContactComponent>
+        <BackcoverWidget></BackcoverWidget>
       </div>
     </div>
-  </template>
+  </div>
+</template>
   
   <script>
-import ArticleComponent from '@/components/articleComponent.vue';
-import BackcoverWidget from '@/widgets/backcoverWidget.vue';
-import ContactComponent from '@/widgets/contactComponent.vue';
+import ArticleComponent from "@/components/articleComponent.vue";
+import BackcoverWidget from "@/widgets/backcoverWidget.vue";
+import ContactComponent from "@/widgets/contactComponent.vue";
 
-  // @ is an alias to /src
-  
-  export default {
-    name: 'HomeView',
-    components: {
+// @ is an alias to /src
+
+export default {
+  name: "HomeView",
+  components: {
     ArticleComponent,
     ContactComponent,
-    BackcoverWidget
-}
-  }
-  </script>
+    BackcoverWidget,
+  },
+};
+</script>
   <style scoped>
-.baseView{
-  width:90%;
-  margin:auto;
+.baseView {
+  width: 90%;
+  margin: auto;
 }
 .menuGrid {
   display: grid;
