@@ -13,20 +13,16 @@
       <div class="inner">
         <nav>
           <ul>
-            <li class="dropdown" @mouseenter="toggleArticles" @mouseleave="toggleArticles">
-              <a class="link-articles" href="#"> <router-link class="routerLink" :to="`/articles`">
-                  Articles
-                </router-link> </a>
-              <div v-if="activeMenu" class="dropdown-content">
-                <router-link
-                  class="routerLink"
-                  v-for="rubrique in rubriques"
-                  :to="`/articles/${rubrique.id}`" 
-                  :key="rubrique.id"
-                > <!--elems pas encore filtrés, faire la route necessaire-->
-                  {{ rubrique.rubrique }}
-                </router-link>
-              </div>
+            <li >
+
+                <select  v-model="selectedRubrique" @change="navigateToRubrique(selectedRubrique)" class="link-select link">
+
+                  <option v-for="rubrique in rubriques" :value="rubrique.id" :key="rubrique.id">
+                    {{ rubrique.rubrique }}
+                  </option>
+                </select>
+              
+
             </li>
           </ul>
           <ul>
@@ -71,6 +67,7 @@ export default {
     return {
       activeMenu: false,
       rubriques: [],
+      selectedRubrique: 'Articles'
     };
   },
   mounted() {
@@ -78,6 +75,7 @@ export default {
       .get("/api/getrubriques")
       .then((response) => {
         this.rubriques = response.data;
+        this.rubriques.push({id: 'Articles', rubrique: 'Articles'})
       })
       .catch((error) =>
         this.$message({
@@ -92,6 +90,9 @@ export default {
     toggleArticles() {
       this.activeMenu = !this.activeMenu;
     },
+    navigateToRubrique(selectedRubrique){
+      this.$router.push(`/articles/${selectedRubrique}`)
+    }
   },
 };
 </script>
@@ -118,6 +119,23 @@ nav {
   padding: 10px;
   /* Add some padding for spacing */
 }
+.link-select{
+  border: none;
+  background-color: white;
+  color: black;
+  padding: 10px;
+  font: 1em ;
+  font-family: "agrafe" !important;
+  font-weight: bold !important;
+}
+.link-select.expanded {
+  font-size: 2em; /* Increase the font size when expanded */
+}
+.link-select:hover{
+  background-color: rgb(0, 0, 0);
+  color: white;
+}
+
 .routerLink {
   color: black;
 }
@@ -170,6 +188,8 @@ a {
   color: #000000 !important;
   background-color: #ffffff;
   border-radius: 5px;
+  font-family: "agrafe" !important;
+  font-weight: bold !important;
 }
 
 .dropdown {
