@@ -2,10 +2,10 @@
     <div class="baseView">
       <div class="menuGrid">
         <div class="leftColumn">
-            <div>
+            <div class="parentDiv">
 
                 <div class="banner">
-                    <p>Notre idée</p>
+                    <p class="titleBanner">Notre idée</p>
                 </div>
                 <div class="text">
                     L'agrafe est issu de la volonté d'un groupe d'étudiants de faire (re)
@@ -18,7 +18,7 @@
 
                 </div>
                 <div class="banner">
-                    <p>L'équipe</p>
+                    <p class="titleBanner">L'équipe</p>
                 </div>
                 <div class="text">
                     À l'origine, quatre étudiants en Infocom' avec la volonté de partager un projet associatif avec 
@@ -72,7 +72,19 @@
     grid-template-columns: 70% 30%; /* 70% for the left column, 30% for the right column */
     column-gap: 20px; /* Adjust the gap as needed */
   }
+  .titleBanner{
+    width : 80%;
+    margin-left: auto;
+    text-align: left;
+  }
+  .text{
+    width : 80%;
+    font-family: 'Bahnschrift', sans-serif;
+margin-left: auto;
+text-align: left;
+  }
   .banner{
+    font-size: x-large;
     color: white;
     background-color: black;
     width : 100%;

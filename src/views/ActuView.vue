@@ -3,8 +3,8 @@
       <div class="menuGrid">
         <div class="leftColumn">
             <div class="banner">
-                <p>Retrouvez ici l'actu de L'agrafe</p>
-            </div>
+                    <p class="titleBanner">Retrouvez ici l'actu de L'agrafe</p>
+                </div>
           <div
             class="articleWidget"
             v-for="article in actus"
@@ -63,6 +63,8 @@ import ActuWidget from "@/widgets/actuWidget.vue";
   <style scoped>
   .articleWidget {
     margin-bottom: 30px;
+    width: 80%;
+    margin-left: auto;  
   }
   
   .baseView {
@@ -74,9 +76,25 @@ import ActuWidget from "@/widgets/actuWidget.vue";
     grid-template-columns: 70% 30%; /* 70% for the left column, 30% for the right column */
     column-gap: 20px; /* Adjust the gap as needed */
   }
+
+  .titleBanner{
+    width : 80%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: auto;
+    text-align: left;
+  }
+  .text{
+    width : 80%;
+    font-family: 'Bahnschrift', sans-serif;
+margin-left: auto;
+text-align: left;
+  }
   .banner{
+    font-size: x-large;
     color: white;
     background-color: black;
     width : 100%;
+    margin-bottom: 20px;
   }
   </style>

@@ -5,7 +5,9 @@ import ArchiveView from '../views/ArchiveView.vue'
 import ActuView from '../views/ActuView.vue'
 import AProposView from '../views/AProposView.vue'
 import proposerArticleView from '../views/proposerArticleView.vue'
+import FocaleView from '../views/FocaleView.vue'
 import axios from 'axios'
+
 import { useStore } from 'vuex'; // Import useStore from Vuex
 // import { isAuthenticated } from './Auth0'; // Import the isAuthenticated function
 const routes = [
@@ -21,6 +23,18 @@ const routes = [
     name: 'articles',
     component: ArticleView,
     meta: {        hideNavigationLinks: false } // Add a meta field to indicate authentication requirement
+  },
+  {
+    path: '/articles/:rubriqueID',
+    name: 'articlesRubrique',
+    component: ArticleView,
+    meta: { hideNavigationLinks: false } // Add a meta field to indicate authentication requirement
+  },
+  {
+    path: '/focale',
+    name: 'focale',
+    component: FocaleView,
+    meta: { hideNavigationLinks: false } // Add a meta field to indicate authentication requirement
   },
   {
     path: '/archives',

@@ -16,10 +16,11 @@
             <li >
 
                 <select  v-model="selectedRubrique" @change="navigateToRubrique(selectedRubrique)" class="link-select link">
-
+                  <option :value="tousArticles">Tous les articles</option>
                   <option v-for="rubrique in rubriques" :value="rubrique.id" :key="rubrique.id">
                     {{ rubrique.rubrique }}
                   </option>
+                  <option value="focale">Focale</option>
                 </select>
               
 
@@ -91,7 +92,11 @@ export default {
       this.activeMenu = !this.activeMenu;
     },
     navigateToRubrique(selectedRubrique){
-      this.$router.push(`/articles/${selectedRubrique}`)
+      if(selectedRubrique === 'focale'){
+        this.$router.push('/focale')
+      } else {
+        this.$router.push(`/articles/${selectedRubrique}`)
+      }
     }
   },
 };
