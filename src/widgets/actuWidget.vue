@@ -24,7 +24,9 @@
            <div class="lienDiv">
             <button @click="toggleDescription" class="lienArticle">
         {{ isFullDescription ? 'Cacher' : 'Afficher toute l\'actu' }}
-      </button>           </div>
+      </button>  
+    
+    </div>
          </div>
        </div>
      </div>
@@ -44,7 +46,7 @@
          },
          computed: {
     displayDescription() {
-      if (this.isFullDescription || this.actu.description.length <= 100) {
+      if (this.isFullDescription || this.actu.description.length <= 400) {
         return this.actu.description;
       } else {
         return this.actu.description.slice(0, 100) + '...';
@@ -141,9 +143,9 @@
    }
    .titre{
        font-family: "Berlin Sans FB", sans-serif;
-       padding-left: 10px;
        font-weight: 1000;
        color: black;
+       padding: 0px;
    }
    .descriptionDiv{
        width:90%;
@@ -158,8 +160,13 @@
        text-align: left;
    }
    .lienArticle {
-     font-family: "Bahnschrift", sans-serif;
-     color:grey;
+    background: none;
+  border: none;
+  color: grey;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 1em;
+  padding: 0;
      /* Additional styles for your links (e.g., color, text-decoration, etc.) */
    }
    </style>

@@ -4,6 +4,7 @@ import ArticleView from '../views/ArticleView.vue'
 import ArchiveView from '../views/ArchiveView.vue'
 import ActuView from '../views/ActuView.vue'
 import AProposView from '../views/AProposView.vue'
+import proposerArticleView from '../views/proposerArticleView.vue'
 import axios from 'axios'
 import { useStore } from 'vuex'; // Import useStore from Vuex
 // import { isAuthenticated } from './Auth0'; // Import the isAuthenticated function
@@ -40,13 +41,10 @@ const routes = [
     meta: {        hideNavigationLinks: false } 
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/ArchiveView.vue'),
-    meta: {        hideNavigationLinks: false } // Add a meta field to indicate authentication requirement
+    path: '/proposerArticle',
+    name: 'proposerArticle',
+    component: proposerArticleView,
+    meta: {        hideNavigationLinks: false } 
   },
   {
     path: '/login',

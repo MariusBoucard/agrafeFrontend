@@ -5,7 +5,6 @@
             <div class="banner">
                 <p>Retrouvez ici l'actu de L'agrafe</p>
             </div>
-            {{ this.actus }}
           <div
             class="articleWidget"
             v-for="article in actus"
