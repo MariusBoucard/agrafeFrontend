@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import menuView from '../views/menuView.vue'
 import ArticleView from '../views/ArticleView.vue'
+import ArchiveView from '../views/ArchiveView.vue'
+import ActuView from '../views/ActuView.vue'
+import AProposView from '../views/AProposView.vue'
 import axios from 'axios'
 import { useStore } from 'vuex'; // Import useStore from Vuex
 // import { isAuthenticated } from './Auth0'; // Import the isAuthenticated function
@@ -17,6 +20,24 @@ const routes = [
     name: 'articles',
     component: ArticleView,
     meta: {        hideNavigationLinks: false } // Add a meta field to indicate authentication requirement
+  },
+  {
+    path: '/archives',
+    name: 'archives',
+    component: ArchiveView,
+    meta: {        hideNavigationLinks: false } 
+  },
+  {
+    path: '/actualite',
+    name: 'actualite',
+    component: ActuView,
+    meta: {        hideNavigationLinks: false } 
+  },
+  {
+    path: '/apropos',
+    name: 'apropos',
+    component: AProposView,
+    meta: {        hideNavigationLinks: false } 
   },
   {
     path: '/about',

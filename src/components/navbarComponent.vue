@@ -28,28 +28,28 @@
           <ul>
             <li>
               <a class="link" href="/">
-                <router-link class="routerLink" to="/">Archives</router-link>
+                <router-link class="routerLink" to="/archives">Archives</router-link>
               </a>
             </li>
           </ul>
           <ul>
             <li>
               <a class="link" href="/">
-                <router-link class="routerLink" to="/">L'actu</router-link>
+                <router-link class="routerLink" to="/actualite">L'actu</router-link>
               </a>
             </li>
           </ul>
           <ul>
             <li>
               <a class="link" href="/">
-                <router-link class="routerLink" to="/">Newsletter</router-link>
+                <router-link class="routerLink" to="/newsletter">Newsletter</router-link>
               </a>
             </li>
           </ul>
           <ul>
             <li>
               <a class="link" href="/">
-                <router-link class="routerLink" to="/">À propos</router-link>
+                <router-link class="routerLink" to="/apropos">À propos</router-link>
               </a>
             </li>
           </ul>
