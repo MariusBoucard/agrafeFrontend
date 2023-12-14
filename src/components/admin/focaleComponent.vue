@@ -27,7 +27,7 @@
                         <td>{{ foc.titre }}</td>
                         <td>{{ foc.description }}</td>
                         <td class="image-container">
-                            <img style="max-width: 100%;"
+                            <!-- <img style="max-width: 100%;"
                                 :src="`${baseUrl}/save/saveFocale/${foc.id}/${foc.images[0].id}.png`">
                             <div class="image-popup" @mouseleave="changeShowInfo(-1)">
                                 <div v-for="(image,index) in foc.images" :key="image.id">
@@ -45,7 +45,7 @@
                                         </div>
                                    
                                 </div>
-                            </div>
+                            </div> -->
                         </td>
 
                         <td>{{ foc.numero }}</td>

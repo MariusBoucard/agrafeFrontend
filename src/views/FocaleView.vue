@@ -7,8 +7,8 @@
        <div class="centerDiv">
         <div class="horizontalChooser">
 
-                <div v-for="i in 5" :key="i" class="rond">
-                    a
+                <div v-for="focale in this.focales" :key="focale.id" class="rond">
+                    {{ focale.numero }}
                 </div>
         </div>
 
@@ -74,7 +74,7 @@ export default{
         return {
             baseUrl : baseUrl,
             pdfUrl: baseUrl+'/save/saveArticle/pdf/4vAAnGg4w3pSlRmOaqn1O.pdf', // Replace with the path to your PDF file
-            selectedFocal : "Focale 1",
+            selectedFocal : { titre : "scooby doo"},
             focales : []
         };
     },
