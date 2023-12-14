@@ -5,8 +5,16 @@
        </div>
 
        <div class="centerDiv">
+        <div class="horizontalChooser">
+
+                <div v-for="i in 5" :key="i" class="rond">
+                    a
+                </div>
+        </div>
+
         <div class="focalInfo">
-            <h1>{{ selectedFocal }}</h1>
+            <h1>{{ selectedFocal.titre }}</h1>
+            {{ focales }}
             <p>Titre de l'oeuvre</p>
             <p>technique</p>
         </div>
@@ -56,7 +64,7 @@
 <script>
 import pdf from 'vue3-pdf';
 import baseUrl from '../config';
-
+import axiosInstance from '@/axios';
 export default{
     name: "FocaleView",
     components: {
@@ -74,7 +82,27 @@ export default{
         this.getFocale()
     },
     methods: {
-        getFocale(){},
+        getFocale(){
+
+       axiosInstance
+      .get("/api/getPublicFocale")
+      .then((response) => {
+        this.focales = response.data;
+        console.log(this.focales)
+        this.focales.sort((a, b) => (a.numero > b.numero) ? 1 : -1)
+        this.selectedFocal = this.focales[this.focales.length-1]
+        //this.rubriques.push({id: 'Articles', rubrique: 'Articles'})
+      })
+      .catch((error) =>
+        this.$message({
+          message: error,
+          type: "error",
+          customClass: "custom-el-message",
+          duration: 1000,
+        })
+      );
+           
+        },
         lastFocale(){
 
         },
@@ -85,6 +113,25 @@ export default{
 }
 </script>
 <style scoped>
+
+.horizontalChooser{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.rond{
+    border-radius: 50%;
+    background-color: white;
+    height: 30px;
+    width : 30px;
+    color : black;
+    margin: 10px;
+}
+.rond:hover{
+    background-color: black;
+    color : white;
+}
 .focalInfo{
    padding-top: 5px;
 }
