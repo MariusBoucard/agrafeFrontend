@@ -3,7 +3,7 @@
      <div class="grid-container">
        <div class="left-column">
          <div class="blackDiv">
-            {{ actu.date }}
+            {{ formatDate(actu.date) }}
          </div>
        
        </div>
@@ -12,18 +12,19 @@
               
             
                <p class="titre">
-                   {{ formatDate(actu.titre) }}
+                   {{ actu.titre}}
                </p>
          </div>
          <div style="margin-bottom: 20px;">
            <div class="descriptionDiv">
                <p>
-               {{ actu.description }}
+                {{ displayDescription }}
                </p>
            </div>
            <div class="lienDiv">
-               <a href="caca" class="lienArticle">Lire l'actu</a>
-           </div>
+            <button @click="toggleDescription" class="lienArticle">
+        {{ isFullDescription ? 'Cacher' : 'Afficher toute l\'actu' }}
+      </button>           </div>
          </div>
        </div>
      </div>
@@ -35,42 +36,60 @@
        props : {
            actu : {required : true, type : Object},
        },
+       data(){
+              return {
+                isFullDescription: false,
+
+              }
+         },
+         computed: {
+    displayDescription() {
+      if (this.isFullDescription || this.actu.description.length <= 100) {
+        return this.actu.description;
+      } else {
+        return this.actu.description.slice(0, 100) + '...';
+      }
+    },
+  },
        methods : {
+        toggleDescription() {
+      this.isFullDescription = !this.isFullDescription;
+    },
            formatDate(date){
                const year = date.slice(0,4)
                const month = date.slice(5,7)
-               
+               const day = date.slice(8,10)
                const ret = this.monthToDate(month)
-               return ret+". "+year
+               return day+" "+ret+" "+year
            },
            monthToDate(month){
                console.log(typeof month)
    
                switch (month) {
                case '1':
-               return 'Jan';
+               return 'Janvier';
                case '2':
-               return 'Fev';
+               return 'Février';
                case '3':
-               return 'Mar';
+               return 'Mars';
                case '4':
-               return 'Avr';
+               return 'Avril';
                case '5':
                return 'Mai';
                case '6':
                return 'Juin';
                case '7':
-               return 'Juil';
+               return 'Juillet';
                case '8':
                return 'Août';
                case '9':
-               return 'Sep';
+               return 'Septembre';
                case '10':
-               return 'Oct';
+               return 'Octobre';
                case '11':
-               return 'Nov';
+               return 'Novembre';
                case '12':
-               return 'Dec';
+               return 'Décembre';
                default:
                return 'Unknown';
            }
