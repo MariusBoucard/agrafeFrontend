@@ -7,7 +7,7 @@
        <div class="centerDiv">
         <div class="horizontalChooser">
 
-                <div v-for="focale in this.focales" :key="focale.id" class="rond">
+                <div v-for="focale in this.focales" :key="focale.id" :class="{ 'selected': focale.id === selectedFocal.id, 'tata': focale.id !== selectedFocal.id }" @click="changeSelectedFocale(focale.id)" class="rond">
                     {{ focale.numero }}
                 </div>
         </div>
@@ -22,29 +22,26 @@
         <div style="display: flex;"> 
             <div class="column" style="width: 10%;" @click="lastFocale()">
             
-               <div class="middleIcon">
-                prout
+            <div class="middleIcon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-6 h-6">
-                <path fill-rule="evenodd" d="M19.5 5.653c0-1.426-1.529-2.33-2.779-1.643l-11.54 6.348c-1.295.712-1.295 2.573 0 3.285l11.54 6.348c1.25.687 2.779-.217 2.779-1.643V5.653z" clip-rule="evenodd" />
+                    <path fill-rule="evenodd" d="M19.5 5.653c0-1.426-1.529-2.33-2.779-1.643l-11.54 6.348c-1.295.712-1.295 2.573 0 3.285l11.54 6.348c1.25.687 2.779-.217 2.779-1.643V5.653z" clip-rule="evenodd" />
                 </svg>
-               </div>
+            </div>
             <!-- Content for the first column -->
         </div>
         <div class="column" style="width: 80%;">
             <!-- Content for the second column -->
             <div style="width=50%">
-                <pdf :src="pdfUrl"></pdf>
-
+                <pdf :src="`${baseUrl}/save/saveFocale/${selectedFocal.id}/1.pdf`"></pdf>
                 </div>
                 <div style="width=50%">
-                    <pdf :src="pdfUrl"></pdf>
+                    <pdf :src="`${baseUrl}/save/saveFocale/${selectedFocal.id}/1.pdf`"></pdf>
 
                 </div>
 
         </div>
         <div class="column" style="width: 10%;">
             <div class="middleIcon" @click="nextFocale()">
-                queue
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-6 h-6">
                 <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
                 </svg>
@@ -82,6 +79,10 @@ export default{
         this.getFocale()
     },
     methods: {
+    changeSelectedFocale(id){
+        this.selectedFocal = this.focales.find(focale => focale.id == id)
+    },
+    
         getFocale(){
 
        axiosInstance
@@ -104,10 +105,22 @@ export default{
            
         },
         lastFocale(){
-
-        },
+                console.log(this.focales)
+                const index = this.focales.findIndex(focale => focale.id === this.selectedFocal.id);
+                if (index > 0) {
+                    this.selectedFocal = this.focales[index - 1];
+                } else {
+                    return this.selectedFocal;
+                }
+            },
         nextFocale(){
-
+            console.log(this.focales)
+            const index = this.focales.findIndex(focale => focale.id === this.selectedFocal.id);
+            if (index < this.focales.length - 1) {
+                this.selectedFocal = this.focales[index + 1];
+            } else {
+                return this.selectedFocal;
+            }
         }
     }
 }
@@ -141,11 +154,14 @@ export default{
 }
 .column{
     display: flex;
+    width: 100%;
     justify-content: center;
     min-height: 70vh;
 }
 
 .middleIcon{
+    width: 60px;
+    height: 60px;
     margin-top: auto;
     margin-bottom: auto;
 }
@@ -166,5 +182,10 @@ export default{
     background-color: black;
     margin-top: 20px;
     margin-bottom: 60px;;
+}
+.selected{
+    background-color: black;
+    color : white;
+    border: 1px solid white;
 }
 </style>
