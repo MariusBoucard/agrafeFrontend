@@ -18,6 +18,11 @@
                             <label for="numeroParu">Numéro du journal :</label>
                             <input type="number" id="numeroParu" v-model="focale.numero" required>
                         </div>
+                        <div class="form-group">
+
+<label for="date">Date :</label>
+<input type="date" id="date" v-model="focale.date" required>
+</div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -76,7 +81,8 @@ export default {
                 auteur : '',
                 technique : '',
                 pdf1 : '',
-                pdf2:''
+                pdf2:'',
+                date : ''
             },
         }
     },

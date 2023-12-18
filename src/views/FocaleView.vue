@@ -37,24 +37,24 @@
                     </div>
                     <div style="width:50%">
                         <pdf :src="`${baseUrl}/save/saveFocale/${selectedFocal.id}/1.pdf`"></pdf>
-
+                        
                     </div>
-
+                    
                 </div>
                 <div class="column" style="width: 10%;">
                     <div class="middleIcon" @click="nextFocale()">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-6 h-6">
                             <path fill-rule="evenodd"
-                                d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
-                                clip-rule="evenodd" />
+                            d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
+                            clip-rule="evenodd" />
                         </svg>
-
+                        
                     </div>
                     <!-- Content for the third column -->
                 </div>
-
-
+                
             </div>
+            <p class="subText"> Focale N°{{ selectedFocal.numero }}. {{ formatDate(selectedFocal.date) }}</p>
 
         </div>
     </div>
@@ -72,18 +72,22 @@ export default {
     data() {
         return {
             baseUrl: baseUrl,
-            selectedFocal: { titre: "scooby doo", auteur: "scooby doo", technique: "scooby doo", id : 0 },
+            selectedFocal: { titre: "scooby doo", auteur: "scooby doo", technique: "scooby doo", id : 0 ,date : "2021-01-01"},
             focales: []
         };
     },
     mounted() {
         this.getFocale()
         this.focales.sort((a, b) => (a.numero > b.numero) ? 1 : -1)
-        this.selectedFocal = this.focales[this.focales.length - 1]
+        if(this.focales.length > 0){
+            this.selectedFocal = this.focales[this.focales.length - 1]
+        }
     },
     methods: {
         changeSelectedFocale(id) {
-            this.selectedFocal = this.focales.find(focale => focale.id == id)
+            if(this.focales.length > 0){
+                this.selectedFocal = this.focales.find(focale => focale.id == id)
+            }
         },
 
         getFocale() {
@@ -94,7 +98,9 @@ export default {
                     this.focales = response.data;
                     console.log(this.focales)
                     this.focales.sort((a, b) => (a.numero > b.numero) ? 1 : -1)
-                    this.selectedFocal = this.focales[this.focales.length - 1]
+                    if(this.focales.length > 0){
+                        this.selectedFocal = this.focales[this.focales.length - 1]
+                    }
                     //this.rubriques.push({id: 'Articles', rubrique: 'Articles'})
                 })
                 .catch((error) =>
@@ -124,11 +130,58 @@ export default {
             } else {
                 return this.selectedFocal;
             }
-        }
+        },
+        formatDate(date){
+               const year = date.slice(0,4)
+               const month = date.slice(5,7)
+               const ret = this.monthToDate(month)
+               return ret+". "+year
+           },
+           monthToDate(month){
+               console.log(typeof month)
+   
+               switch (month) {
+               case '1':
+               return 'Jan';
+               case '2':
+               return 'Fév';
+               case '3':
+               return 'Mars';
+               case '4':
+               return 'Avr';
+               case '5':
+               return 'Mai';
+               case '6':
+               return 'Juin';
+               case '7':
+               return 'Juil';
+               case '8':
+               return 'Août';
+               case '9':
+               return 'Sept';
+               case '10':
+               return 'Oct';
+               case '11':
+               return 'Nov';
+               case '12':
+               return 'Déc';
+               default:
+               return 'Unknown';
+           }
+           }
+       
     }
 }
 </script>
 <style scoped>
+.subText {
+    font-size: larger;
+    margin-top: 20px;
+    font-weight: 100  ;
+    padding-bottom: 20px;
+    color: white;
+    text-align: center;
+}
 .horizontalChooser {
     width: 100%;
     display: flex;
