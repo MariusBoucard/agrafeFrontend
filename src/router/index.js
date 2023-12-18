@@ -15,50 +15,68 @@ const routes = [
     path: '/',
     name: 'home',
     component: menuView,
-    meta: {        hideNavigationLinks: false } // Add a meta field to indicate authentication requirement
+    meta: {        hideNavigationLinks: false ,
+      title: 'L\'Agrafe - Journal'
+    },
+
 
   },
   {
     path: '/articles',
     name: 'articles',
     component: ArticleView,
-    meta: {        hideNavigationLinks: false } // Add a meta field to indicate authentication requirement
+    meta: {        hideNavigationLinks: false,
+      title: 'L\'Agrafe - Articles'
+
+    } // Add a meta field to indicate authentication requirement
   },
   {
     path: '/articles/:rubriqueID',
     name: 'articlesRubrique',
     component: ArticleView,
-    meta: { hideNavigationLinks: false } // Add a meta field to indicate authentication requirement
+    meta: { hideNavigationLinks: false,
+      title: 'L\'Agrafe - Articles'
+    } // Add a meta field to indicate authentication requirement
   },
   {
     path: '/focale',
     name: 'focale',
     component: FocaleView,
-    meta: { hideNavigationLinks: false } // Add a meta field to indicate authentication requirement
+    meta: { hideNavigationLinks: false,
+      title: 'L\'Agrafe - Focale'
+    } // Add a meta field to indicate authentication requirement
   },
   {
     path: '/archives',
     name: 'archives',
     component: ArchiveView,
-    meta: {        hideNavigationLinks: false } 
+    meta: {        hideNavigationLinks: false,
+      title: 'L\'Agrafe - Archives'
+    } 
   },
   {
     path: '/actualite',
     name: 'actualite',
     component: ActuView,
-    meta: {        hideNavigationLinks: false } 
+    meta: {        hideNavigationLinks: false,
+      title: 'L\'Agrafe - Actualité'
+    } 
   },
   {
     path: '/apropos',
     name: 'apropos',
     component: AProposView,
-    meta: {        hideNavigationLinks: false } 
+    meta: {        hideNavigationLinks: false,
+      title: 'L\'Agrafe - A propos'
+    } 
   },
   {
     path: '/proposerArticle',
     name: 'proposerArticle',
     component: proposerArticleView,
-    meta: {        hideNavigationLinks: false } 
+    meta: {        hideNavigationLinks: false,
+      title: 'L\'Agrafe - Proposer un article'
+    } 
   },
   {
     path: '/login',
@@ -81,12 +99,7 @@ const routes = [
     // meta: { requiresAuth: true } // Add a meta field to indicate authentication requirement
   },
 
-  {
-    path: '/proposerArticle',
-    name: 'proposerArticle',
-    component: () => import( '../views/proposerArticleView.vue'),
-    // meta: { requiresAuth: true } // Add a meta field to indicate authentication requirement
-  }
+ 
 ]
 
 const router = createRouter({
