@@ -6,6 +6,7 @@ import ActuView from '../views/ActuView.vue'
 import AProposView from '../views/AProposView.vue'
 import proposerArticleView from '../views/proposerArticleView.vue'
 import FocaleView from '../views/FocaleView.vue'
+import ArchiveLectureView from '../views/ArchiveLectureView.vue'
 import axios from 'axios'
 
 import { useStore } from 'vuex'; // Import useStore from Vuex
@@ -50,6 +51,14 @@ const routes = [
     path: '/archives',
     name: 'archives',
     component: ArchiveView,
+    meta: {        hideNavigationLinks: false,
+      title: 'L\'Agrafe - Archives'
+    } 
+  },
+  {
+    path: '/archives/:id',
+    name: 'archiveLecture',
+    component: ArchiveLectureView,
     meta: {        hideNavigationLinks: false,
       title: 'L\'Agrafe - Archives'
     } 

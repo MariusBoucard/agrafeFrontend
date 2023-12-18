@@ -2,10 +2,11 @@
      <div>
    
         <div class="articleWidget" v-for="archive in archives" :key="archive.id">
-            <archiveWidget :archive="archive">
-            </archiveWidget> 
-                      </div>
-    </div>
+            <router-link class="routerLink" :to="'/archives/' + archive.id">
+                <archiveWidget :archive="archive"></archiveWidget> 
+            </router-link>
+        </div>
+     </div>
 </template>
 <script>
 import axiosInstance from '@/axios';
