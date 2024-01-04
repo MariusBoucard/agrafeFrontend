@@ -18,6 +18,11 @@
                             <label for="numeroParu">Numéro du journal :</label>
                             <input type="number" id="numeroParu" v-model="focale.numero" required>
                         </div>
+                        <div class="form-group">
+
+<label for="date">Date :</label>
+<input type="date" id="date" v-model="focale.date" required>
+</div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -27,70 +32,34 @@
                 <div class="form-columns">
                     <!-- Left column -->
                     <div class="form-column">
-                        <h2>Images :</h2>
-                        <draggable class="dragArea list-group w-full" :list="focale.images" @change="orderChanged">
-                            <div class="list-group-item bg-gray-300 m-1 p-3 rounded-md text-center"
-                                v-for="(element, index) in focale.images" :key="element.id">
-                                <div class="horizontal-card">
-                                    <div @click="deleteImage(element.id)" class="deleteDiv"> 
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                                    </svg>
-
-                                    </div>
-                                    <div class="number">{{ index }}</div>
-                                    <div class="image">
-                                        <img :src="getImageUrl(element.image)" alt="Image Preview">
-                                    </div>
-                                    <div class="title">{{ element.titre }}</div>
-                                    <div @click="editImage(element.id)" class="deleteDiv"> 
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                             <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                                        </svg>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </draggable>
-                        <button class="button" @click="addImage = true">Ajouter une image</button>
-
+                        <div class="form-group">
+                            <label for="titreFront">Auteur</label>
+                            <input type="text" id="titreFront" v-model="focale.auteur" required>
+                        </div>
                     </div>
                     <div class="form-column">
-                        <div v-if="addImage">
 
-                            <div class="form-group">
-                                <label for="auteur">Titre :</label>
-                                <input type="text" id="auteur" v-model="imgToAdd.titre">
-                            </div>
-                            <div class="form-group">
-                                <label for="imageLogo">Image :</label>
-                                <input type="file" id="imageLogo" accept="image/*" @change="handleImageUpload" required>
-                            </div>
-                            <div class="form-group">
-                                <!-- Add a preview for the uploaded image (optional) -->
-                                <img v-if="imagePreview" :src="imagePreview" alt="Uploaded Image">
-                            </div>
-                            <div class="form-group">
-                                <label for="auteur">Description :</label>
-                                <input type="text" id="auteur" v-model="imgToAdd.description">
-                            </div>
-                            <div class="form-group">
-                                <label for="auteur">Auteur :</label>
-                                <input type="text" id="auteur" v-model="imgToAdd.auteur" required>
-                            </div>
+                        <div class="form-group">
 
-                            <div class="form-group">
-                                <label for="date">Date de publication :</label>
-                                <input type="date" id="date" v-model="imgToAdd.date" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="auteur">Copyright :</label>
-                                <input type="text" id="auteur" v-model="imgToAdd.copyright" required>
-                            </div>
-                            <div class="form-group">
-                                <button class="button" @click="pushImage()">Ajouter Image</button>
-                            </div>
+                            <label for="numeroParu">Technique</label>
+                            <input type="text" id="numeroParu" v-model="focale.technique" required>
                         </div>
+                    </div>
+                </div>
+                <div class="form-columns">
+                    <div class="form-column">
+
+                    <div class="form-group">
+                                <label for="imageLogo">PDF 1 :</label>
+                                <input type="file" id="imageLogo" accept="pdf/*" @change="handlePdfUpoad" required>
+                    </div>
+                    </div>
+                    <div class="form-column">
+
+                    <div class="form-group">
+                                <label for="imageLogo">PDF 2 :</label>
+                                <input type="file" id="imageLogo" accept="pdf/*" @change="handlePdfUpoad2" required>
+                    </div>
                     </div>
                 </div>
                 <button type="submit" class="submit-button">Submit</button>
@@ -101,30 +70,20 @@
 <script>
 import axiosInstance from '@/axios';
 import { nanoid } from 'nanoid'
-import { VueDraggableNext } from 'vue-draggable-next'
 export default {
-    components: {
-        draggable: VueDraggableNext,
-    },
+
     data() {
         return {
             focale: {
                 titre: '',
                 numero: '',
                 description: '',
-                images: []
+                auteur : '',
+                technique : '',
+                pdf1 : '',
+                pdf2:'',
+                date : ''
             },
-            imgToAdd: {
-                id: '',
-                auteur: 'f',
-                titre: 'f',
-                description: 'caca',
-                date: 'd',
-                copyright: 'd',
-                image: null
-            },
-            imagePreview: null,
-            addImage: false
         }
     },
     mounted() {
@@ -172,36 +131,72 @@ export default {
             this.addImage = false
 
         },
-        handleImageUpload(event) {
+        handlePdfUpoad(event) {
             const file = event.target.files[0];
 
             // Check if a file was selected
             if (file) {
-                // Display a preview of the selected image (optional)
-                this.imagePreview = URL.createObjectURL(file);
-                this.imgToAdd.image = file
-                // Assign the selected file to the article's imageLogo property
-            } else {
-                // Clear the imagePreview and imageLogo if no file was selected
-                this.imagePreview = null;
-                this.imgToAdd.image = null;
-            }
+                this.focale.pdf1 = file;
+      } else {
+        // Clear the imagePreview and imageLogo if no file was selected
+            this.focale.pdf1 = null;
+      }
+        },
+        handlePdfUpoad2(event) {
+            const file = event.target.files[0];
+
+            // Check if a file was selected
+            if (file) {
+                this.focale.pdf2 = file;
+      } else {
+        // Clear the imagePreview and imageLogo if no file was selected
+            this.focale.pdf2 = null;
+      }
         },
         sendFocaleToBackend() {
       // Create a FormData object to send the form data, including images
      
-      axiosInstance
-        .post('/api/addFocale', this.focale)
-        .then(response => {
-          // Handle the response from the backend if needed
-          console.log('Backend response:', response.data);
-          const id = response.data
-          this.sendImagesToBackend(id)
-        })
-        .catch(error => {
-          // Handle errors if the request fails
-          console.error('Error sending data to the backend:', error);
-        });
+  axiosInstance.post('/api/addFocale',{ focale : this.focale},)
+    .then(response => {
+      // Handle the response from the backend
+
+    const id = response.data
+    const formData = new FormData();
+    formData.append('focalePDF', this.focale.pdf1);
+    formData.append('focalePDF', this.focale.pdf2);
+    formData.append('focaleID', id ); // Add your string data here
+    axiosInstance.post('/api/uploadPDFFocale', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    .then(() => {
+      this.$emit('componentChanged','focal')
+    })
+    .catch(error => {
+      // Handle errors if the request fails
+      console.error(error);
+    });
+         },
+    )
+    .catch(error => {
+      // Handle errors if the request fails
+      console.error(error);
+    });
+
+
+    //   axiosInstance
+    //     .post('/api/addFocale', this.focale)
+    //     .then(response => {
+    //       // Handle the response from the backend if needed
+    //       console.log('Backend response:', response.data);
+    //       const id = response.data
+    //       this.sendImagesToBackend(id)
+    //     })
+    //     .catch(error => {
+    //       // Handle errors if the request fails
+    //       console.error('Error sending data to the backend:', error);
+    //     });
     },
     sendImagesToBackend(id) {
     const formData = new FormData();

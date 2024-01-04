@@ -1,7 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import menuView from '../views/menuView.vue'
 import ArticleView from '../views/ArticleView.vue'
+import ArchiveView from '../views/ArchiveView.vue'
+import ActuView from '../views/ActuView.vue'
+import AProposView from '../views/AProposView.vue'
+import proposerArticleView from '../views/proposerArticleView.vue'
+import FocaleView from '../views/FocaleView.vue'
+import ArchiveLectureView from '../views/ArchiveLectureView.vue'
 import axios from 'axios'
+
 import { useStore } from 'vuex'; // Import useStore from Vuex
 // import { isAuthenticated } from './Auth0'; // Import the isAuthenticated function
 const routes = [
@@ -9,23 +16,76 @@ const routes = [
     path: '/',
     name: 'home',
     component: menuView,
-    meta: {        hideNavigationLinks: false } // Add a meta field to indicate authentication requirement
+    meta: {        hideNavigationLinks: false ,
+      title: 'L\'Agrafe - Journal'
+    },
+
 
   },
   {
     path: '/articles',
     name: 'articles',
     component: ArticleView,
-    meta: {        hideNavigationLinks: false } // Add a meta field to indicate authentication requirement
+    meta: {        hideNavigationLinks: false,
+      title: 'L\'Agrafe - Articles'
+
+    } // Add a meta field to indicate authentication requirement
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../components/AboutPute.vue'),
-    meta: {        hideNavigationLinks: false } // Add a meta field to indicate authentication requirement
+    path: '/articles/:rubriqueID',
+    name: 'articlesRubrique',
+    component: ArticleView,
+    meta: { hideNavigationLinks: false,
+      title: 'L\'Agrafe - Articles'
+    } // Add a meta field to indicate authentication requirement
+  },
+  {
+    path: '/focale',
+    name: 'focale',
+    component: FocaleView,
+    meta: { hideNavigationLinks: false,
+      title: 'L\'Agrafe - Focale'
+    } // Add a meta field to indicate authentication requirement
+  },
+  {
+    path: '/archives',
+    name: 'archives',
+    component: ArchiveView,
+    meta: {        hideNavigationLinks: false,
+      title: 'L\'Agrafe - Archives'
+    } 
+  },
+  {
+    path: '/archives/:id',
+    name: 'archiveLecture',
+    component: ArchiveLectureView,
+    meta: {        hideNavigationLinks: false,
+      title: 'L\'Agrafe - Archives'
+    } 
+  },
+  {
+    path: '/actualite',
+    name: 'actualite',
+    component: ActuView,
+    meta: {        hideNavigationLinks: false,
+      title: 'L\'Agrafe - Actualité'
+    } 
+  },
+  {
+    path: '/apropos',
+    name: 'apropos',
+    component: AProposView,
+    meta: {        hideNavigationLinks: false,
+      title: 'L\'Agrafe - A propos'
+    } 
+  },
+  {
+    path: '/proposerArticle',
+    name: 'proposerArticle',
+    component: proposerArticleView,
+    meta: {        hideNavigationLinks: false,
+      title: 'L\'Agrafe - Proposer un article'
+    } 
   },
   {
     path: '/login',
@@ -48,12 +108,7 @@ const routes = [
     // meta: { requiresAuth: true } // Add a meta field to indicate authentication requirement
   },
 
-  {
-    path: '/proposerArticle',
-    name: 'proposerArticle',
-    component: () => import( '../views/proposerArticleView.vue'),
-    // meta: { requiresAuth: true } // Add a meta field to indicate authentication requirement
-  }
+ 
 ]
 
 const router = createRouter({

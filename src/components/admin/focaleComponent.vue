@@ -27,7 +27,7 @@
                         <td>{{ foc.titre }}</td>
                         <td>{{ foc.description }}</td>
                         <td class="image-container">
-                            <img style="max-width: 100%;"
+                            <!-- <img style="max-width: 100%;"
                                 :src="`${baseUrl}/save/saveFocale/${foc.id}/${foc.images[0].id}.png`">
                             <div class="image-popup" @mouseleave="changeShowInfo(-1)">
                                 <div v-for="(image,index) in foc.images" :key="image.id">
@@ -45,7 +45,7 @@
                                         </div>
                                    
                                 </div>
-                            </div>
+                            </div> -->
                         </td>
 
                         <td>{{ foc.numero }}</td>
@@ -95,10 +95,7 @@ export default {
             ).catch(error => console.log(error))
 
         },
-        // modifyArticle(id) {
-        //   this.$emit('modifyArticle', id)
-        // },
-
+   
         deleteFocale(id) {
             axiosInstance.delete(`/api/deleteFocale/${id}`).then(() => {
                 this.$message({
@@ -107,11 +104,12 @@ export default {
                     customClass: 'custom-el-message',
                     duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
                 });
-                this.setArticles()
+                this.setFocale()
             })
-                .catch(() => {
+                .catch((error) => {
+                    console.log(error)
                     this.$message({
-                        message: 'Erreur lors de la suppression de l\'article',
+                        message: 'Erreur lors de la suppression de la Focale',
                         type: 'error',
                         customClass: 'custom-el-message',
                         duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)

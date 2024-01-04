@@ -249,17 +249,6 @@ export default {
                 this.files.push(files[i]);
             }
         },
-        async recaptcha() {
-            // (optional) Wait until recaptcha has been loaded.
-            await this.$recaptchaLoaded()
-
-            // Execute reCAPTCHA with action "login".
-            const token = await this.$recaptcha('login')
-            console.log(token)
-            this.captchaResponse = token
-            // Now you can send `token` to your server for verification
-            // and proceed with the form submission if the verification is successful
-        },
         async sendArticle() {
 
             this.testCaptcha()
@@ -304,23 +293,23 @@ export default {
         console.error('Error sending data to the backend:', error);
       });
   },
-        async testCaptcha() {
-            await this.recaptcha()
-            await axiosInstance.post('/verifyRecaptcha', { captcha: this.captchaResponse })
-                .then(response => {
-                    if (response.data.success) {
-                        console.log('Success!')
-                        // The reCAPTCHA was verified successfully. Continue processing the form.
-                    } else {
-                        console.log('Failed!')
-                        // The reCAPTCHA verification failed. Send an error response.
-                    }
-                })
-                .catch(error => {
-                    console.error('Error verifying reCAPTCHA:', error);
-                });
+        // async testCaptcha() {
+        //     await this.recaptcha()
+        //     await axiosInstance.post('/verifyRecaptcha', { captcha: this.captchaResponse })
+        //         .then(response => {
+        //             if (response.data.success) {
+        //                 console.log('Success!')
+        //                 // The reCAPTCHA was verified successfully. Continue processing the form.
+        //             } else {
+        //                 console.log('Failed!')
+        //                 // The reCAPTCHA verification failed. Send an error response.
+        //             }
+        //         })
+        //         .catch(error => {
+        //             console.error('Error verifying reCAPTCHA:', error);
+        //         });
 
-        },
+        // },
         setRubriques() {
             axiosInstance.get('/api/getRubriques').then(response => {
                 this.rubriques = response.data

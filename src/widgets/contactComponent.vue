@@ -20,10 +20,14 @@
     </div>
 </li>
 <li class="listItem">
-    <div class="listDiv">
-        <p class="listText">Proposer un article</p>
-        <img class="listImg" src="../assets/social/Location.svg" />
-    </div>
+    <router-link class="routerLink" to="/proposerArticle">
+
+        
+        <div class="listDiv">
+            <p class="listText">Proposer un article</p>
+            <img class="listImg" src="../assets/social/Location.svg" />
+        </div>
+    </router-link>
 </li>
 
 
@@ -46,6 +50,7 @@ ul{
 .listText{
     margin: auto;
     margin-right: 0px;
+    color : black;
     font-family: "Bahnschrift", sans-serif;
 }
 </style>

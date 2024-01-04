@@ -19,6 +19,10 @@ export default {
     },
   },
   watch: {
+    $route(to) {
+      document.title = to.meta.title || 'L\'Agrafe - Journal';
+    },
+  
     user: {
       handler: function (newUser) {
         if (newUser) {

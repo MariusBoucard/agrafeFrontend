@@ -2,7 +2,10 @@
   <div class="baseView">
     <div class="menuGrid">
       <div class="leftColumn">
-        <ArticleComponent></ArticleComponent>
+        <div class="article">
+          <ArticleComponent></ArticleComponent>
+
+        </div>
       </div>
       <div class="rightColumn">
         <ContactComponent></ContactComponent>
@@ -45,6 +48,10 @@ export default {
 
 .rightColumn {
   /* Your styles for the right column here */
+}
+.article{
+  width: 80%;
+  margin-left: auto;
 }
 </style>
   
