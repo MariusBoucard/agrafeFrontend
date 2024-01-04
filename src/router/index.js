@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import menuView from '../views/menuView.vue'
 import ArticleView from '../views/ArticleView.vue'
+import NewsletterView from '../views/NewsletterView.vue'
 import axios from 'axios'
 import { useStore } from 'vuex'; // Import useStore from Vuex
 // import { isAuthenticated } from './Auth0'; // Import the isAuthenticated function
@@ -53,6 +54,11 @@ const routes = [
     name: 'proposerArticle',
     component: () => import( '../views/proposerArticleView.vue'),
     // meta: { requiresAuth: true } // Add a meta field to indicate authentication requirement
+  },
+  {
+    path: '/newsletter',
+    name: 'newsletter',
+    component: NewsletterView,
   }
 ]
 
