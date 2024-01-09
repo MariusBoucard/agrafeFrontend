@@ -38,7 +38,6 @@ export default {
       user: this.$auth0.user,
     };
   },
-
   methods: {
     ...mapMutations("auth", ["SET_AUTHENTICATED"]),
     ...mapActions("auth", ["setUser", "clearUser", "setConnection"]),

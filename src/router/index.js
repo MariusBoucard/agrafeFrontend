@@ -7,6 +7,7 @@ import AProposView from '../views/AProposView.vue'
 import proposerArticleView from '../views/proposerArticleView.vue'
 import FocaleView from '../views/FocaleView.vue'
 import ArchiveLectureView from '../views/ArchiveLectureView.vue'
+import NewsletterView from '../views/NewsletterView.vue'
 import axios from 'axios'
 
 import { useStore } from 'vuex'; // Import useStore from Vuex
@@ -109,6 +110,13 @@ const routes = [
   },
 
  
+
+  
+  {
+    path: '/newsletter',
+    name: 'newsletter',
+    component: NewsletterView,
+  }
 ]
 
 const router = createRouter({
