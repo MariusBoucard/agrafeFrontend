@@ -11,8 +11,8 @@
     </router-link>
     <div class="innerNav">
       <div class="inner">
-        <nav>
-          <ul>
+        <nav class="nav-list">
+          <ul >
             <li >
 
                 <select  v-model="selectedRubrique" @change="navigateToRubrique(selectedRubrique)" class="link-select link">
@@ -103,6 +103,11 @@ export default {
 </script>
 
 <style scoped>
+.nav-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .navbar {
   width: 100%;
   border: 10px solid white;
