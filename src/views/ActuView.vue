@@ -1,6 +1,6 @@
 <template>
     <div class="baseView">
-      <div class="menuGrid">
+      <div class="container">
         <div class="leftColumn">
             <div class="banner">
                     <p class="titleBanner">Retrouvez ici l'actu de L'agrafe</p>
@@ -71,12 +71,38 @@ import ActuWidget from "@/widgets/actuWidget.vue";
     width: 90%;
     margin: auto;
   }
-  .menuGrid {
-    display: grid;
-    grid-template-columns: 70% 30%; /* 70% for the left column, 30% for the right column */
-    column-gap: 20px; /* Adjust the gap as needed */
-  }
+  .container {
+  display: flex;
+  flex-wrap: wrap;
+}
 
+.leftColumn {
+  width : 65%
+  /* Your styles for the left column here */
+}
+
+.rightColumn {
+  width: 30%;
+  /* Your styles for the right column here */
+}
+.article{
+  width: 80%;
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  .leftColumn {
+    width: 100%;
+  }
+  .rightColumn {
+    width: 100%;
+  }
+  .articleWidget{
+    width: 100%;
+  }}
   .titleBanner{
     width : 80%;
     margin-top: 5px;

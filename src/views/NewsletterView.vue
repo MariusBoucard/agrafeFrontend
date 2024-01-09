@@ -1,6 +1,6 @@
 <template>
   <div class="baseView">
-    <div class="menuGrid">
+    <div class="container">
       <div class="leftColumn">
         <div class="content">
           <div class="title">Abonne-toi à la newsletter !</div>
@@ -101,11 +101,6 @@ export default {
   margin: auto;
 }
 
-.menuGrid {
-  display: grid;
-  grid-template-columns: 70% 30%; 
-  column-gap: 20px; 
-}
 
 .content {
   margin: auto;
@@ -142,6 +137,7 @@ export default {
   flex-direction: column;
   font-size: 1.5em;
   align-items: flex-start;
+  padding-bottom: 10px;;
 }
 
 .input {
@@ -165,7 +161,7 @@ input[type="email"] {
 
 button {
   border: none;
-  width: 30%;
+  /* width: 30%; */
   height: 40px;
   color: rgb(255, 255, 255);
   background-color: black;
@@ -183,4 +179,37 @@ button:hover {
   color: black;
   background-color: #ffffff;
 }
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.leftColumn {
+  width : 65%
+  /* Your styles for the left column here */
+}
+
+.rightColumn {
+  width: 30%;
+  /* Your styles for the right column here */
+}
+.article{
+  width: 80%;
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  .leftColumn {
+    width: 100%;
+  }
+  .rightColumn {
+    width: 100%;
+  }
+  .article{
+    width: 100%;
+  }}
 </style>
