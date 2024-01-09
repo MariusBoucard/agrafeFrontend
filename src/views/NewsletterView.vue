@@ -12,7 +12,7 @@
             </p>
             <p>PS : tu peux te désinscrire à tout moment.</p>
           </div>
-          <form class="form" @submit.prevent="inscription">
+          <form class="form" >
             <div class="input">
               <label for="name" >Nom</label>
               <input type="text" required v-model="user.name" />
@@ -21,8 +21,9 @@
               <label for="email">Adresse mail</label>
               <input type="email" required v-model="user.mail" />
             </div>
-            <button>Inscription</button>
-            <button>Désinscription</button>
+            <span v-if="validateEmail(user.mail) === false">Veuillez entrer une adresse mail valide</span>
+            <button @click="inscription">Inscription</button>
+            <button @click="desinscription">Désinscription</button>
           </form>
         </div>
       </div>
@@ -51,7 +52,6 @@ export default {
       user: {
         name: "",
         mail: "",
-        id: null, //jsp si je dois recup l'id là
       },
     };
   },
@@ -59,10 +59,14 @@ export default {
   methods: {
     async inscription() {
       try {
+        if(this.validateEmail(this.user.mail) === false){
+          alert("Veuillez entrer une adresse mail valide");
+          return;
+        }
+
         const response = await axiosInstance.post("/api/addNewsletter", {
           user: this.user,
         });
-        this.user.id = response.data.newsletter.id;
         console.log("Inscription réussie", response.data);
       } catch (error) {
         console.error("Erreur lors de l'inscription", error);
@@ -72,12 +76,16 @@ export default {
     async desinscription() {
       try {
         const response = await axiosInstance.delete(
-          `/api/deleteNewsletter/${this.user.id}`
+          `/api/deleteNewsletter/${this.user.mail}`
         );
         console.log(response.data);
       } catch (error) {
         console.error("Erreur lors de la désinscription", error);
       }
+    },
+    validateEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
     },
   },
 };
