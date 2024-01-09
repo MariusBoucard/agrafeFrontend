@@ -8,6 +8,7 @@ import proposerArticleView from '../views/proposerArticleView.vue'
 import FocaleView from '../views/FocaleView.vue'
 import ArchiveLectureView from '../views/ArchiveLectureView.vue'
 import NewsletterView from '../views/NewsletterView.vue'
+import ReadArticleView from '../views/ReadArticleView.vue'
 import axios from 'axios'
 
 import { useStore } from 'vuex'; // Import useStore from Vuex
@@ -36,6 +37,15 @@ const routes = [
     path: '/articles/:rubriqueID',
     name: 'articlesRubrique',
     component: ArticleView,
+    meta: { hideNavigationLinks: false,
+      title: 'L\'Agrafe - Articles'
+    } // Add a meta field to indicate authentication requirement
+  },
+  {
+    path: '/article/:articleId',
+    name: 'article',
+    component: ReadArticleView,
+    props: true, // Enable passing route params as props
     meta: { hideNavigationLinks: false,
       title: 'L\'Agrafe - Articles'
     } // Add a meta field to indicate authentication requirement

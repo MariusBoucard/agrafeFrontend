@@ -114,10 +114,15 @@ de rang 2 et 3 un peu moins, en vrai ça dépend si vous voulez l'utiliser ou no
                 <!-- Replaced the input with a select -->
                 <select id="type" v-model="partToAdd.type" required>
                   <option value="titre">Titre</option>
+                  <option value="sousTitre1">Sous titre 1</option>
+                  <option value="sousTitre2">Sous titre 2</option>
+                  <option value="Citation">Citation</option>
+
                   <option value="interTitre">Inter titre</option>
                   <option value="chapeau">Chapeau</option>
                   <option value="paragraphe">Paragraphe</option>
                   <option value="image">Image</option>
+                  <option value="Sources">Sources</option>
                   <option value="notesBasPage">Notes de bas de page</option>
                   <!-- Add more options as needed -->
                 </select>

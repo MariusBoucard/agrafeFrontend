@@ -26,7 +26,7 @@
             </p>
         </div>
         <div class="lienDiv">
-            <a href="caca" class="lienArticle">Lire l'article</a>
+            <a :href="`/article/${article.id}`" class="lienArticle">Lire l'article</a>
         </div>
       </div>
     </div>
