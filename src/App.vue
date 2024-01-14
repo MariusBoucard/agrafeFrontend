@@ -87,11 +87,20 @@ export default {
   font-style: normal;
 }
 @font-face {
+  font-family: "Bahnschrift";
+  src: local("Bahnschrift"), url("./assets/font/Bahnschrift-Font-Family/BAHNSCHRIFT.TTF") format("truetype");
+}
+@font-face {
   font-family: "agrafeit";
   src: url("./assets/font/ELEPHNTI.TTF") format("ttf");
   /* Add additional formats if necessary */
   font-weight: normal;
   font-style: normal;
+}
+
+@font-face {
+  font-family: "Berlin sans FB demi bold";
+  src: url("./assets/font/berlin-sans-fb-demi-bold-font/BRLNSDB.TTF") format("ttf");
 }
 
 #app {
