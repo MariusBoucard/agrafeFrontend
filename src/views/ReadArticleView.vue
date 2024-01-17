@@ -1,62 +1,67 @@
 <template>
-    <div class="container">
+  <div class="container">
+    <div class="left-column">
+      <div class="parentDiv">
+        <div class="date">
+          <p>
+            {{ article.titreFront }}
+          </p>
+          <!-- Content of the first inner div -->
+        </div>
+        <div class="rubrique">
+          <p>
+            {{ rubriqueFromId(article.rubrique) }}
+          </p>
+          <!-- Content of the second inner div -->
+        </div>
+        <div class="author">
+          <p>
+            {{
+              article.auteur
+            }}
 
-        <div class="left-column">
-            <div class="parentDiv">
-  <div class="date">
-   <p>saca</p> 
-    <!-- Content of the first inner div -->
-  </div>
-  <div class="rubrique">
-    <p>
-      dsqdqs
-    </p>
-    <!-- Content of the second inner div -->
-    </div>
-  <div class="author">
-    <p>
-      dsqdqs
-
-    </p>
-    <!-- Content of the author div -->
-  </div>
-  <div class="title">
-    dsqdqs
-    <!-- Content of the title div -->
-  </div>
-</div>
-            <!-- Content for the left column -->
-            <ul>
-                <li v-for="item in article.contenu" :key="item.id" >
-                  <div v-if="item.type === 'sousTitre1'" style="margin-right: 10px; width: 5%; background-color: black; padding-top: 10px; height: 30%; margin-bottom:0 ;  position: relative;transform: translateY(60%); "></div>
-                  <div v-if="item.type === 'Sources'" style="display: flex;">
-  <p v-for="source in data.listeSources" :key="source.id" class="source-paragraph Sources">
-    <span class="source-span">
-      <div class="source-dot"></div>
-    </span>
-    {{ source }}
-  </p>
-</div>
-                 <div v-if="item.type === 'notesBasPage'" >
-                  <ul class="footnotes-list">
-  <li v-for="(foot, index) in data.footnotes" :key="foot" class="footnote-item">
-    <div class="index-div">{{ index + 1 }}</div>
-    <p class="footnote-text">{{ foot }}</p>
-  </li>
-</ul>
-                </div>
-
-                 <p v-if="item.type !== 'Sources' && item.type !== 'notesBasPage'" :class="item.type">  {{ item.text }}</p>
-                  
-                </li>
+          </p>
+          <!-- Content of the author div -->
+        </div>
+        <div class="title">
+          {{ article.titre }}
+          <!-- Content of the title div -->
+        </div>
+      </div>
+      <!-- Content for the left column -->
+      <ul>
+        <li v-for="item in article.contenu" :key="item.id">
+          <div v-if="item.type === 'sousTitre1'"
+            style="margin-right: 10px; width: 5%; background-color: black; padding-top: 10px; height: 30%; margin-bottom:0 ;  position: relative;transform: translateY(60%); ">
+          </div>
+          <div v-if="item.type === 'Sources'" style="display: flex;">
+            <p v-for="source in listeSources" :key="source.id" class="source-paragraph Sources">
+              <span class="source-span">
+                <div class="source-dot"></div>
+              </span>
+              {{ source }}
+            </p>
+          </div>
+          <div v-if="item.type === 'notesBasPage'">
+            <ul class="footnotes-list">
+              <li v-for="(foot, index) in footnotes" :key="foot" class="footnote-item">
+                <div class="index-div">{{ index + 1 }}</div>
+                <p class="footnote-text">{{ foot }}</p>
+              </li>
             </ul>
-        </div>
-        <div class="right-column">
-            <!-- Widgets for the right column -->
-            <contactComponent />
-            <backcoverWidget />
-        </div>
+          </div>
+
+          <p v-if="item.type !== 'Sources' && item.type !== 'notesBasPage'" :class="item.type"> {{ item.text }}</p>
+
+        </li>
+      </ul>
     </div>
+    <div class="right-column">
+      <!-- Widgets for the right column -->
+      <contactComponent />
+      <backcoverWidget />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -65,62 +70,95 @@ import backcoverWidget from '@/widgets/backcoverWidget';
 import contactComponent from '@/widgets/contactComponent';
 
 export default {
-    name: "ReadArticleView",
-    components: {
-        backcoverWidget,
-        contactComponent
+  name: "ReadArticleView",
+  components: {
+    backcoverWidget,
+    contactComponent
+  },
+  computed: {
+    listeSources() {
+      const found = this.article.contenu.find(item => item.type === 'Sources');
+      if (found) {
+        var list = found.text.split('\n').map(item => item.trim());
+        return list;
+      }
+      return []
     },
-    data() {
-        return {
-            article: {},
-            data : {listeSources : [
-              "yecouuuuu","peeettt"
-            ]
-          ,
-        footnotes : [
-          "yecouuuuu","peeettt"
-        ]}
-        };
-    },
-    props: ['articleId'],
-    mounted() {
-        // Get the article from the backend
-        axiosInstance.get('/api/getPublicArticle/' + this.articleId)
-            .then(response => {
-                this.article = response.data;
-            })
-            .catch(error => {
-                this.$message({
-                    message: error,
-                    type: 'error',
-                    customClass: 'custom-el-message',
-                    duration: 1000
-                });
-            });
+    footnotes() {
+      const found = this.article.contenu.find(item => item.type === 'notesBasPage');
+      if (found) {
+        var list = found.text.split('\n').map(item => item.trim());
+        return list;
+      }
+      return []
     }
+  },
+  data() {
+    return {
+      article: {},
+      rubriques: []
+    };
+  },
+  props: ['articleId'],
+  mounted() {
+    // Get the article from the backend
+    axiosInstance.get('/api/getPublicArticle/' + this.articleId)
+      .then(response => {
+        this.article = response.data;
+      })
+      .catch(error => {
+        this.$message({
+          message: error,
+          type: 'error',
+          customClass: 'custom-el-message',
+          duration: 1000
+        });
+      });
+      axiosInstance.get('/api/getrubriques').then(response => {
+            this.rubriques = response.data
+        }).catch(error => 
+        this.$message({
+              message: error,
+              type: 'error',
+              customClass: 'custom-el-message',
+              duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+            })      )
+  },
+  methods : {
+    rubriqueFromId(id){
+      const found = this.rubriques.find(rubrique => rubrique.id === id);
+      if(found){
+        return found.rubrique;
+      }
+      return "";
+    }
+  
+  }
 };
 </script>
 
 <style scoped>
 .container {
-    display: flex;
-    
-    
+  display: flex;
+
+
 }
 
 .left-column {
-    width: 65%;
-    margin-left: 5%;
+  width: 65%;
+  margin-left: 5%;
 }
 
 .right-column {
-    width: 30%;
+  width: 30%;
 }
+
 .parentDiv {
   display: flex;
   align-items: center;
 }
-.parentDiv > div {
+
+.parentDiv>div {
   flex: 0.1;
 
   text-align: center;
@@ -130,11 +168,13 @@ export default {
   background-color: black;
   color: white;
 }
-p{
+
+p {
   margin: 5px;
 
 }
-li{
+
+li {
   display: flex;
   list-style: none;
   text-align: left;
@@ -158,16 +198,17 @@ li{
   width: 5px;
   margin: auto;
 }
-.rubrique > p {
-  
+
+.rubrique>p {
+
   font-family: "Bahnschrift", sans-serif;
-  color : rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.6);
   /* Styles for the rubrique class */
 }
 
 .author {
   font-family: "Bahnschrift", sans-serif;
-  color : rgba(0, 0, 0, 1);
+  color: rgba(0, 0, 0, 1);
   font-weight: 500;
   /* Styles for the author class */
 }
@@ -175,9 +216,10 @@ li{
 .title {
   /* Styles for the title class */
   font-family: "Berlin Sans FB", sans-serif;
-  color : rgba(0, 0, 0, 1);
+  color: rgba(0, 0, 0, 1);
   font-weight: bold;
 }
+
 .titre {
 
   font-family: "Berlin Sans FB", sans-serif !important;
@@ -201,7 +243,7 @@ li{
   font-family: "Berlin Sans FB", sans-serif;
   font-size: xx-large;
   font-weight: bolder;
-  color : rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.5);
   /* Styles for the sousTitre2 type */
 }
 
@@ -209,7 +251,7 @@ li{
   font-family: "Bahnschrift", sans-serif;
   background-color: black;
   color: white;
-  
+
 
   font-weight: 900;
   /* Styles for the Citation type */
@@ -221,7 +263,7 @@ li{
 
 .chapeau {
   font-family: "Bahnschrift", sans-serif;
-  color : rgba(0, 0, 0, 1);
+  color: rgba(0, 0, 0, 1);
   font-weight: 500;
   /* Styles for the chapeau type */
 }
@@ -247,6 +289,7 @@ li{
 .notesBasPage {
   /* Styles for the notesBasPage type */
 }
+
 .footnotes-list {
   display: flex;
   flex-direction: column;
@@ -264,7 +307,8 @@ li{
   background-color: black;
   color: white;
   margin-right: 10px;
-  width: 20px; /* Adjust the width as needed */
+  width: 20px;
+  /* Adjust the width as needed */
   text-align: right;
 }
 
@@ -272,6 +316,4 @@ li{
   margin: 0;
   font-family: "Bahnschrift", sans-serif;
   font-size: 13px;
-}
-
-</style>
+}</style>

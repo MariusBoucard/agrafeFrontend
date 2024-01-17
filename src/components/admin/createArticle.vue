@@ -128,12 +128,20 @@ de rang 2 et 3 un peu moins, en vrai ça dépend si vous voulez l'utiliser ou no
                 </select>
               </div>
               <div class="form-group">
-
+                <div v-if="partToAdd.type === 'Sources'">
+                  <p>Ajout de sources : mettez bien une source par nouvelle ligne ! </p>
+                  
+                </div>
+                <div v-if="partToAdd.type === 'NotesBasPage'">
+                  <p>Ajout de sources : mettez bien une source par nouvelle ligne ! </p>
+                  
+                </div>
                 <label for="texte">Texte à ajouter</label>
-                <textarea id="texte" v-model="partToAdd.text" required></textarea>
+                <textarea id="texte" v-model="partToAdd.text" ></textarea>
 
               </div>
               <div class="form-group">
+               
                 <div v-if="partToAdd.type === 'image'">
                   <div class="form-group">
                     <label for="img">Image :</label>

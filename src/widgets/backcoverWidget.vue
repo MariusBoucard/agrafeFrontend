@@ -58,6 +58,8 @@ export default{
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px; /* Adjust the gap as needed */
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .logoPartenaire {
