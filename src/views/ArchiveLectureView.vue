@@ -21,13 +21,20 @@
                     <!-- Content for the first column -->
                 </div>
                 <div class="column" style="width: 80%;">
+                    
+                    <div v-if="currentPage==1" style="width:50%; margin: auto; height: 100%;">
+                        
+                        <pdf :src="`${baseUrl}/save/saveArchive/pdf/${archiveId}.pdf`" :page="currentPage" :key="currentPage" ref="pdfViewer"></pdf>
+                    </div>
+                    <div v-if="currentPage == nbPages" style="width:50%; margin: auto;height: 100%;">
+                        <img :src="`${baseUrl}/save/saveArchive/back/${archiveId}.png`" style="width: 100%; ">
+                    </div>
                     <!-- Content for the second column -->
-                    <div style="width:50%">
+                    <div v-if="currentPage!=1 && currentPage != nbPages" style="width:50%">
                         <pdf :src="`${baseUrl}/save/saveArchive/pdf/${archiveId}.pdf`" :page="currentPage" ref="pdfViewer"></pdf>
                     </div>
-                    <div style="width:50%">
+                    <div v-if="currentPage!=1 && currentPage != nbPages" style="width:50%">
                         <pdf :src="`${baseUrl}/save/saveArchive/pdf/${archiveId}.pdf`" :page="currentPage+1"></pdf>
-                        
                     </div>
                     
                 </div>
@@ -78,7 +85,14 @@ export default {
     watch: {
         pdfUrl: function () {
             this.fetchPdf()
-        }
+        },
+        currentPage() {
+          try{
+                this.$refs.pdfBack.renderPage(this.currentPage);
+            } catch(error){
+                console.log(error)
+            }
+        },
     },
     methods: {
         async fetchPdf() {
@@ -111,12 +125,16 @@ export default {
 
         },
         lastPage() {
-           if(this.currentPage > 1){
+            if (this.currentPage == 2) {
+                this.currentPage -= 1
+            } else if(this.currentPage > 2){
                this.currentPage -= 2
            }
         },
         nextPage() {
-            if(this.currentPage < this.nbPages){
+            if(this.currentPage == 1){
+                this.currentPage += 1
+            } else if(this.currentPage < this.nbPages){
                this.currentPage += 2
            }
         },

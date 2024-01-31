@@ -8,16 +8,20 @@
     </div>
 </li>
 <li class="listItem">
-    <div class="listDiv">
+    <a href="https://www.instagram.com/lagrafejournal/">
+    <div class="listDiv" >
         <p class="listText">@lagrafejournal</p>
         <img class="listImg" src="../assets/social/Instagram.svg" />
     </div>
+</a>
 </li>
 <li class="listItem">
+    <a href="mailto:lagrafejournal@protonmail.com?subject=Mail depuis le site de l'agrafe">
     <div class="listDiv">
         <p class="listText">lagrafejournal@protonmail.com</p>
         <img class="listImg" src="../assets/social/Envelopper.svg" />
     </div>
+</a>
 </li>
 <li class="listItem">
     <router-link class="routerLink" to="/proposerArticle">

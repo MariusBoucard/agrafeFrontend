@@ -19,7 +19,7 @@ const routes = [
     name: 'home',
     component: menuView,
     meta: {        hideNavigationLinks: false ,
-      title: 'L\'Agrafe - Journal'
+      title: 'L\'agrafe - Journal'
     },
 
 
@@ -29,7 +29,7 @@ const routes = [
     name: 'articles',
     component: ArticleView,
     meta: {        hideNavigationLinks: false,
-      title: 'L\'Agrafe - Articles'
+      title: 'L\'agrafe - Articles'
 
     } // Add a meta field to indicate authentication requirement
   },
@@ -38,7 +38,7 @@ const routes = [
     name: 'articlesRubrique',
     component: ArticleView,
     meta: { hideNavigationLinks: false,
-      title: 'L\'Agrafe - Articles'
+      title: 'L\'agrafe - Articles'
     } // Add a meta field to indicate authentication requirement
   },
   {
@@ -47,7 +47,7 @@ const routes = [
     component: ReadArticleView,
     props: true, // Enable passing route params as props
     meta: { hideNavigationLinks: false,
-      title: 'L\'Agrafe - Articles'
+      title: 'L\'agrafe - Articles'
     } // Add a meta field to indicate authentication requirement
   },
   {
@@ -55,7 +55,7 @@ const routes = [
     name: 'focale',
     component: FocaleView,
     meta: { hideNavigationLinks: false,
-      title: 'L\'Agrafe - Focale'
+      title: 'L\'agrafe - Focale'
     } // Add a meta field to indicate authentication requirement
   },
   {
@@ -63,7 +63,7 @@ const routes = [
     name: 'archives',
     component: ArchiveView,
     meta: {        hideNavigationLinks: false,
-      title: 'L\'Agrafe - Archives'
+      title: 'L\'agrafe - Archives'
     } 
   },
   {
@@ -71,7 +71,7 @@ const routes = [
     name: 'archiveLecture',
     component: ArchiveLectureView,
     meta: {        hideNavigationLinks: false,
-      title: 'L\'Agrafe - Archives'
+      title: 'L\'agrafe - Archives'
     } 
   },
   {
@@ -79,7 +79,7 @@ const routes = [
     name: 'actualite',
     component: ActuView,
     meta: {        hideNavigationLinks: false,
-      title: 'L\'Agrafe - Actualité'
+      title: 'L\'agrafe - Actualité'
     } 
   },
   {
@@ -87,7 +87,7 @@ const routes = [
     name: 'apropos',
     component: AProposView,
     meta: {        hideNavigationLinks: false,
-      title: 'L\'Agrafe - A propos'
+      title: 'L\'agrafe - A propos'
     } 
   },
   {
@@ -95,7 +95,7 @@ const routes = [
     name: 'proposerArticle',
     component: proposerArticleView,
     meta: {        hideNavigationLinks: false,
-      title: 'L\'Agrafe - Proposer un article'
+      title: 'L\'agrafe - Proposer un article'
     } 
   },
   {
