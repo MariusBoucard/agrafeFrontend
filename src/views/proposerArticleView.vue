@@ -434,12 +434,12 @@ a {
     width: 90%;
     margin: auto;
 }
-
 .container {
+    gap: 20px; /* Adjust as needed */
+
   display: flex;
   flex-wrap: wrap;
 }
-
 .leftColumn {
   width : 65%
   /* Your styles for the left column here */

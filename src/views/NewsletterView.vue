@@ -181,6 +181,8 @@ button:hover {
 }
 
 .container {
+    gap: 20px; /* Adjust as needed */
+
   display: flex;
   flex-wrap: wrap;
 }

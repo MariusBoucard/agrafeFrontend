@@ -86,6 +86,7 @@ text-align: left;
     width : 100%;
   }
   .container {
+    gap :30px;
   display: flex;
   flex-wrap: wrap;
 }

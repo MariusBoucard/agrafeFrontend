@@ -83,6 +83,7 @@ export default {
 .container {
   display: flex;
   flex-wrap: wrap;
+  gap : 30px;
 }
 
 .leftColumn {

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p >Dernier numéro</p>
+        <p style="font-size: large;">Dernier numéro</p>
         <div class="backCoverImg">
             <img class="innerImage" :src="`${baseUrl}/save/saveArchive/cover/${archive.id}.png`"/>
         </div>

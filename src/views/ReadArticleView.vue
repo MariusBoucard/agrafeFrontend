@@ -1,39 +1,21 @@
 <template>
   <div class="container">
     <div class="left-column">
-      <div class="parentDiv">
-        <div class="date">
-          <p>
-            {{ article.titreFront }}
-          </p>
-          <!-- Content of the first inner div -->
-        </div>
-        <div class="rubrique">
-          <p>
-            {{ rubriqueFromId(article.rubrique) }}
-          </p>
-          <!-- Content of the second inner div -->
-        </div>
-        <div class="author">
-          <p>
-            {{
-              article.auteur
-            }}
-
-          </p>
-          <!-- Content of the author div -->
-        </div>
-        <div class="title">
-          {{ article.titre }}
-          <!-- Content of the title div -->
-        </div>
-      </div>
+    
       <!-- Content for the left column -->
-      <ul>
+      <ul style="width:80%">
         <li v-for="item in article.contenu" :key="item.id">
           <div v-if="item.type === 'sousTitre1'"
             style="margin-right: 10px; width: 5%; background-color: black; padding-top: 10px; height: 30%; margin-bottom:0 ;  position: relative;transform: translateY(60%); ">
           </div>
+          
+          <p v-if="item.type !== 'Sources' && item.type !== 'notesBasPage'" :class="item.type"> {{ item.text }}</p>
+          
+        </li>
+      </ul>
+        {{ article.auteur }}
+      <ul style=" width: 80%;">
+        <li v-for="item in article.contenu" :key="item.id" style="margin: 0px;">
           <div v-if="item.type === 'Sources'" style="display: flex;">
             <p v-for="source in listeSources" :key="source.id" class="source-paragraph Sources">
               <span class="source-span">
@@ -50,9 +32,6 @@
               </li>
             </ul>
           </div>
-
-          <p v-if="item.type !== 'Sources' && item.type !== 'notesBasPage'" :class="item.type"> {{ item.text }}</p>
-
         </li>
       </ul>
     </div>
@@ -79,7 +58,7 @@ export default {
     listeSources() {
       const found = this.article.contenu.find(item => item.type === 'Sources');
       if (found) {
-        var list = found.text.split('\n').map(item => item.trim());
+        var list = found.text.split('\n\n').map(item => item.trim());
         return list;
       }
       return []
@@ -87,7 +66,7 @@ export default {
     footnotes() {
       const found = this.article.contenu.find(item => item.type === 'notesBasPage');
       if (found) {
-        var list = found.text.split('\n').map(item => item.trim());
+        var list = found.text.split('\n\n').map(item => item.trim());
         return list;
       }
       return []
@@ -140,7 +119,7 @@ export default {
 <style scoped>
 .container {
   display: flex;
-
+  gap: 20px;
 
 }
 
@@ -150,10 +129,11 @@ export default {
 }
 
 .right-column {
-  width: 30%;
+  width: 25%;
 }
 
 .parentDiv {
+  width: 80%;
   display: flex;
   align-items: center;
 }
@@ -265,13 +245,15 @@ li {
   font-family: "Bahnschrift", sans-serif;
   color: rgba(0, 0, 0, 1);
   font-weight: 500;
+  font-size: x-large;
   /* Styles for the chapeau type */
 }
 
 .paragraphe {
   font-family: "Bahnschrift", sans-serif;
   font-weight: light;
-
+  text-align: justify; /* Justify the text */
+  font-size: large;
   /* Styles for the paragraphe type */
 }
 

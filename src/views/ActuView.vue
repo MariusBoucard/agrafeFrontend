@@ -73,6 +73,7 @@ import ActuWidget from "@/widgets/actuWidget.vue";
   }
   .container {
   display: flex;
+  gap : 30px;
   flex-wrap: wrap;
 }
 

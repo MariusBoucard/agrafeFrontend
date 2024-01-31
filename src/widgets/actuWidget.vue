@@ -125,6 +125,7 @@
    }
    
    .right-column {
+    
    }
    .haut{
        width:100%;

@@ -42,6 +42,8 @@ export default {
   column-gap: 20px; /* Adjust the gap as needed */
 }
 .container {
+  gap : 30px;
+
   display: flex;
   flex-wrap: wrap;
 }

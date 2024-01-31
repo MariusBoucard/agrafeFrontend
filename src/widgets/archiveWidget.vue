@@ -1,7 +1,7 @@
 <template>
     <div class="outsideDiv">
         <p>N° {{ archive.numero }}. {{ formatDate(archive.date) }}</p>
-        <img class="innerImage" :src="`${baseUrl}/save/saveArchive/back/${archive.id}.png`"/>
+        <img class="innerImage" :src="`${baseUrl}/save/saveArchive/cover/${archive.id}.png`"/>
         
     </div>
 

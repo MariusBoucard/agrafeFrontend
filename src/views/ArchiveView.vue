@@ -33,6 +33,8 @@ import ArchiveComponent from '@/components/archiveComponent.vue'
   margin:auto;
 }
 .container {
+    gap: 20px; /* Adjust as needed */
+
   display: flex;
   flex-wrap: wrap;
 }
