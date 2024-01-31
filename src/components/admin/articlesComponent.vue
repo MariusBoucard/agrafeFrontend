@@ -27,7 +27,7 @@
         </thead>
         <tbody>
           <tr v-for="(article, index) in articles" :key="index">
-            <td><button class="button" @click.stop="deleteArticle(article.id)">Supprimer</button></td>
+            <td><button class="button" style="background-color: red;" @click.stop="deleteArticle(article.id)">Supprimer</button></td>
             <td>{{ article.titreFront }}</td>
             <td>{{ article.description }}</td>
             <td>

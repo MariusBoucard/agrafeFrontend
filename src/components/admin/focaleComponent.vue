@@ -23,7 +23,7 @@
                 <tbody>
                     <tr v-for="(foc, index) in focales" :key="index">
                         <td>
-                            <button class="button" @click.stop="deleteFocale(foc.id)">Supprimer</button></td>
+                            <button class="button" style="background-color: red;" @click.stop="deleteFocale(foc.id)">Supprimer</button></td>
                         <td>{{ foc.titre }}</td>
                         <td>{{ foc.description }}</td>
                         <td class="image-container">

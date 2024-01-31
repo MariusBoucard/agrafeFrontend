@@ -9,21 +9,34 @@
     </div>
     <div class="right-column"> 
         <div class="haut">
-            <p class="rubrique">
-                {{ getRubrique(article.rubrique) }}
-            </p>
-            <p class="auteur">
-                {{ article.auteur }}
-            </p>
-            <p class="titre">
-                {{ article.titreFront }}
-            </p>
+            <div class="highDiv">
+
+                <p class="rubrique">
+                    {{ getRubrique(article.rubrique) }}
+                </p>
+            </div>
+            <div class="highDivTitle">
+                
+                <p class="titre">
+                    {{ article.titreFront }}
+                </p>
+            </div>
+            <div class="highDiv">
+
+                <p class="auteur">
+                    {{ article.auteur }}
+                </p>
+            </div>
       </div>
       <div style="margin-bottom: 20px;">
         <div class="descriptionDiv">
             <p>
-            {{ article.description }}
+            {{ truncatedDescription }}
             </p>
+            <span v-if="isTruncated" class="readMore" @click="expandDescription">...lire plus</span>
+            <span v-if="!isTruncated" class="readMore" @click="expandDescription">...lire moins</span>
+
+
         </div>
         <div class="lienDiv">
             <a :href="`/article/${article.id}`" class="lienArticle">Lire l'article</a>
@@ -40,7 +53,21 @@ export default {
         article : {required : true, type : Object},
         rubriques : { required : true, type : [Object]}
     },
+    data(){
+        return{
+            isTruncated: true,
+        }
+    },
+    computed : {
+        truncatedDescription(){
+            if(this.isTruncated){
+                return this.article.description.slice(0, 200)+"..."
+            }
+            return this.article.description
+        }
+    },
     methods : {
+     
         formatDate(date){
             const year = date.slice(0,4)
             const month = date.slice(5,7)
@@ -85,11 +112,22 @@ export default {
             default:
             return 'Unknown';
         }
-        }
+        },
+        expandDescription() {
+      this.isTruncated = !this.isTruncated;
+    },
     }
 }
 </script>
 <style>
+.highDivTitle{
+    width: 45%;
+   margin-left:10px;
+    text-align: center;
+}
+.highDiv{
+    width:25%
+}
 .blackDiv{
     background-color: black;
     width:90%;
@@ -146,6 +184,14 @@ export default {
     color:black;
 
 }
+.readMore {
+  color: rgb(124, 124, 124);
+  font-family: "Bahnschrift", sans-serif;
+  text-decoration: underline;
+
+  cursor: pointer;
+}
+
 .lienDiv{
     text-align: left;
 }

@@ -24,7 +24,7 @@
       </thead>
       <tbody>
         <tr v-for="(archive, index) in archives" :key="index">
-          <td><button class="button" @click.stop="deleteArchive(archive.id)">Supprimer</button></td>
+          <td><button class="button" style="background-color: red;" @click.stop="deleteArchive(archive.id)">Supprimer</button></td>
           <td>{{ archive.titre }}</td>
           <td>{{ archive.description }}</td>
           <td>
