@@ -7,6 +7,7 @@ const axiosInstance = axios.create({
   baseURL: 'http://192.168.0.13:3000/', // Replace with your API base URL
   headers: {
     'Authorization': '', // Set your default header here
+    
   },
 });
 
