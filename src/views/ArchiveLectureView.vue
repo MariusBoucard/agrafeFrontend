@@ -42,12 +42,20 @@
                     <div class="middleIcon" @click="nextPage()">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-6 h-6">
                             <path fill-rule="evenodd"
-                            d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
-                            clip-rule="evenodd" />
+                                d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
+                                clip-rule="evenodd" />
                         </svg>
-                        
                     </div>
                     <!-- Content for the third column -->
+                    <a  class="bottomLink" style="position: absolute; bottom: 10px;right: 20px;">
+                        <button class="download-button" @click="downloadArchive()">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-2 h-2" style="height: 50px;width: 50px;;">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
+</svg>
+
+                            Télécharger
+                        </button>
+                    </a>
                 </div>
                 
             </div>
@@ -95,6 +103,15 @@ export default {
         },
     },
     methods: {
+    downloadArchive() {
+        let url = this.baseUrl + "/save/saveArchive/pdf/" + this.archiveId + ".pdf";
+let link = document.createElement('a');
+link.href = url;
+link.setAttribute('download', this.archiveId + '.pdf'); // provide a default filename
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
+    },
         async fetchPdf() {
             let url = this.baseUrl+"/save/saveArchive/pdf/"+this.archiveId+".pdf"
 
@@ -183,6 +200,22 @@ export default {
 }
 </script>
 <style scoped>
+.download-button {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+  background-color: white;
+  color: black;
+}
 .subText {
     font-size: larger;
     margin-top: 20px;
@@ -241,6 +274,7 @@ letter-spacing: 2px; /* Adjust the value to change the space between letters */
 }
 
 .column {
+    position: relative;
     display: flex;
     width: 100%;
     justify-content: center;

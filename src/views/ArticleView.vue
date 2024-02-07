@@ -3,7 +3,7 @@
     <div class="container">
       <div class="leftColumn">
 <div v-if="normalArticle">
-
+  <input type="text" v-model="search" placeholder="Chercher un article..." class="input-search">
   <div 
   class="articleWidget"
   v-for="article in paginatedArticles"
@@ -83,6 +83,13 @@ export default {
          
   },
   computed: {
+    filteredArticles() {
+    const searchLower = this.search.toLowerCase();
+    return this.selectedArticles.filter(article =>
+      article.titreFront.toLowerCase().includes(searchLower) ||
+      article.description.toLowerCase().includes(searchLower)
+    );
+  },
     normalArticle() {
       console.log("caca",this.selectedRubriqueId === 'LLwDinc4Uh79PDLxLd9sd' ? false: true)
     return this.selectedRubriqueId === 'LLwDinc4Uh79PDLxLd9sd' ? false: true;
@@ -90,7 +97,7 @@ export default {
   paginatedArticles() {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
-    return this.selectedArticles.slice(start, end);
+    return this.filteredArticles.slice(start, end);
   },
   pageCount() {
     return Math.ceil(this.selectedArticles.length / this.itemsPerPage);
@@ -129,6 +136,7 @@ export default {
   },
   data() {
     return {
+      search : "",
       articles: [],
       rubriques: [],
       selectedRubriqueId : "",
@@ -141,6 +149,15 @@ export default {
 </script>
 
 <style scoped>
+.input-search {
+  width: 75%;
+  margin: 0 auto 20px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+}
 .pagination-container {
   display: flex;
   align-items: center;
