@@ -29,7 +29,11 @@
           <tr v-for="(article, index) in articles" :key="index">
             <td><button class="button" style="background-color: red;" @click.stop="deleteArticle(article.id)">Supprimer</button></td>
             <td>{{ article.titreFront }}</td>
-            <td>{{ article.description }}</td>
+            <td>{{ cropText(article.description, article.id) }}
+              <button @click="toggleFullDescription(article.id)">
+    {{ showFullDescription[article.id] ? 'afficher moins' : 'afficher plus' }}
+  </button></td>
+
             <td>
               <img style="max-width: 100%;" :src="`${baseUrl}/save/saveArticle/cover/${article.id}.png`">
             </td>
@@ -65,7 +69,9 @@ export default {
     return {
       articles: [],
       rubriques: [],
-      baseUrl: baseUrl
+      baseUrl: baseUrl,
+      showFullDescription: {},
+
     }
   },
   mounted() {
@@ -98,6 +104,8 @@ export default {
       }
     },
     deleteArticle(id) {
+      if (confirm("T'es sûr de vouloir supprimer l'article ?\n C'est pas prévu d'être réversible, à tes risques et périls fréro")) {
+
       axiosInstance.delete(`/api/deleteArticle/${id}`).then(() => {
         this.$message({
           message: 'Article deleted successfully',
@@ -115,7 +123,8 @@ export default {
             duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
           });
         });
-    },
+      }
+      },
     setArticles() {
       axiosInstance.get('/api/getrubriques').then(response => {
         this.rubriques = response.data
@@ -149,7 +158,14 @@ export default {
     },
     createArticle() {
       this.$emit("componentChanged", "createArticle")
-    }
+    },
+    cropText(text, id) {
+    const showFull = this.showFullDescription[id] || false;
+    return showFull ? text : text.substring(0, 100) + '...';
+  },
+  toggleFullDescription(id) {
+    this.showFullDescription[id] = !this.showFullDescription[id];
+  },
   }
 }
 </script>

@@ -51,10 +51,19 @@ const routes = [
     } // Add a meta field to indicate authentication requirement
   },
   {
+    path: '/articles/',
+    name: 'articlesAll',
+    component: ArticleView,
+    props: true, // Enable passing route params as props
+    meta: { hideNavigationLinks: false,
+      title: 'L\'agrafe - Articles'
+    } // Add a meta field to indicate authentication requirement
+  },
+  {
     path: '/focale',
     name: 'focale',
     component: FocaleView,
-    meta: { hideNavigationLinks: false,
+    meta: { hideNavigationLinks: false, 
       title: 'L\'agrafe - Focale'
     } // Add a meta field to indicate authentication requirement
   },

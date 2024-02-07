@@ -49,22 +49,7 @@
             </select>
 
           </div>
-          <div class="form-group">
-            <label for="rubrique" title="Ce paramètre est utile pour la page d'accueil,
-l'article le plus recent de rang 1 est mis en avant et ceux
-de rang 2 et 3 un peu moins, en vrai ça dépend si vous voulez l'utiliser ou non">Rang article :</label>
-            <p></p>
-            <!-- Replaced the input with a select -->
-            <select id="rang" v-model="article.rangArticle" required>
-              <option value="1">1</option>
-              <option value="2">2</option>
-
-              <option value="3">3</option>
-
-              <!-- Add more options as needed -->
-            </select>
-
-          </div>
+        
           
         </div>
       </div>
@@ -103,7 +88,7 @@ de rang 2 et 3 un peu moins, en vrai ça dépend si vous voulez l'utiliser ou no
 
 
 
-          <button class="button" @click="enableAddPart()">Ajouter une partie</button>
+          <button type="button"  class="button" @click.stop="enableAddPart()">Ajouter une partie</button>
         </div>
         <div class="form-column">
           <div class="form-group">
@@ -164,7 +149,7 @@ de rang 2 et 3 un peu moins, en vrai ça dépend si vous voulez l'utiliser ou no
                   </div>
                 </div>
               </div>
-              <button class="button" style="margin-top: 10px;" @click="addPart()">Ajouter une partie</button>
+              <button type="button" class="button" style="margin-top: 10px;" @click="addPart()">Ajouter une partie</button>
             </div>
           </div>
 </div>
@@ -253,7 +238,7 @@ export default {
       this.cleanTemp()
     },
     cleanTemp(){
-      this.partToAdd.type = ''
+      // this.partToAdd.type = ''
       this.partToAdd.text = ''
       this.partToAdd.auteur = ''
       this.partToAdd.copyright = ''
@@ -292,15 +277,17 @@ export default {
     },
 
     submitForm() {
-      axiosInstance.post('/api/addArticle', { article: this.article },)
+      if(confirm("T'es sûr que c'est tout bon ??\nAlleyyy, c'est tipar")){
+
+        axiosInstance.post('/api/addArticle', { article: this.article },)
         .then(response => {
           const id = response.data
-
+          
           // TODO Gestion de flot pour pouvoir lancer ou pas le logo de l'article // les differentes images indépendamment
           const formData = new FormData();
           if (this.article.imageLogo) {
-
-          formData.append('imageLogo', this.article.imageLogo);
+            
+            formData.append('imageLogo', this.article.imageLogo);
           }
           formData.append('articleId', id); // Add your string data here
           axiosInstance.post('/api/uploadImage', formData, {
@@ -308,58 +295,59 @@ export default {
               'Content-Type': 'multipart/form-data',
             },
           })
-            .then(() => {
-              const formData = new FormData();
-              // envoi de toutes les img
-
-    formData.append(`generalId`, id);
-    // Append each JSON object and its associated image to the FormData
-    this.article.contenu.forEach((imageObj, index) => {
-      // Append the image File objects with unique names, e.g., 'image0', 'image1', etc.
-      if(imageObj.type === 'image')
-      {
-        formData.append(`images`, imageObj.image);
-        formData.append(`id${index}`, imageObj.id);
-      }
-    });
-
-
-    // Send the FormData object with JSON objects and images to the backend using Axios
-    axiosInstance
-      .post('/api/uploadArticleImages', formData)
-      .then(response => {
-        // Handle the response from the backend if needed
-        this.$message({
-                  message: 'Article Bien ajouté!!',
-                  type: 'success',
-                  customClass: 'custom-el-message',
-                  duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
-                })
-                this.$emit("componentChanged", "article")
-        console.log('Backend response:', response.data);
-      })
-      .catch(error => {
-        // Handle errors if the request fails
-        console.error('Error sending data to the backend:', error);
-      });
+          .then(() => {
+            const formData = new FormData();
+            // envoi de toutes les img
+            
+            formData.append(`generalId`, id);
+            // Append each JSON object and its associated image to the FormData
+            this.article.contenu.forEach((imageObj, index) => {
+              // Append the image File objects with unique names, e.g., 'image0', 'image1', etc.
+              if(imageObj.type === 'image')
+              {
+                formData.append(`images`, imageObj.image);
+                formData.append(`id${index}`, imageObj.id);
+              }
+            });
             
             
-              // Handle the response from the backend
+            // Send the FormData object with JSON objects and images to the backend using Axios
+            axiosInstance
+            .post('/api/uploadArticleImages', formData)
+            .then(response => {
+              // Handle the response from the backend if needed
+              this.$message({
+                message: 'Article Bien ajouté!!',
+                type: 'success',
+                customClass: 'custom-el-message',
+                duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
+              })
+              this.$emit("componentChanged", "article")
+              console.log('Backend response:', response.data);
             })
             .catch(error => {
               // Handle errors if the request fails
-              console.error(error);
+              console.error('Error sending data to the backend:', error);
             });
+            
+            
+            // Handle the response from the backend
+          })
+          .catch(error => {
+            // Handle errors if the request fails
+            console.error(error);
+          });
         },
         )
         .catch(error => {
           // Handle errors if the request fails
           console.error(error);
         });
+      }
     }
+    
   }
-
-}
+  }
 </script>
 <style scoped>
 /* CSS */

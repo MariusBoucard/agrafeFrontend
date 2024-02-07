@@ -9,7 +9,11 @@
             style="margin-right: 10px; width: 5%; background-color: black; padding-top: 10px; height: 30%; margin-bottom:0 ;  position: relative;transform: translateY(60%); ">
           </div>
           
-          <p v-if="item.type !== 'Sources' && item.type !== 'notesBasPage'" :class="item.type"> {{ item.text }}</p>
+          <div v-if="item.type === 'image'">
+            <img style="width: 70%; margin: auto; display: block;" :title="`photographe : ${item.auteur}`" :src="`${baseUrl}/save/saveArticle/images/${article.id}/${item.id}.png`">
+            <p class="paragraphe" style="margin-top:10px" v-html="processText(item.text)"></p>
+          </div>
+          <p v-if="item.type !== 'Sources' && item.type !== 'notesBasPage' && item.type !== 'image'" :class="item.type" v-html="processText(item.text)"></p>
           
         </li>
       </ul>
@@ -47,6 +51,7 @@
 import axiosInstance from '@/axios';
 import backcoverWidget from '@/widgets/backcoverWidget';
 import contactComponent from '@/widgets/contactComponent';
+import baseUrl from '../config';
 
 export default {
   name: "ReadArticleView",
@@ -55,6 +60,7 @@ export default {
     contactComponent
   },
   computed: {
+  
     listeSources() {
       const found = this.article.contenu.find(item => item.type === 'Sources');
       if (found) {
@@ -75,7 +81,9 @@ export default {
   data() {
     return {
       article: {},
-      rubriques: []
+      rubriques: [],
+      baseUrl : baseUrl
+
     };
   },
   props: ['articleId'],
@@ -104,6 +112,10 @@ export default {
             })      )
   },
   methods : {
+    processText(text){
+      text = text.replace(/\*(\d+)\*/g, '<sup>$1</sup>');
+        return text;
+    },
     rubriqueFromId(id){
       const found = this.rubriques.find(rubrique => rubrique.id === id);
       if(found){
@@ -201,11 +213,10 @@ li {
 }
 
 .titre {
-
   font-family: "Berlin Sans FB", sans-serif !important;
   font-weight: 600;
   color: black;
-  font-size: 70px;
+  font-size: 50px;
 }
 
 

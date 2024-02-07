@@ -15,14 +15,14 @@
           <ul >
             <li >
 
-                <select  v-model="selectedRubrique" @change="navigateToRubrique(selectedRubrique)" class="link-select link">
-                  <option :value="tousArticles">Tous les articles</option>
-                  <option v-for="rubrique in rubriques" :value="rubrique.id" :key="rubrique.id">
-                    {{ rubrique.rubrique }}
-                  </option>
-                  <option value="focale">Focale</option>
-                </select>
-              
+              <select v-model="selectedRubrique" @change="navigateToRubrique(selectedRubrique)" class="link-select link">
+  <option disabled value="">Articles</option>
+  <option value="">Tous les articles</option>
+  <option v-for="rubrique in rubriques" :value="rubrique.id" :key="rubrique.id">
+    {{ rubrique.rubrique }}
+  </option>
+  <option value="focale">Focale</option>
+</select>
 
             </li>
           </ul>
@@ -68,7 +68,7 @@ export default {
     return {
       activeMenu: false,
       rubriques: [],
-      selectedRubrique: 'Articles'
+      selectedRubrique: ""
     };
   },
   mounted() {
@@ -76,7 +76,6 @@ export default {
       .get("/api/getrubriques")
       .then((response) => {
         this.rubriques = response.data;
-        this.rubriques.push({id: 'Articles', rubrique: 'Articles'})
       })
       .catch((error) =>
         this.$message({

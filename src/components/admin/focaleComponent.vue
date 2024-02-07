@@ -97,6 +97,8 @@ export default {
         },
    
         deleteFocale(id) {
+            if (confirm("T'es sûr de vouloir supprimer l'article ?\n C'est pas prévu d'être réversible, à tes risques et périls fréro")) {
+
             axiosInstance.delete(`/api/deleteFocale/${id}`).then(() => {
                 this.$message({
                     message: 'Article deleted successfully',
@@ -114,7 +116,7 @@ export default {
                         customClass: 'custom-el-message',
                         duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
                     });
-                });
+                });}
         },
         setFocale() {
 

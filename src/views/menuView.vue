@@ -4,7 +4,7 @@
       <div class="leftColumn">
         <div class="article">
           <ArticleComponent></ArticleComponent>
-
+          
         </div>
       </div>
       <div class="rightColumn">
