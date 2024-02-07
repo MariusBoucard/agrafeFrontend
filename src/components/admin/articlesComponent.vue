@@ -4,6 +4,8 @@
 
       <div class="header">
         <h1>Voila la page des articles</h1>
+        <input type="text" v-model="search" placeholder="Chercher un article..."  style="margin-right:20px ;" class="input-search">
+
         <button class="add-article-button" @click="createArticle()">Add an article</button>
       </div>
     </div>
@@ -26,7 +28,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(article, index) in articles" :key="index">
+          <tr v-for="(article, index) in filteredArticles" :key="index">
             <td><button class="button" style="background-color: red;" @click.stop="deleteArticle(article.id)">Supprimer</button></td>
             <td>{{ article.titreFront }}</td>
             <td>{{ cropText(article.description, article.id) }}
@@ -67,6 +69,8 @@ import baseUrl from '../../config';
 export default {
   data() {
     return {
+      search: '',
+
       articles: [],
       rubriques: [],
       baseUrl: baseUrl,
@@ -74,6 +78,15 @@ export default {
 
     }
   },
+  computed: {
+  filteredArticles() {
+    const searchLower = this.search.toLowerCase();
+    return this.articles.filter(article =>
+      article.titreFront.toLowerCase().includes(searchLower) ||
+      article.description.toLowerCase().includes(searchLower)
+    );
+  },
+},
   mounted() {
     this.setArticles()
   },
@@ -180,7 +193,15 @@ export default {
   display: block;
 }
 
-
+.input-search {
+  width: 75%;
+  margin: 0 auto 20px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+}
 
 
 .container {
