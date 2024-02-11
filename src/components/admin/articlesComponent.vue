@@ -23,7 +23,7 @@
             <th>Prive</th>
             <th>Rubrique</th>
             <th>Type</th>
-            <th>Modifier</th>
+            <th>ID</th>
             <!-- Add more table headers for other attributes as needed -->
           </tr>
         </thead>
@@ -53,6 +53,7 @@
             <td>{{ rubriqueNameFromId(article.rubrique) }}</td>
             <td>{{ article.fileType }}</td>
             <td>
+              {{ article.id }}
               <!-- <button class="button" @click.stop="modifyArticle(article.id)">Modifier</button> -->
             </td>
             <!-- Add more table cells for other attributes as needed -->
@@ -83,7 +84,8 @@ export default {
     const searchLower = this.search.toLowerCase();
     return this.articles.filter(article =>
       article.titreFront.toLowerCase().includes(searchLower) ||
-      article.description.toLowerCase().includes(searchLower)
+      article.description.toLowerCase().includes(searchLower) ||
+      article.id.toLowerCase().includes(searchLower)
     );
   },
 },
@@ -156,6 +158,7 @@ export default {
           console.log("on a get les articles",response.data)
 
           this.articles = response.data
+          this.articles = this.articles.reverse()
         })
         .catch(() => {
           this.$message({
