@@ -68,23 +68,23 @@
                console.log(typeof month)
    
                switch (month) {
-               case '1':
+               case '01':
                return 'Janvier';
-               case '2':
+               case '02':
                return 'Février';
-               case '3':
+               case '03':
                return 'Mars';
-               case '4':
+               case '04':
                return 'Avril';
-               case '5':
+               case '05':
                return 'Mai';
-               case '6':
+               case '06':
                return 'Juin';
-               case '7':
+               case '07':
                return 'Juillet';
-               case '8':
+               case '08':
                return 'Août';
-               case '9':
+               case '09':
                return 'Septembre';
                case '10':
                return 'Octobre';
