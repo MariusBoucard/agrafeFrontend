@@ -97,4 +97,12 @@ export default{
     width: 90%;
     margin: auto;
 }
+
+@media screen and (max-width: 768px) {
+    .outsideDiv{
+    width: 90%;
+    }
+
+    
+}
 </style>

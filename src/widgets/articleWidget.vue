@@ -128,6 +128,8 @@ export default {
 .highDiv{
     width:25%
 }
+
+
 .blackDiv{
     background-color: black;
     width:90%;
@@ -157,6 +159,8 @@ export default {
 .haut{
     width:100%;
     display: flex;
+    margin-top: 10px;
+    padding-right: 20px; ;
 }
 .rubrique{
     color:rgb(153, 153, 153);
@@ -199,5 +203,33 @@ export default {
   font-family: "Bahnschrift", sans-serif;
   color:grey;
   /* Additional styles for your links (e.g., color, text-decoration, etc.) */
+}
+
+
+
+
+
+
+
+.highDiv, .highDivTitle {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.rubrique, .titre, .auteur {
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 600px) {
+  .haut {
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .rubrique, .titre, .auteur {
+    font-size: 14px; /* adjust as needed */
+  }
 }
 </style>
