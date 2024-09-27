@@ -4,7 +4,6 @@
     
       <!-- Content for the left column -->
       <ul style="width:80%">
-        // eslint-disable-next-line
         <li v-for="(item,index) in filteredContenu"   :key="item.id">
           <div v-if="item.type === 'sousTitre1'"
             style="margin-right: 10px; width: 5%; background-color: black; padding-top: 10px; height: 30%; margin-bottom:0 ;  position: relative;transform: translateY(60%); ">
