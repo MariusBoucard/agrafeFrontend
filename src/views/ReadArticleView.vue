@@ -4,7 +4,8 @@
     
       <!-- Content for the left column -->
       <ul style="width:80%">
-        <li v-for="(item,index) in article.contenu" :key="item.id">
+        // eslint-disable-next-line
+        <li v-for="(item,index) in filteredContenu"   :key="item.id">
           <div v-if="item.type === 'sousTitre1'"
             style="margin-right: 10px; width: 5%; background-color: black; padding-top: 10px; height: 30%; margin-bottom:0 ;  position: relative;transform: translateY(60%); ">
           </div>
@@ -60,21 +61,12 @@ export default {
     contactComponent
   },
   computed: {
-    processedContent() {
-      const result = [];
-      let group = [];
-      this.article.contenu.forEach((item, index) => {
-        if (item.type === 'paragraph' && this.article.contenu[index + 1]?.type === 'Citation' && this.article.contenu[index + 2]?.type === 'paragraph') {
-          group.push(item, this.article.contenu[index + 1], this.article.contenu[index + 2]);
-          result.push(group);
-          group = [];
-        } else if (!group.includes(item)) {
-          result.push(item);
-        }
-      });
-      return result;
+    filteredContenu() {
+      if(this.article.contenu === undefined){
+        return [];
+      }
+      return this.article.contenu.filter((item, index) => !this.displayCitation(index));
     },
-  
   
     listeSources() {
       const found = this.article.contenu.find(item => item.type === 'Sources');
@@ -128,16 +120,12 @@ export default {
   },
   methods : {
     processText(item,index){
-      console.log(item,index);
-      console.log(this.article.contenu.length);
         if(index >0 && index < this.article.contenu.length - 2){
-          console.log(this.article.contenu[index - 1]?.type);
           if(item.type === "paragraphe" && this.article.contenu[index + 1]?.type === "Citation" && this.article.contenu[index + 2]?.type === "paragraphe"){
             return null;
             // return item.text
           }
           if(item.type === "Citation" && this.article.contenu[index - 1]?.type === "paragraphe" && this.article.contenu[index + 1]?.type === "paragraphe"){
-            console.log("return null");
             // return item.text
 
             return null;
@@ -145,10 +133,9 @@ export default {
           }
           if(item.type === "paragraphe" && this.article.contenu[index - 1]?.type === "Citation" && this.article.contenu[index - 2]?.type === "paragraphe"){
             // Return catenation of the three text with their styles applied;
-            console.log("catenation of the three text with their styles applied");
-            return `<span class="${this.article.contenu[index - 2].type}" style="color: black;">${this.article.contenu[index - 2].text}</span>` +
+            return `<span class="${this.article.contenu[index - 2].type}" >${this.article.contenu[index - 2].text}</span>` +
        `<span class="${this.article.contenu[index - 1].type}" style="color: white; background-color: black;">${this.article.contenu[index - 1].text}</span>` +
-       `<span class="${item.type}" style="color: black;">${item.text}</span>`;      }
+       `<span class="${item.type}" >${item.text}</span>`;      }
 
           // return item.text;
         }
@@ -159,13 +146,18 @@ export default {
     
     },
     displayCitation(i){
+      console.log(i);
       if(i < this.article.contenu.length - 2 && i > 0){
-        if(this.article.contenu[i].type === "paragraph" && this.article.contenu[i + 1]?.type === "Citation" && this.article.contenu[i + 2]?.type === "paragraph"){
-          return "display: none";
+        if(this.article.contenu[i].type === "paragraphe" && this.article.contenu[i + 1]?.type === "Citation" && this.article.contenu[i + 2]?.type === "paragraphe"){
+          console.log("display: none");
+          return true
+          // return "display: none !important";
         }
-        if(this.article.contenu[i].type === "Citation" && this.article.contenu[i - 1]?.type === "paragraph" && this.article.contenu[i + 1]?.type === "paragraph"){
-          return "display: none !important";
+        if(this.article.contenu[i].type === "Citation" && this.article.contenu[i - 1]?.type === "paragraphe" && this.article.contenu[i + 1]?.type === "paragraphe"){
+          return true
+          // return "display: none !important";
         }
+        return false
       }
     
       // Doit dire si on se display ou non : return css
