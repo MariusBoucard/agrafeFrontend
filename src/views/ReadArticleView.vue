@@ -4,16 +4,16 @@
     
       <!-- Content for the left column -->
       <ul style="width:80%">
-        <li v-for="item in article.contenu" :key="item.id">
+        <li v-for="(item,index) in article.contenu" :key="item.id">
           <div v-if="item.type === 'sousTitre1'"
             style="margin-right: 10px; width: 5%; background-color: black; padding-top: 10px; height: 30%; margin-bottom:0 ;  position: relative;transform: translateY(60%); ">
           </div>
           
           <div v-if="item.type === 'image'">
             <img style="width: 70%; margin: auto; display: block;" :title="`photographe : ${item.auteur}`" :src="`${baseUrl}/api/save/saveArticle/images/${article.id}/${item.id}.png`">
-            <p class="paragraphe" style="margin-top:10px" v-html="processText(item.text)"></p>
+            <p class="paragraphe" style="margin-top:10px" v-html="processText(item)"></p>
           </div>
-          <p v-if="item.type !== 'Sources' && item.type !== 'notesBasPage' && item.type !== 'image'" :class="item.type" v-html="processText(item.text)"></p>
+          <p v-if="item.type !== 'Sources' && item.type !== 'notesBasPage' && item.type !== 'image'" :class="item.type"  :style="displayCitation(index)" v-html="processText(item,index)"></p>
           
         </li>
       </ul>
@@ -60,6 +60,21 @@ export default {
     contactComponent
   },
   computed: {
+    processedContent() {
+      const result = [];
+      let group = [];
+      this.article.contenu.forEach((item, index) => {
+        if (item.type === 'paragraph' && this.article.contenu[index + 1]?.type === 'Citation' && this.article.contenu[index + 2]?.type === 'paragraph') {
+          group.push(item, this.article.contenu[index + 1], this.article.contenu[index + 2]);
+          result.push(group);
+          group = [];
+        } else if (!group.includes(item)) {
+          result.push(item);
+        }
+      });
+      return result;
+    },
+  
   
     listeSources() {
       const found = this.article.contenu.find(item => item.type === 'Sources');
@@ -112,10 +127,56 @@ export default {
             })      )
   },
   methods : {
-    processText(text){
-      text = text.replace(/\*(\d+)\*/g, '<sup>$1</sup>');
+    processText(item,index){
+      console.log(item,index);
+      console.log(this.article.contenu.length);
+        if(index >0 && index < this.article.contenu.length - 2){
+          console.log(this.article.contenu[index - 1]?.type);
+          if(item.type === "paragraphe" && this.article.contenu[index + 1]?.type === "Citation" && this.article.contenu[index + 2]?.type === "paragraphe"){
+            return null;
+            // return item.text
+          }
+          if(item.type === "Citation" && this.article.contenu[index - 1]?.type === "paragraphe" && this.article.contenu[index + 1]?.type === "paragraphe"){
+            console.log("return null");
+            // return item.text
+
+            return null;
+
+          }
+          if(item.type === "paragraphe" && this.article.contenu[index - 1]?.type === "Citation" && this.article.contenu[index - 2]?.type === "paragraphe"){
+            // Return catenation of the three text with their styles applied;
+            console.log("catenation of the three text with their styles applied");
+            return `<span class="${this.article.contenu[index - 2].type}" style="color: black;">${this.article.contenu[index - 2].text}</span>` +
+       `<span class="${this.article.contenu[index - 1].type}" style="color: white; background-color: black;">${this.article.contenu[index - 1].text}</span>` +
+       `<span class="${item.type}" style="color: black;">${item.text}</span>`;      }
+
+          // return item.text;
+        }
+        let text = item.text;
+        text = text.replace(/\*(\d+)\*/g, '<sup>$1</sup>');
         return text;
+      
+    
     },
+    displayCitation(i){
+      if(i < this.article.contenu.length - 2 && i > 0){
+        if(this.article.contenu[i].type === "paragraph" && this.article.contenu[i + 1]?.type === "Citation" && this.article.contenu[i + 2]?.type === "paragraph"){
+          return "display: none";
+        }
+        if(this.article.contenu[i].type === "Citation" && this.article.contenu[i - 1]?.type === "paragraph" && this.article.contenu[i + 1]?.type === "paragraph"){
+          return "display: none !important";
+        }
+      }
+    
+      // Doit dire si on se display ou non : return css
+    },
+    // parseCitations(i){
+    //   // Si fin display tarba
+    //   // Doit dire si on se display ou non : return css
+    //   this.article.contenu[i].type = "paragraph";
+
+    //   this.article.contenu[i].text = this.article.contenu[i].text.replace(/\*(\d+)\*/g, '<sup>$1</sup>');
+    // },
     rubriqueFromId(id){
       const found = this.rubriques.find(rubrique => rubrique.id === id);
       if(found){
@@ -240,8 +301,8 @@ li {
 
 .Citation {
   font-family: "Bahnschrift", sans-serif;
-  background-color: black;
-  color: white;
+  background-color: black !important;
+  color: white !important;
 
 
   font-weight: 900;
@@ -265,6 +326,8 @@ li {
   font-weight: light;
   text-align: justify; /* Justify the text */
   font-size: large;
+  /* color : black !important;
+  background-color: white !important; */
   /* Styles for the paragraphe type */
 }
 
