@@ -1,11 +1,15 @@
 <template>
- <div class="card">
+ <div class="card" @click="redirectUser()">
   <div class="grid-container">
     <div class="left-column">
       <div class="blackDiv">
         N° {{ article.numeroParu }}. {{ formatDate(article.date) }}
       </div>
-    
+      <div>
+        <a :href="`/article/${article.id}`" class="lienArticle">
+  <img class="image-shadow" style="max-width: 70%;margin:auto;margin-top: 20px;margin-bottom: 10px; margin-left: -10px;" :src="`${baseUrl}/api/save/saveArticle/cover/${article.id}.png`" onerror="this.style.display='none'">
+</a>
+     </div>
     </div>
     <div class="right-column"> 
         <div class="haut">
@@ -28,7 +32,7 @@
                 </p>
             </div>
       </div>
-      <div style="margin-bottom: 20px;">
+      <div @click.stop  style="margin-bottom: 20px;">
         <div class="descriptionDiv">
             <p>
             {{ truncatedDescription }}
@@ -48,6 +52,7 @@
 
 </template>
 <script>
+import  baseUrl  from '../config.js'
 export default {
     props : {
         article : {required : true, type : Object},
@@ -55,6 +60,8 @@ export default {
     },
     data(){
         return{
+            baseUrl : baseUrl,
+
             isTruncated: true,
         }
     },
@@ -67,7 +74,9 @@ export default {
         }
     },
     methods : {
-     
+        redirectUser() {
+    this.$router.push(`/article/${this.article.id}`);
+  },
         formatDate(date){
             const year = date.slice(0,4)
             const month = date.slice(5,7)
@@ -139,6 +148,14 @@ export default {
 
     margin-top: 10px;
 }
+.image-shadow {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  transition: transform 0.3s ease-in-out; /* Smooth transition */
+}
+
+.image-shadow:hover {
+  transform: rotate(5deg); /* Rotate the image 5 degrees on hover */
+}
 .card {
   display: flex;
   justify-content: center; /* Center the content horizontally */
@@ -152,6 +169,8 @@ export default {
 }
 
 .left-column {
+    width: 100%;
+    overflow: hidden;
 }
 
 .right-column {
