@@ -47,10 +47,23 @@ export default {
   display: flex;
   flex-wrap: wrap;
 }
-
 .leftColumn {
-  width : 65%
+  width : 65%;
   /* Your styles for the left column here */
+  background-image: url('../../public/LOGOFILI.png');
+  background-repeat: repeat;
+  background-size: 16vw;
+  position: relative;
+}
+
+.leftColumn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5); /* Adjust color and opacity as needed */
 }
 
 .rightColumn {
@@ -60,6 +73,7 @@ export default {
 .article{
   width: 80%;
   margin-left: auto;
+
 }
 
 @media (max-width: 768px) {

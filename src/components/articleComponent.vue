@@ -108,11 +108,11 @@ export default{
   border-radius: 10px;
   /* Add your styles for the buttons here */
 }
-.articleWidget {
+  .articleWidget {
   transition: all 0.3s ease-in-out;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 0.7); /* Adjust color as needed */
+  backdrop-filter: blur(15px); /* Increase blur */
+  background-color: rgba(255, 255, 255, 0.1); /* Decrease opacity */
 }
 
 .articleWidget:hover {

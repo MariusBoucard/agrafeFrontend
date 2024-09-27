@@ -163,7 +163,7 @@ export default {
   transition: all 0.3s ease-in-out;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 0.7); /* Adjust color as needed */
+  background-color: rgba(255, 255, 255, 0.3); /* Adjust color as needed */
   width: 80%;
   margin-left: 20%;;
 }
