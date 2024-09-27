@@ -108,7 +108,17 @@ export default{
   border-radius: 10px;
   /* Add your styles for the buttons here */
 }
+.articleWidget {
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.7); /* Adjust color as needed */
+}
 
+.articleWidget:hover {
+  transform: scale(1.05); /* Grow the element slightly */
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
 .pagination-text {
   /* Add your styles for the text here */
   margin: 0 1em; /* Add some horizontal margin around the text */

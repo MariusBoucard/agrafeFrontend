@@ -52,13 +52,17 @@ export default{
     width: 100%;
 }
 .backCoverImg{
-    width:100%;
+    width:80%;
+    margin:auto;
+    
 }
 .partenaires {
+    width: 70%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px; /* Adjust the gap as needed */
-  margin-top: 20px;
+  margin : auto;
+  margin-top: 30px;
   margin-bottom: 20px;
 }
 

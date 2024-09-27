@@ -2,7 +2,9 @@
     <div class="outsideDiv">
         <p>N° {{ archive.numero }}. {{ formatDate(archive.date) }}</p>
         <img class="innerImage" :src="`${baseUrl}/api/save/saveArchive/cover/${archive.id}.png`"/>
-        
+        <p>
+            {{ archive.description }}
+        </p>
     </div>
 
 </template>
