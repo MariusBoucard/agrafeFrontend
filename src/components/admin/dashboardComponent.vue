@@ -27,7 +27,7 @@
                                 <td>{{ article.titreFront }}</td>
                                 <td>
                                     <img style="max-width: 100%;"
-                                        :src="`${baseUrl}/save/saveArticle/cover/${article.id}.png`">
+                                        :src="`${baseUrl}/api/save/saveArticle/cover/${article.id}.png`">
                                 </td>
                                 <td>{{ article.auteur }}</td>
                                 <td>{{ article.numeroParu }}</td>
@@ -63,11 +63,11 @@
                                 <td>{{ archive.description }}</td>
                                 <td>
                                     <img style="max-width: 100%;"
-                                        :src="`${baseUrl}/save/saveArchive/cover/${archive.id}.png`">
+                                        :src="`${baseUrl}/api/save/saveArchive/cover/${archive.id}.png`">
                                 </td>
                                 <td>
                                     <img style="max-width: 100%;"
-                                        :src="`${baseUrl}/save/saveArchive/back/${archive.id}.png`">
+                                        :src="`${baseUrl}/api/save/saveArchive/back/${archive.id}.png`">
                                 </td>
                                 <td>{{archive.numero }}</td>
                                 <td>{{ archive.date }}</td>

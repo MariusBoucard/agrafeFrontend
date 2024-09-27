@@ -28,10 +28,10 @@
           <td>{{ archive.titre }}</td>
           <td>{{ archive.description }}</td>
           <td>
-            <img style="max-width: 100%;" :src="`${baseUrl}/save/saveArchive/cover/${archive.id}.png`">
+            <img style="max-width: 100%;" :src="`${baseUrl}/api/save/saveArchive/cover/${archive.id}.png`">
           </td>
           <td>
-            <img style="max-width: 100%;" :src="`${baseUrl}/save/saveArchive/back/${archive.id}.png`">
+            <img style="max-width: 100%;" :src="`${baseUrl}/api/save/saveArchive/back/${archive.id}.png`">
           </td>
           <td>{{ archive.numero}}</td>
           <td>{{ archive.date }}</td>

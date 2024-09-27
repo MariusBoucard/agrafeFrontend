@@ -32,7 +32,7 @@
             <label for="description">Description:</label>
             <input type="text" id="description" v-model="rubrique.description" required>
 
-            <label for="rubRoute">Rubrique Route:</label>
+            <label for="rubRoute">Rubrique Route: (ne mettre ni accent ni espace)</label>
             <input type="text" id="rubRoute" v-model="rubrique.rubRoute" required>
 
             <label for="rubRoute">Informations :</label>

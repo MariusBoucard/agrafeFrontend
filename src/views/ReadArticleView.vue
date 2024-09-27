@@ -10,7 +10,7 @@
           </div>
           
           <div v-if="item.type === 'image'">
-            <img style="width: 70%; margin: auto; display: block;" :title="`photographe : ${item.auteur}`" :src="`${baseUrl}/save/saveArticle/images/${article.id}/${item.id}.png`">
+            <img style="width: 70%; margin: auto; display: block;" :title="`photographe : ${item.auteur}`" :src="`${baseUrl}/api/save/saveArticle/images/${article.id}/${item.id}.png`">
             <p class="paragraphe" style="margin-top:10px" v-html="processText(item.text)"></p>
           </div>
           <p v-if="item.type !== 'Sources' && item.type !== 'notesBasPage' && item.type !== 'image'" :class="item.type" v-html="processText(item.text)"></p>

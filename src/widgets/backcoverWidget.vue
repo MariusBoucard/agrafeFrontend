@@ -2,7 +2,7 @@
     <div>
         <p style="font-size: large;">Dernier numéro</p>
         <div class="backCoverImg">
-            <img class="innerImage" :src="`${baseUrl}/save/saveArchive/cover/${archive.id}.png`"/>
+            <img class="innerImage" :src="`${baseUrl}/api/save/saveArchive/cover/${archive.id}.png`"/>
         </div>
         <div class="partenaires">
                 <div class="logoPartenaire">
