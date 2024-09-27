@@ -151,12 +151,26 @@ export default {
 <style scoped>
 .input-search {
   width: 75%;
-  margin: 0 auto 20px;
+  margin-left: 20%;
+  margin-bottom: 30px;
   padding: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: none;
   border-radius: 4px;
   font-size: 16px;
+}
+.articleWidget {
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.7); /* Adjust color as needed */
+  width: 80%;
+  margin-left: 20%;;
+}
+
+.articleWidget:hover {
+  transform: scale(1.05); /* Grow the element slightly */
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 .pagination-container {
   display: flex;
