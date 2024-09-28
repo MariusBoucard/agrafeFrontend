@@ -74,4 +74,16 @@ ul {
     margin-right: 0px;
     color: black;
     font-family: "Bahnschrift", sans-serif;
-}</style>
+}
+
+@media (max-width: 768px) {
+    .listText {
+        width: 90%;
+        margin: 0;
+    }
+
+    .mam ul{
+        padding: 0;
+    }
+}
+</style>

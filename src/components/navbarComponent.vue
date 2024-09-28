@@ -331,5 +331,25 @@ a {
 .dropdown:hover .dropdown-content {
   display: block;
 }
+@media (max-width: 768px) {
+  .inner {
+    width: 90%;
+  }
+  .nav-list {
+width: 100%;;
+padding: 0;  }
+.nav-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .nav-list ul {
+  width :40%;
+  padding: 0; /* This will make each <ul> take up 50% of the width of .nav-list */
+  }
+  .routerLink {
+    padding: 0;
+  }
+}
 
 </style>

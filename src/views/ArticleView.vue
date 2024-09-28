@@ -240,7 +240,7 @@ export default {
     margin-left: 0;
   }
   .input-search {
-    width: 100%;
+    width: 80%;
     margin-left: 0;}
   }
 </style>
