@@ -4,7 +4,7 @@ import axios from 'axios';
 
 // Create a global Axios instance with a base URL
 const axiosInstance = axios.create({
-  baseURL: 'https://lagrafejournal.com', // Replace with your API base URL
+  baseURL: 'https://lagrafejournal.com/', // Replace with your API base URL
   headers: {
     'Authorization': '', // Set your default header here
     

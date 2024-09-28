@@ -3,7 +3,7 @@
     <div class="left-column">
     
       <!-- Content for the left column -->
-      <ul style="width:80%">
+      <ul class="ull">
         <li v-for="(item,index) in filteredContenu"   :key="item.id">
           <div v-if="item.type === 'sousTitre1'"
             style="margin-right: 10px; width: 5%; background-color: black; padding-top: 10px; height: 30%; margin-bottom:0 ;  position: relative;transform: translateY(60%); ">
@@ -195,6 +195,10 @@ export default {
 .right-column {
   width: 25%;
 }
+.ull{
+  width:80%;
+  padding: 0;
+}
 
 .parentDiv {
   width: 80%;
@@ -363,4 +367,20 @@ li {
   margin: 0;
   font-family: "Bahnschrift", sans-serif;
   font-size: 13px;
-}</style>
+}
+
+@media (max-width: 600px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .left-column {
+    width: 100%;
+  }
+
+  .right-column {
+    width: 100%;
+  }
+}
+
+</style>

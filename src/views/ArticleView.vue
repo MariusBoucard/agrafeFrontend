@@ -234,5 +234,13 @@ export default {
   }
   .article{
     width: 100%;
-  }}
+  }
+  .articleWidget {
+    width: 100%;
+    margin-left: 0;
+  }
+  .input-search {
+    width: 100%;
+    margin-left: 0;}
+  }
 </style>
