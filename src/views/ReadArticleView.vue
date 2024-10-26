@@ -4,7 +4,7 @@
     
       <!-- Content for the left column -->
       <ul class="ull">
-        <li v-for="(item,index) in filteredContenu"   :key="item.id">
+        <li v-for="(item,index) in article.contenu" :style="{ display : displayCitation(index) }"  :key="item.id">
           <div v-if="item.type === 'sousTitre1'"
             style="margin-right: 10px; width: 5%; background-color: black; padding-top: 10px; height: 30%; margin-bottom:0 ;  position: relative;transform: translateY(60%); ">
           </div>
@@ -13,7 +13,7 @@
             <img style="width: 70%; margin: auto; display: block;" :title="`photographe : ${item.auteur}`" :src="`${baseUrl}/api/save/saveArticle/images/${article.id}/${item.id}.png`">
             <p class="paragraphe" style="margin-top:10px" v-html="processText(item)"></p>
           </div>
-          <p v-if="item.type !== 'Sources' && item.type !== 'notesBasPage' && item.type !== 'image'" :class="item.type"  :style="displayCitation(index)" v-html="processText(item,index)"></p>
+          <p v-if="item.type !== 'Sources' && item.type !== 'notesBasPage' && item.type !== 'image'" :class="item.type" :style="{ display : displayCitation(index) }"  v-html="processText(item,index)"></p>
           
         </li>
       </ul>
@@ -118,15 +118,13 @@ export default {
             })      )
   },
   methods : {
+    /* eslint-disable */
     processText(item,index){
         if(index >0 && index < this.article.contenu.length - 2){
           if(item.type === "paragraphe" && this.article.contenu[index + 1]?.type === "Citation" && this.article.contenu[index + 2]?.type === "paragraphe"){
             return null;
-            // return item.text
           }
           if(item.type === "Citation" && this.article.contenu[index - 1]?.type === "paragraphe" && this.article.contenu[index + 1]?.type === "paragraphe"){
-            // return item.text
-
             return null;
 
           }
@@ -149,14 +147,12 @@ export default {
       if(i < this.article.contenu.length - 2 && i > 0){
         if(this.article.contenu[i].type === "paragraphe" && this.article.contenu[i + 1]?.type === "Citation" && this.article.contenu[i + 2]?.type === "paragraphe"){
           console.log("display: none");
-          return true
-          // return "display: none !important";
+          return "none";
         }
         if(this.article.contenu[i].type === "Citation" && this.article.contenu[i - 1]?.type === "paragraphe" && this.article.contenu[i + 1]?.type === "paragraphe"){
-          return true
-          // return "display: none !important";
+          return "none"
         }
-        return false
+        return "block";
       }
     
       // Doit dire si on se display ou non : return css
