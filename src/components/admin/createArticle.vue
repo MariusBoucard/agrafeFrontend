@@ -301,16 +301,19 @@ export default {
             
             formData.append(`generalId`, id);
             // Append each JSON object and its associated image to the FormData
-            this.article.contenu.forEach((imageObj, index) => {
+            console.log(this.article.contenu)
+            let caca = 0;
+            this.article.contenu.forEach((imageObj) => {
               // Append the image File objects with unique names, e.g., 'image0', 'image1', etc.
               if(imageObj.type === 'image')
               {
                 formData.append(`images`, imageObj.image);
-                formData.append(`id${index}`, imageObj.id);
+                formData.append(`id${caca}`, imageObj.id);
+                caca++;
               }
             });
             
-            
+
             // Send the FormData object with JSON objects and images to the backend using Axios
             axiosInstance
             .post('/api/uploadArticleImages', formData)
