@@ -8,7 +8,10 @@ import proposerArticleView from '../views/proposerArticleView.vue'
 import FocaleView from '../views/FocaleView.vue'
 import ArchiveLectureView from '../views/ArchiveLectureView.vue'
 import NewsletterView from '../views/NewsletterView.vue'
+import MentionsLegalesView from '../views/MentionsLegalesView.vue'
 import ReadArticleView from '../views/ReadArticleView.vue'
+import DossierView from '../views/DossierView.vue'
+import EquipeView from '../views/EquipeView.vue'
 import axios from 'axios'
 
 import { useStore } from 'vuex'; // Import useStore from Vuex
@@ -42,18 +45,18 @@ const routes = [
     } // Add a meta field to indicate authentication requirement
   },
   {
+    path: '/mentions-legales',
+    name: 'mentionsLegales',
+    component: MentionsLegalesView,
+    meta: {
+      hideNavigationLinks: false,
+      title: "L'agrafe - Mentions légales"
+    }
+  },
+  {
     path: '/article/:articleId',
     name: 'article',
     component: ReadArticleView,
-    props: true, // Enable passing route params as props
-    meta: { hideNavigationLinks: false,
-      title: 'L\'agrafe - Articles'
-    } // Add a meta field to indicate authentication requirement
-  },
-  {
-    path: '/articles/',
-    name: 'articlesAll',
-    component: ArticleView,
     props: true, // Enable passing route params as props
     meta: { hideNavigationLinks: false,
       title: 'L\'agrafe - Articles'
@@ -125,12 +128,24 @@ const routes = [
     path: '/admin/register',
     name: 'admin/register',
     component: () => import(/* webpackChunkName: "admin" */ '../components/admin/registerComponent.vue'),
-    // meta: { requiresAuth: true } // Add a meta field to indicate authentication requirement
+    meta: { requiresAuth: true, requiresAdmin: true, hideNavigationLinks: true },
   },
 
  
 
   
+  {
+    path: '/dossiers/:id',
+    name: 'dossier',
+    component: DossierView,
+    meta: { hideNavigationLinks: false, title: "L'agrafe - Dossier" }
+  },
+  {
+    path: '/equipe/:slug',
+    name: 'equipe',
+    component: EquipeView,
+    meta: { hideNavigationLinks: false, title: "L'agrafe - Équipe" }
+  },
   {
     path: '/newsletter',
     name: 'newsletter',
@@ -146,29 +161,24 @@ const router = createRouter({
 
 // Global navigation guard
 router.beforeEach((to, from, next) => {
-  const store = useStore(); // Access the Vuex store
-  console.log(store)
-  // Set showNavigationLinks based on the hideNavigationLinks meta field
-  console.log(to.meta.hideNavigationLinks)
+  const store = useStore();
   store.commit('app/toggleNavigationLinks', !to.meta.hideNavigationLinks);
-  // Check if the route requires authentication
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    // Retrieve the token from localStorage or sessionStorage
-    const token = sessionStorage.getItem('token');
 
-    // Check if the token exists
+  const token = sessionStorage.getItem('token');
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+
+  if (requiresAuth) {
     if (!token) {
-      // Redirect to the login page or handle unauthorized access as needed
       next('/login');
-    } else {
-      // Include the token in the request headers using Axios
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      next();
+      return;
     }
-  } else {
-    // If the route does not require authentication, proceed to the route
+    axios.defaults.headers.common['Authorization'] = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+    store.dispatch('auth/hydrateFromSession');
     next();
+    return;
   }
+
+  next();
 });
 
 

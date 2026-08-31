@@ -1,121 +1,61 @@
 <template>
-    <div class="baseView">
-      <div class="container">
-        <div class="leftColumn">
-            <div class="parentDiv">
-
-                <div class="banner">
-                    <p class="titleBanner">Notre idée</p>
-                </div>
-                <div class="text">
-                    L'agrafe est issu de la volonté d'un groupe d'étudiants de faire (re)
-                    vivre l'esprit du journal étudiant à Rennes 2, en y ajoutant une dimension collaborative
-                    qui nous a parue essentielle pour faire subsister nos convictions au travers de notre projet.
-                    Nous avons fait mûrir cette idée d'un journal participatif invitant tous ses lecteurs.ices à en devenir
-                    les acteur.ices, selon leurs passions, leur désir de discuter de l'actualité politique, environnementale ou culturelle,
-                    de présenter un travail d'investigation plus abouti ou encore de mettre en lumière leurs productions artistiques, 
-                    qu'elles soient graphiques, littéraires, photographiques, cinématographiques, etc.
-
-                </div>
-                <div class="banner">
-                    <p class="titleBanner">L'équipe</p>
-                </div>
-                <div class="text">
-                    À l'origine, quatre étudiants en Infocom' avec la volonté de partager un projet associatif avec 
-                    la communauté étudiante qui, on le sait, en a - en aura toujours - besoin ! Depuis, l'équipe a bien grandi et 
-                    continue de vivre et d'évoluer au quotidien, au gré des parutions, des distributions et des rencontres. Alors si toi 
-                    aussi tu veux rejoindre l'aventure, n'hésite pas à nous envoyer un mail, soit pour nous proposer un article, soit pour intégrer l'asso - 
-                    et pourquoi pas les deux ! On a hâte de vous retrouver aux présentations d'information, et surtout de lire toutes vos propositions d'articles ! 
-                </div>
+  <div class="baseView">
+    <div class="container">
+      <div class="leftColumn">
+        <div class="parentDiv">
+          <div v-for="(section, i) in sections" :key="i">
+            <div class="banner">
+              <p class="titleBanner">{{ section.title }}</p>
             </div>
-        
-        </div>
-        <div class="rightColumn">
-          <ContactComponent></ContactComponent>
-          <BackcoverWidget></BackcoverWidget>
+            <div class="text font-body">{{ section.body }}</div>
+          </div>
         </div>
       </div>
+      <div class="rightColumn">
+        <ContactComponent />
+        <BackcoverWidget />
+      </div>
     </div>
-  </template>
-  
-  <script>
-  import BackcoverWidget from "@/widgets/backcoverWidget.vue";
-  import ContactComponent from "@/widgets/contactComponent.vue";
-  
-  export default {
-    name: "ArticleView",
-    components: {
-    BackcoverWidget,
-    ContactComponent},
-    mounted() {
+  </div>
+</template>
 
-     
-    },
-    data() {
-      return {
-      };
-    },
-  };
-  </script>
-  
-  <style scoped>
-  .articleWidget {
-    margin-bottom: 30px;
-  }
-  
-  .baseView {
-    width: 90%;
-    margin: auto;
-  }
-  
-  .titleBanner{
-    width : 80%;
-    margin-left: auto;
-    text-align: left;
-  }
-  .text{
-    width : 80%;
-    font-family: 'Bahnschrift', sans-serif;
-margin-left: auto;
-text-align: left;
-  }
-  .banner{
-    font-size: x-large;
-    color: white;
-    background-color: black;
-    width : 100%;
-  }
-  .container {
-    gap :30px;
-  display: flex;
-  flex-wrap: wrap;
-}
+<script>
+import BackcoverWidget from "@/widgets/backcoverWidget.vue";
+import ContactComponent from "@/widgets/contactComponent.vue";
+import axiosInstance from "@/axios";
 
-.leftColumn {
-  width : 65%
-  /* Your styles for the left column here */
-}
+export default {
+  name: "AProposView",
+  components: { BackcoverWidget, ContactComponent },
+  data() {
+    return {
+      sections: [
+        { title: "Notre idée", body: "Chargement..." },
+        { title: "L'équipe", body: "" },
+      ],
+    };
+  },
+  mounted() {
+    axiosInstance.get("/api/pages/apropos").then((res) => {
+      if (res.data?.content?.sections?.length) {
+        this.sections = res.data.content.sections;
+      }
+    }).catch(() => {});
+  },
+};
+</script>
 
-.rightColumn {
-  width: 30%;
-  /* Your styles for the right column here */
-}
-.article{
-  width: 80%;
-  margin-left: auto;
-}
-
+<style scoped>
+.baseView { width: 90%; margin: auto; }
+.titleBanner { width: 80%; margin-left: auto; text-align: left; }
+.text { width: 80%; font-family: var(--font-body, 'Bahnschrift', sans-serif); margin-left: auto; text-align: left; line-height: 1.6; }
+.banner { font-size: x-large; color: white; background-color: black; width: 100%; font-family: var(--font-title); }
+.container { gap: 30px; display: flex; flex-wrap: wrap; }
+.leftColumn { width: 65%; }
+.rightColumn { width: 30%; }
 @media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-  }
-  .leftColumn {
-    width: 100%;
-  }
-  .rightColumn {
-    width: 100%;
-  }
-  .article{
-    width: 100%;
-  }}
-  </style>
+  .container { flex-direction: column; }
+  .leftColumn, .rightColumn { width: 100%; }
+  .text, .titleBanner { width: 100%; margin-left: 0; }
+}
+</style>

@@ -1,33 +1,65 @@
 <template>
-    <div> 
-        <NavbarComponent></NavbarComponent>
-        <div class="container">
-    <div class="left-column">
-        <MenuComponent :selectedComponent="activeComponent" @componentChanged="setComponent($event)"></MenuComponent>
-      <!-- Content for the left column -->
-    </div>
-    <div class="right-column">
-      <DashboardComponent  v-if="activeComponent.dashboard"></DashboardComponent>
-      <!-- Content for the right column -->
-      <modifyArticle v-if="activeComponent.modifyArticle" :id="articleId" @componentChanged="setComponent($event)"></modifyArticle>
-      <RegisterComponent v-if="activeComponent.register">   </RegisterComponent>
-      <ArticlesComponent @componentChanged="setComponent($event)" @modifyArticle="modifyArticle($event)" v-if="activeComponent.article"></ArticlesComponent>
-      <CreateArticle v-if="activeComponent.createArticle" @componentChanged="setComponent($event)"></CreateArticle>
-      <NewsletterComponent v-if="activeComponent.newsletter"></NewsletterComponent>
-      <newsComponent v-if="activeComponent.news" @componentChanged="setComponent($event)" @modifyNews="setComponent($event)"></newsComponent>
-      <CreateNewsComponent @componentChanged="setComponent($event)" v-if="activeComponent.createNews"></CreateNewsComponent>
-      <rubriquesComponent v-if="activeComponent.rubrique"></rubriquesComponent>
+  <div class="admin-shell">
+    <NavbarComponent />
+    <div class="admin-layout">
+      <button
+        type="button"
+        class="menu-toggle"
+        :aria-expanded="menuOpen ? 'true' : 'false'"
+        @click="menuOpen = !menuOpen"
+      >
+        {{ menuOpen ? 'Fermer le menu' : 'Menu admin' }}
+      </button>
 
-      <ArchiveComponent v-if="activeComponent.archive" @componentChanged="setComponent($event)"></ArchiveComponent>
-      <createArchive v-if="activeComponent.createArchive" @componentChanged="setComponent($event)"></createArchive>
-      <FocalComponent v-if="activeComponent.focal" @componentChanged="setComponent($event)"></FocalComponent>
-      <CreateFocalComponent v-if="activeComponent.createFocal" @componentChanged="setComponent($event)"></CreateFocalComponent>
-      <propositionArticleComponent v-if="activeComponent.propalArticle" @componentChanged="setComponent($event)"></propositionArticleComponent>
-      <FileUploadComponent  v-if="activeComponent.fichiers" @componentChanged="setComponent($event)"></FileUploadComponent>
+      <div class="backdrop" v-if="menuOpen" @click="menuOpen = false"></div>
+
+      <div class="left-column" :class="{ open: menuOpen }">
+        <MenuComponent
+          :selectedComponent="activeComponent"
+          :mobileOpen="menuOpen"
+          @componentChanged="onNavigate"
+        />
+      </div>
+
+      <main class="right-column">
+        <DashboardComponent v-if="activeComponent.dashboard" />
+        <modifyArticle
+          v-if="activeComponent.modifyArticle"
+          :id="articleId"
+          @componentChanged="setComponent($event)"
+        />
+        <RegisterComponent v-if="activeComponent.register" />
+        <ArticlesComponent
+          @componentChanged="setComponent($event)"
+          @modifyArticle="modifyArticle($event)"
+          v-if="activeComponent.article"
+        />
+        <CreateArticle v-if="activeComponent.createArticle" @componentChanged="setComponent($event)" />
+        <NewsletterComponent v-if="activeComponent.newsletter" />
+        <NewsletterCampaignComponent v-if="activeComponent.newsletterCampaign" />
+        <DossiersComponent v-if="activeComponent.dossiers" />
+        <PagesEditorComponent v-if="activeComponent.pages" />
+        <newsComponent
+          v-if="activeComponent.news"
+          @componentChanged="setComponent($event)"
+          @modifyNews="setComponent($event)"
+        />
+        <CreateNewsComponent @componentChanged="setComponent($event)" v-if="activeComponent.createNews" />
+        <rubriquesComponent v-if="activeComponent.rubrique" />
+        <ArchiveComponent v-if="activeComponent.archive" @componentChanged="setComponent($event)" />
+        <createArchive v-if="activeComponent.createArchive" @componentChanged="setComponent($event)" />
+        <FocalComponent v-if="activeComponent.focal" @componentChanged="setComponent($event)" />
+        <CreateFocalComponent v-if="activeComponent.createFocal" @componentChanged="setComponent($event)" />
+        <propositionArticleComponent
+          v-if="activeComponent.propalArticle"
+          @componentChanged="setComponent($event)"
+        />
+        <FileUploadComponent v-if="activeComponent.fichiers" @componentChanged="setComponent($event)" />
+      </main>
     </div>
   </div>
-    </div>
 </template>
+
 <script>
 import ArticlesComponent from './articlesComponent.vue';
 import CreateArticle from './createArticle.vue';
@@ -45,72 +77,169 @@ import createArchive from './createArchive.vue';
 import FocalComponent from './focaleComponent.vue';
 import CreateFocalComponent from './createFocaleComponent.vue';
 import propositionArticleComponent from './propositionArticleComponent.vue';
+import NewsletterCampaignComponent from './newsletterCampaignComponent.vue';
+import DossiersComponent from './dossiersComponent.vue';
+import PagesEditorComponent from './pagesEditorComponent.vue';
 import FileUploadComponent from './FileUploadComponent.vue';
-export default{
-    components: { FileUploadComponent, propositionArticleComponent, createArchive, rubriquesComponent, newsComponent, NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle, modifyArticle, NewsletterComponent, CreateNewsComponent, DashboardComponent, ArchiveComponent, FocalComponent, CreateFocalComponent },
-   
-    data(){
-        return {
-            activeComponent: {
-                dashboard: true,
-                register: false,
-                article: false,
-                archive: false,
-                createArchive : false,
-                newsletter: false,
-                news: false,
-                createArticle : false,
-                createNews : false,
-                modifyNews : false,
-                rubrique : false,
-                focal : false,
-                createFocal : false,
-                propalArticle : false,
-                fichiers : false,
-            },
-            articleId : ""
-        }
+import { mapGetters } from 'vuex';
+import { canAccessSection, defaultAdminSection } from '@/utils/permissions';
 
-    }, methods : {
-      modifyArticle(id){
-        this.articleId = id
-        this.setComponent("modifyArticle")
-      },
-        setComponent(compo){
-            for (const key in this.activeComponent) {
-                    this.activeComponent[key] = false;
-            }
-            this.activeComponent[compo] = true
-        
-        }
-    }
-    
-}
+const EMPTY_ACTIVE = {
+  dashboard: false,
+  register: false,
+  article: false,
+  archive: false,
+  createArchive: false,
+  newsletter: false,
+  news: false,
+  createArticle: false,
+  createNews: false,
+  modifyNews: false,
+  modifyArticle: false,
+  rubrique: false,
+  focal: false,
+  createFocal: false,
+  propalArticle: false,
+  fichiers: false,
+  dossiers: false,
+  pages: false,
+  newsletterCampaign: false,
+};
+
+export default {
+  components: {
+    FileUploadComponent,
+    propositionArticleComponent,
+    createArchive,
+    rubriquesComponent,
+    newsComponent,
+    NavbarComponent,
+    MenuComponent,
+    RegisterComponent,
+    ArticlesComponent,
+    CreateArticle,
+    modifyArticle,
+    NewsletterComponent,
+    NewsletterCampaignComponent,
+    DossiersComponent,
+    PagesEditorComponent,
+    CreateNewsComponent,
+    DashboardComponent,
+    ArchiveComponent,
+    FocalComponent,
+    CreateFocalComponent,
+  },
+  computed: {
+    ...mapGetters('auth', ['userRole']),
+  },
+  data() {
+    return {
+      activeComponent: { ...EMPTY_ACTIVE, dashboard: true },
+      articleId: '',
+      menuOpen: false,
+    };
+  },
+  mounted() {
+    const landing = defaultAdminSection(this.userRole);
+    this.setComponent(landing);
+  },
+  methods: {
+    modifyArticle(id) {
+      this.articleId = id;
+      this.setComponent('modifyArticle');
+    },
+    onNavigate(compo) {
+      this.setComponent(compo);
+      this.menuOpen = false;
+    },
+    setComponent(compo) {
+      if (!canAccessSection(this.userRole, compo)) {
+        compo = defaultAdminSection(this.userRole);
+      }
+      this.activeComponent = { ...EMPTY_ACTIVE, [compo]: true };
+    },
+  },
+};
 </script>
-<style>
-/* Apply CSS reset to remove default padding and margin */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+
+<style scoped>
+.admin-shell {
+  min-height: 100vh;
+  background: #f4f4f4;
 }
 
-/* Create a container for the two columns */
-.container {
+.admin-layout {
   display: flex;
+  min-height: calc(100vh - 60px);
+  position: relative;
 }
 
-/* Style the left column */
+.menu-toggle {
+  display: none;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  width: 100%;
+  min-height: 44px;
+  border: none;
+  background: #111;
+  color: #fff;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.backdrop {
+  display: none;
+}
+
 .left-column {
-  width: 20%;
-  background-color: #ccc; /* Add your desired background color */
-  /* You can also add padding, margin, or other styles as needed */
+  width: 260px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
 }
 
-/* Style the right column */
 .right-column {
-  width: 80%;
-  background-color: #f0f0f0; /* Add your desired background color */
-  /* You can also add padding, margin, or other styles as needed */
+  flex: 1;
+  min-width: 0;
+  background: #f4f4f4;
+  overflow-x: hidden;
+}
+
+@media (max-width: 900px) {
+  .admin-layout {
+    flex-direction: column;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 40;
+  }
+
+  .left-column {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: min(300px, 86vw);
+    height: 100vh;
+    z-index: 50;
+    transform: translateX(-105%);
+    transition: transform 0.2s ease;
+  }
+
+  .left-column.open {
+    transform: translateX(0);
+  }
 }
 </style>

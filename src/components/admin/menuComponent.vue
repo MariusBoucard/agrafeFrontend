@@ -1,214 +1,240 @@
 <template>
- <div class="menu">
-    <h1>Menu des choses à faire</h1>
-    <el-icon name="el-icon-monitor" style="color:red"></el-icon>
-    <ul>
-        <li>
-            <div @click="setComponent('dashboard')" class="menu-item" :class="getMenuItemClass('dashboard')"> 
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-10 h-10 icon">
-                    <path d="M15.5 2A1.5 1.5 0 0014 3.5v13a1.5 1.5 0 001.5 1.5h1a1.5 1.5 0 001.5-1.5v-13A1.5 1.5 0 0016.5 2h-1zM9.5 6A1.5 1.5 0 008 7.5v9A1.5 1.5 0 009.5 18h1a1.5 1.5 0 001.5-1.5v-9A1.5 1.5 0 0010.5 6h-1zM3.5 10A1.5 1.5 0 002 11.5v5A1.5 1.5 0 003.5 18h1A1.5 1.5 0 006 16.5v-5A1.5 1.5 0 004.5 10h-1z" />
-                    </svg>
-               
-                <span>Dashboard</span>
-            </div>
-        </li>
-        <hr style="margin-bottom: 10px;">
-        <li>
-            <div @click="setComponent('register')" class="menu-item" :class="getMenuItemClass('register')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 icon">
-  <path d="M10 9a3 3 0 100-6 3 3 0 000 6zM6 8a2 2 0 11-4 0 2 2 0 014 0zM1.49 15.326a.78.78 0 01-.358-.442 3 3 0 014.308-3.516 6.484 6.484 0 00-1.905 3.959c-.023.222-.014.442.025.654a4.97 4.97 0 01-2.07-.655zM16.44 15.98a4.97 4.97 0 002.07-.654.78.78 0 00.357-.442 3 3 0 00-4.308-3.517 6.484 6.484 0 011.907 3.96 2.32 2.32 0 01-.026.654zM18 8a2 2 0 11-4 0 2 2 0 014 0zM5.304 16.19a.844.844 0 01-.277-.71 5 5 0 019.947 0 .843.843 0 01-.277.71A6.975 6.975 0 0110 18a6.974 6.974 0 01-4.696-1.81z" />
-</svg>
+  <aside class="menu" :class="{ open: mobileOpen }">
+    <div class="menu-top">
+      <div>
+        <p class="menu-kicker">Administration</p>
+        <h1>L'Agrafe</h1>
+      </div>
+      <span class="role-pill" :data-role="normalizedRole">{{ roleLabel }}</span>
+    </div>
 
-                <span>Utilisateurs</span>
-            </div>
-        </li>
-        <hr style="margin-bottom: 10px;">
+    <nav class="menu-nav">
+      <template v-for="group in visibleGroups" :key="group.title">
+        <p class="menu-group">{{ group.title }}</p>
+        <ul>
+          <li v-for="item in group.items" :key="item.key">
+            <button
+              type="button"
+              class="menu-item"
+              :class="{ active: isActive(item.key) }"
+              @click="setComponent(item.key)"
+            >
+              <span>{{ item.label }}</span>
+            </button>
+          </li>
+        </ul>
+      </template>
+    </nav>
 
-        <li>
-            <div @click="setComponent('article')" class="menu-item"  :class="getMenuItemClass('article')"> 
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 icon">
-  <path d="M7 3.5A1.5 1.5 0 018.5 2h3.879a1.5 1.5 0 011.06.44l3.122 3.12A1.5 1.5 0 0117 6.622V12.5a1.5 1.5 0 01-1.5 1.5h-1v-3.379a3 3 0 00-.879-2.121L10.5 5.379A3 3 0 008.379 4.5H7v-1z" />
-  <path d="M4.5 6A1.5 1.5 0 003 7.5v9A1.5 1.5 0 004.5 18h7a1.5 1.5 0 001.5-1.5v-5.879a1.5 1.5 0 00-.44-1.06L9.44 6.439A1.5 1.5 0 008.378 6H4.5z" />
-</svg>
-                <span>Articles</span>
-            </div>
+    <div class="menu-legend">
+      <p class="menu-group">Rôles</p>
+      <ul class="legend-list">
+        <li v-for="(desc, key) in roleDescriptions" :key="key">
+          <strong>{{ roleLabels[key] }}</strong>
+          <span>{{ desc }}</span>
         </li>
-        <hr style="margin-bottom: 10px;">
-
-        <li>
-            <div @click="setComponent('archive')" class="menu-item"  :class="getMenuItemClass('archive')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 icon">
-                <path d="M2 3a1 1 0 00-1 1v1a1 1 0 001 1h16a1 1 0 001-1V4a1 1 0 00-1-1H2z" />
-                <path fill-rule="evenodd" d="M2 7.5h16l-.811 7.71a2 2 0 01-1.99 1.79H4.802a2 2 0 01-1.99-1.79L2 7.5zM7 11a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1z" clip-rule="evenodd" />
-                </svg>
-                <span>Archives</span>
-            </div>
-        </li>
-        <hr style="margin-bottom: 10px;">
-        <li>
-            <div @click="setComponent('focal')" class="menu-item"  :class="getMenuItemClass('focal')">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 icon">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-  <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
-</svg>
-
-                <span>Focal</span>
-            </div>
-        </li>
-        <hr style="margin-bottom: 10px;">
-
-        <li>
-            <div @click="setComponent('newsletter')" class="menu-item"  :class="getMenuItemClass('newsletter')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 icon">
-  <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
-  <path d="M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
-</svg>
-                <span>Newsletter</span>
-            </div>
-        </li>
-        <hr style="margin-bottom: 10px;">
-
-        <li>
-            <div @click="setComponent('news')" class="menu-item"  :class="getMenuItemClass('news')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 icon">
-  <path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />
-  <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z" />
-</svg>
-                <span>News</span>
-            </div>
-        </li>
-        <hr style="margin-bottom: 10px;">
-
-        <li>
-            <div @click="setComponent('rubrique')" class="menu-item"  :class="getMenuItemClass('rubrique')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 icon">
-  <path fill-rule="evenodd" d="M7.84 1.804A1 1 0 018.82 1h2.36a1 1 0 01.98.804l.331 1.652a6.993 6.993 0 011.929 1.115l1.598-.54a1 1 0 011.186.447l1.18 2.044a1 1 0 01-.205 1.251l-1.267 1.113a7.047 7.047 0 010 2.228l1.267 1.113a1 1 0 01.206 1.25l-1.18 2.045a1 1 0 01-1.187.447l-1.598-.54a6.993 6.993 0 01-1.929 1.115l-.33 1.652a1 1 0 01-.98.804H8.82a1 1 0 01-.98-.804l-.331-1.652a6.993 6.993 0 01-1.929-1.115l-1.598.54a1 1 0 01-1.186-.447l-1.18-2.044a1 1 0 01.205-1.251l1.267-1.114a7.05 7.05 0 010-2.227L1.821 7.773a1 1 0 01-.206-1.25l1.18-2.045a1 1 0 011.187-.447l1.598.54A6.993 6.993 0 017.51 3.456l.33-1.652zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
-</svg>
-                <span>Rubriques</span>
-            </div>
-        </li>
-
-        <li>
-            <div @click="setComponent('propalArticle')" class="menu-item"  :class="getMenuItemClass('propalArticle')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 icon">
-  <path fill-rule="evenodd" d="M7.84 1.804A1 1 0 018.82 1h2.36a1 1 0 01.98.804l.331 1.652a6.993 6.993 0 011.929 1.115l1.598-.54a1 1 0 011.186.447l1.18 2.044a1 1 0 01-.205 1.251l-1.267 1.113a7.047 7.047 0 010 2.228l1.267 1.113a1 1 0 01.206 1.25l-1.18 2.045a1 1 0 01-1.187.447l-1.598-.54a6.993 6.993 0 01-1.929 1.115l-.33 1.652a1 1 0 01-.98.804H8.82a1 1 0 01-.98-.804l-.331-1.652a6.993 6.993 0 01-1.929-1.115l-1.598.54a1 1 0 01-1.186-.447l-1.18-2.044a1 1 0 01.205-1.251l1.267-1.114a7.05 7.05 0 010-2.227L1.821 7.773a1 1 0 01-.206-1.25l1.18-2.045a1 1 0 011.187-.447l1.598.54A6.993 6.993 0 017.51 3.456l.33-1.652zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
-</svg>
-                <span>Propositions d'articles</span>
-            </div>
-        </li>
-        <li>
-            <div @click="setComponent('fichiers')" class="menu-item"  :class="getMenuItemClass('propalArticle')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 icon">
-  <path fill-rule="evenodd" d="M7.84 1.804A1 1 0 018.82 1h2.36a1 1 0 01.98.804l.331 1.652a6.993 6.993 0 011.929 1.115l1.598-.54a1 1 0 011.186.447l1.18 2.044a1 1 0 01-.205 1.251l-1.267 1.113a7.047 7.047 0 010 2.228l1.267 1.113a1 1 0 01.206 1.25l-1.18 2.045a1 1 0 01-1.187.447l-1.598-.54a6.993 6.993 0 01-1.929 1.115l-.33 1.652a1 1 0 01-.98.804H8.82a1 1 0 01-.98-.804l-.331-1.652a6.993 6.993 0 01-1.929-1.115l-1.598.54a1 1 0 01-1.186-.447l-1.18-2.044a1 1 0 01.205-1.251l1.267-1.114a7.05 7.05 0 010-2.227L1.821 7.773a1 1 0 01-.206-1.25l1.18-2.045a1 1 0 011.187-.447l1.598.54A6.993 6.993 0 017.51 3.456l.33-1.652zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
-</svg>
-                <span>Fichiers</span>
-            </div>
-        </li>
-    </ul>
-</div>
-
+      </ul>
+    </div>
+  </aside>
 </template>
-<script>
-export default {
-  props : {
-    selectedComponent : {
-        required : true , type : Object
-    }
-  },
-    methods: {
-        getMenuItemClass(classe){
-            if(this.selectedComponent[classe]){
-                return "activeComponent"
-            }
-            else if(classe === "article" && this.selectedComponent["createArticle"]){
-                return "activeComponent"
-            } 
-            else if(classe === "article" && this.selectedComponent["modifyArticle"]){
-                return "activeComponent"
-            } 
-            else if(classe === "news" && this.selectedComponent["createNews"]){
-                return "activeComponent"
-            } 
-            else if(classe === "news" && this.selectedComponent["modifyNews"]){
-                return "activeComponent"
-            } 
-            else if(classe === "propalArticle" && this.selectedComponent["propalArticle"]){
-                return "activeComponent"
-            } 
-            else {
-                return ""
-            }
-        },
-        setComponent(compo) {
-            this.$emit('componentChanged',compo)
-        }
 
-    }
-}
+<script>
+import { mapGetters } from 'vuex';
+import {
+  canAccessSection,
+  normalizeRole,
+  ROLE_LABELS,
+  ROLE_DESCRIPTIONS,
+} from '@/utils/permissions';
+
+const MENU_GROUPS = [
+  {
+    title: 'Pilotage',
+    items: [
+      { key: 'dashboard', label: 'Dashboard' },
+      { key: 'register', label: 'Utilisateurs' },
+    ],
+  },
+  {
+    title: 'Contenu',
+    items: [
+      { key: 'article', label: 'Articles' },
+      { key: 'news', label: 'News' },
+      { key: 'archive', label: 'Archives' },
+      { key: 'focal', label: 'Focal' },
+      { key: 'dossiers', label: 'Dossiers' },
+      { key: 'rubrique', label: 'Rubriques' },
+      { key: 'pages', label: 'Pages' },
+      { key: 'propalArticle', label: "Propositions d'articles" },
+    ],
+  },
+  {
+    title: 'Diffusion',
+    items: [
+      { key: 'newsletter', label: 'Abonnés newsletter' },
+      { key: 'newsletterCampaign', label: 'Envoi newsletter' },
+      { key: 'fichiers', label: 'Fichiers' },
+    ],
+  },
+];
+
+const ACTIVE_ALIASES = {
+  article: ['createArticle', 'modifyArticle'],
+  news: ['createNews', 'modifyNews'],
+  archive: ['createArchive'],
+  focal: ['createFocal'],
+};
+
+export default {
+  props: {
+    selectedComponent: { required: true, type: Object },
+    mobileOpen: { type: Boolean, default: false },
+  },
+  computed: {
+    ...mapGetters('auth', ['userRole']),
+    normalizedRole() {
+      return normalizeRole(this.userRole);
+    },
+    roleLabel() {
+      return ROLE_LABELS[this.normalizedRole] || this.normalizedRole;
+    },
+    roleLabels() {
+      return ROLE_LABELS;
+    },
+    roleDescriptions() {
+      return ROLE_DESCRIPTIONS;
+    },
+    visibleGroups() {
+      return MENU_GROUPS.map((group) => ({
+        ...group,
+        items: group.items.filter((item) => canAccessSection(this.userRole, item.key)),
+      })).filter((group) => group.items.length > 0);
+    },
+  },
+  methods: {
+    isActive(key) {
+      if (this.selectedComponent[key]) return true;
+      const aliases = ACTIVE_ALIASES[key] || [];
+      return aliases.some((alias) => this.selectedComponent[alias]);
+    },
+    setComponent(compo) {
+      this.$emit('componentChanged', compo);
+    },
+  },
+};
 </script>
+
 <style scoped>
-.icon{
-    height: 30px;
-}
-.activeComponent {
-  background-color: #007bff; /* Blue background color for active item */
-  color: white;
-}
-hr{
-    border-color: #9e9e9e;
-}
 .menu {
-  background-color: #f8f9fa; /* Light gray background color */
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  background: #111;
+  color: #f5f5f5;
   width: 100%;
-  height: 100vh; /* Fill available height */
+  min-height: 100%;
+  padding: 1.25rem 1rem 2rem;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center content horizontally */
-  justify-content: flex-start; /* Align content to the top */
-  padding: 20px; /* Add padding for spacing */
+  gap: 1rem;
+  font-family: var(--font-body, Bahnschrift, sans-serif);
 }
 
-h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #333; /* Darken the title color */
+.menu-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0 0.35rem;
+}
+
+.menu-kicker {
+  margin: 0;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.55;
+}
+
+.menu-top h1 {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-title, agrafe, serif);
+  font-size: 1.35rem;
+  color: #fff;
+}
+
+.role-pill {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  white-space: nowrap;
+}
+
+.role-pill[data-role='admin'] {
+  background: #fff;
+  color: #111;
+  border-color: #fff;
+}
+
+.role-pill[data-role='editor'] {
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.menu-group {
+  margin: 0.85rem 0 0.35rem;
+  padding: 0 0.45rem;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.45;
 }
 
 ul {
-  list-style-type: none;
+  list-style: none;
   padding: 0;
-  width: 100%; /* Make the list items take full width */
-  max-width: 300px; /* Limit the maximum width of the menu */
-}
-
-li {
-  margin-bottom: 10px; /* Increase spacing between menu items */
+  margin: 0;
 }
 
 .menu-item {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: inherit;
   cursor: pointer;
-  padding: 10px;
-  border-radius: 5px;
-  transition: background-color 0.3s; /* Add a smooth hover effect */
-  display: flex; /* Center items horizontally */
-  align-items: center; /* Vertically align items */
-}
-
-.menu-item i {
-  font-size: 20px;
-  margin-right: 10px;
-}
-
-.menu-item span {
-  font-size: 16px;
-  margin-left: 10px; /* Add spacing between icon and text */
+  padding: 0.7rem 0.75rem;
+  font-size: 0.95rem;
+  min-height: 44px;
+  border-left: 3px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .menu-item:hover {
-  background-color: #007bff; /* Darken the background color on hover */
-  color: white; /* Change text color on hover */
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.menu-item.active {
+  background: rgba(255, 255, 255, 0.12);
+  border-left-color: #fff;
+  font-weight: 600;
+}
+
+.menu-legend {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.legend-list li {
+  padding: 0.45rem 0.45rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.78rem;
+  opacity: 0.75;
+}
+
+.legend-list strong {
+  font-size: 0.8rem;
+  opacity: 1;
 }
 </style>

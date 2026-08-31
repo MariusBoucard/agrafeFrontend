@@ -49,7 +49,16 @@
             </select>
 
           </div>
-        
+          <div class="form-group">
+            <label for="dossier">Dossier (optionnel) :</label>
+            <select id="dossier" v-model="article.dossier_id">
+              <option :value="null">Aucun dossier</option>
+              <option v-for="d in dossiers" :key="d.id" :value="d.id">
+                {{ d.titre }} — {{ d.statut === 'termine' ? 'Terminé' : 'En cours' }}
+              </option>
+            </select>
+          </div>
+
           
         </div>
       </div>
@@ -177,6 +186,9 @@ export default {
       customClass: 'custom-el-message',
       duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
     }))
+    axiosInstance.get('/api/dossiers').then((r) => {
+      this.dossiers = r.data || []
+    }).catch(() => {})
   },
   data() {
     return {
@@ -193,6 +205,7 @@ export default {
         // Attention, bien save l id de la rubrique
         rubrique: "fds",
         misEnLigne: "dfs",
+        dossier_id: null,
         contenu : []
       },
       partToAdd: {
@@ -205,6 +218,7 @@ export default {
       },
       enableAdd : false,
       rubriques: [],
+      dossiers: [],
       imagePreview: null, // Store the image preview URL
     };
   },

@@ -1,58 +1,62 @@
 <template>
-    <div class="navbar">
-      <div class="navbar-content">
-        <p class="navbar-title">Salut, bienvenue dans la page admin</p>
-        <router-link to="/" class="logout-button" @click="logout">Logout</router-link>
-            </div>
+  <div class="navbar">
+    <div class="navbar-content">
+      <p class="navbar-title">Salut, bienvenue dans la page admin</p>
+      <router-link to="/" class="logout-button" @click="logout">Logout</router-link>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {};
+  </div>
+</template>
+
+<script>
+import { mapActions } from 'vuex';
+
+export default {
+  methods: {
+    ...mapActions('auth', ['clearUser']),
+    logout() {
+      this.clearUser();
     },
-    methods : {
-      logout(){
-        sessionStorage.setItem('token', ''); // For session-only storage
-      }
-    }
-  };
-  </script>
-  
-  <style scoped>
-  .navbar {
-    width: 100%;
-    background-color: #333; /* Dark background color */
-    color: white; /* Text color */
-    padding: 10px 0; /* Add some vertical padding */
-  }
-  
-  .navbar-content {
-    max-width: 1200px; /* Limit the content width for better readability */
-    margin: 0 auto; /* Center the content horizontally */
-    display: flex;
-    justify-content: space-between; /* Space elements evenly */
-    align-items: center;
-  }
-  
-  .navbar-title {
-    font-size: 18px;
-  }
-  
-  .logout-button {
-    background-color: #f44336; /* Red color for the logout button */
-    color: white; /* Text color */
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s; /* Add a smooth hover effect */
-  }
-  
-  .logout-button:hover {
-    background-color: #d32f2f; /* Darker red color on hover */
-  }
-  </style>
-  
+  },
+};
+</script>
+
+<style scoped>
+.navbar {
+  width: 100%;
+  background-color: #333;
+  color: white;
+  padding: 10px 0;
+}
+
+.navbar-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.navbar-title {
+  font-size: 18px;
+}
+
+.logout-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.logout-button:hover {
+  background-color: #d32f2f;
+}
+</style>

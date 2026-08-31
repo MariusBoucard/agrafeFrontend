@@ -31,8 +31,17 @@
             <label for="date">Date de publication :</label>
             <input type="date" id="date" v-model="news.date" required>
           </div>
-
-
+          <div class="form-group">
+            <label><input type="checkbox" v-model="news.is_banner"> Afficher en bandeau éphémère</label>
+          </div>
+          <div class="form-group" v-if="news.is_banner">
+            <label for="banner_text">Texte du bandeau :</label>
+            <input type="text" id="banner_text" v-model="news.banner_text">
+          </div>
+          <div class="form-group" v-if="news.is_banner">
+            <label for="expires_at">Expire le :</label>
+            <input type="datetime-local" id="expires_at" v-model="news.expires_at">
+          </div>
         </div>
       </div>
       <button type="submit" class="submit-button">Submit</button>
@@ -51,7 +60,10 @@ export default {
         titre: "",
         date: "",
         description: "",
-        imageLogo : ""
+        imageLogo: "",
+        is_banner: false,
+        banner_text: "",
+        expires_at: "",
       },
       imagePreview: null, // Store the image preview URL
     };

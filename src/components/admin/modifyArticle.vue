@@ -44,6 +44,10 @@
             <label for="date">Date de publication :</label>
             <input type="date" id="date" v-model="article.date" required>
             </div>
+            <div class="form-group" v-if="article.created_at">
+              <label>Date de création (non modifiable) :</label>
+              <input type="text" :value="article.created_at" disabled>
+            </div>
       
             <div class="form-group">
               <label for="rubrique" class="label">Rubrique:</label>
@@ -53,6 +57,15 @@
                 <!-- Add more options as needed -->
               </select>
     
+       </div>
+       <div class="form-group">
+              <label for="dossier">Dossier (optionnel) :</label>
+              <select id="dossier" v-model="article.dossier_id">
+                <option :value="null">Aucun dossier</option>
+                <option v-for="d in dossiers" :key="d.id" :value="d.id">
+                  {{ d.titre }} — {{ d.statut === 'termine' ? 'Terminé' : 'En cours' }}
+                </option>
+              </select>
        </div>
        <div class="form-group">
     
@@ -79,10 +92,15 @@
               customClass: 'custom-el-message',
               duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
             }))
-        axiosInstance.get('api/getArticle?id=' + this.id).then(
+        axiosInstance.get('/api/dossiers').then((r) => {
+          this.dossiers = r.data || []
+        }).catch(() => {})
+        axiosInstance.get('/api/getArticle?id=' + this.id).then(
             response => 
             {
               this.article = response.data
+              if (!this.article.contenu) this.article.contenu = []
+              if (this.article.dossier_id === undefined) this.article.dossier_id = null
             }
 
         ).catch(() => 
@@ -112,11 +130,13 @@
             misEnLigne : "dfs",
             articlePdf : "",
             fileType : "fds",
+            dossier_id: null,
             // Initialize other attributes with empty values or default values
             // For example: auteur: "", numeroParu: "", date: "", ...
           },
           notModifiedImage : true,
           rubriques : [],
+          dossiers: [],
           imagePreview: null, // Store the image preview URL
           baseUrl : baseUrl
         };

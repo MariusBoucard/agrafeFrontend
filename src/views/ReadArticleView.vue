@@ -17,7 +17,16 @@
           
         </li>
       </ul>
-        {{ article.auteur }}
+      <p class="author" v-if="article.auteur">
+        <template v-if="article.authorSlug">
+          par
+          <router-link class="author-link" :to="`/equipe/${article.authorSlug}`">
+            {{ article.auteur }}
+          </router-link>
+          — <router-link class="portfolio-link" :to="`/equipe/${article.authorSlug}`">voir le portfolio</router-link>
+        </template>
+        <template v-else>par {{ article.auteur }}</template>
+      </p>
       <ul style=" width: 80%;">
         <li v-for="item in article.contenu" :key="item.id" style="margin: 0px;">
           <div v-if="item.type === 'Sources'" style="display: flex;">
@@ -254,7 +263,19 @@ li {
   font-family: "Bahnschrift", sans-serif;
   color: rgba(0, 0, 0, 1);
   font-weight: 500;
-  /* Styles for the author class */
+  margin: 1.25rem 0 0.5rem;
+}
+
+.author-link,
+.portfolio-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.author-link:hover,
+.portfolio-link:hover {
+  opacity: 0.7;
 }
 
 .title {

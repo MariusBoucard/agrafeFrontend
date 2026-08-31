@@ -1,355 +1,376 @@
 <template>
-  <div class="navbar">
-    <p class="title">Journal associatif étudiant</p>
-    <router-link to="/">
-      <div class="imgDiv">
-        <img
-          src="../assets/logos/logo_entier_white.svg"
-          alt="Logo de l'agrafe"
-        />
+  <header class="site-header">
+    <div class="masthead">
+      <div class="masthead-inner page-shell">
+        <p class="masthead-left">Rennes 2</p>
+        <router-link to="/" class="brand" aria-label="L'Agrafe — Accueil">
+          <img src="../assets/logos/logo_entier_white.svg" alt="L'Agrafe" />
+        </router-link>
+        <p class="masthead-right">Journal étudiant</p>
       </div>
-    </router-link>
-    <div class="innerNav">
-      <div class="inner">
-        <nav class="nav-list">
-          <ul >
-            <li >
+    </div>
 
-              <select v-model="selectedRubrique" @change="navigateToRubrique(selectedRubrique)" class="link-select link">
-  <option disabled value="">Articles</option>
-  <option value="">Tous les articles</option>
-  <option v-for="rubrique in rubriques" :value="rubrique.id" :key="rubrique.id">
-    {{ rubrique.rubrique }}
-  </option>
-  <option value="focale">Focale</option>
-</select>
+    <div class="nav-bar">
+      <div class="nav-inner page-shell">
+        <button
+          class="burger"
+          type="button"
+          :aria-expanded="mobileOpen ? 'true' : 'false'"
+          aria-label="Ouvrir le menu"
+          @click="mobileOpen = !mobileOpen"
+        >
+          <span></span><span></span><span></span>
+        </button>
 
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <a class="link" href="/">
-                <router-link class="routerLink" to="/archives">Archives</router-link>
-              </a>
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <a class="link" href="/">
-                <router-link class="routerLink" to="/actualite">L'actu</router-link>
-              </a>
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <a class="link" href="/">
-                <router-link class="routerLink" to="/newsletter">Newsletter</router-link>
-              </a>
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <a class="link" href="/">
-                <router-link class="routerLink" to="/apropos">À propos</router-link>
-              </a>
-            </li>
-          </ul>
+        <nav class="nav-list" :class="{ open: mobileOpen }" aria-label="Navigation principale">
+          <select
+            v-model="selectedRubrique"
+            class="nav-select"
+            aria-label="Articles par rubrique"
+            @change="navigateToRubrique(selectedRubrique)"
+          >
+            <option disabled value="">Articles</option>
+            <option value="">Tous les articles</option>
+            <option v-for="rubrique in rubriques" :value="rubrique.id" :key="rubrique.id">
+              {{ rubrique.rubrique }}
+            </option>
+            <option value="focale">Focale</option>
+          </select>
+
+          <div class="dropdown" @mouseleave="dossiersOpen = false">
+            <button
+              type="button"
+              class="nav-link dropdown-trigger"
+              @click="dossiersOpen = !dossiersOpen"
+              @mouseenter="dossiersOpen = true"
+            >
+              Dossiers
+            </button>
+            <div class="dropdown-panel" :class="{ open: dossiersOpen }">
+              <router-link
+                v-for="d in recentDossiers"
+                :key="d.id"
+                :to="`/dossiers/${d.id}`"
+                @click="closeMobile"
+              >
+                <span>{{ d.titre }}</span>
+                <em>{{ d.statut === 'termine' ? 'Terminé' : 'En cours' }}</em>
+              </router-link>
+              <p v-if="!recentDossiers.length" class="dropdown-empty">Aucun dossier</p>
+            </div>
+          </div>
+
+          <router-link class="nav-link" to="/archives" @click="closeMobile">Archives</router-link>
+          <router-link class="nav-link" to="/actualite" @click="closeMobile">L'actu</router-link>
+          <router-link class="nav-link" to="/newsletter" @click="closeMobile">Newsletter</router-link>
+          <router-link class="nav-link" to="/apropos" @click="closeMobile">À propos</router-link>
+          <router-link class="nav-link nav-cta" to="/proposerArticle" @click="closeMobile">
+            Proposer un article
+          </router-link>
         </nav>
       </div>
     </div>
-  </div>
+  </header>
 </template>
 
 <script>
-import axiosInstance from "../axios.js";
+import axiosInstance from '../axios.js';
 
 export default {
   data() {
     return {
-      activeMenu: false,
       rubriques: [],
-      selectedRubrique: ""
+      dossiers: [],
+      selectedRubrique: '',
+      mobileOpen: false,
+      dossiersOpen: false,
     };
   },
+  computed: {
+    recentDossiers() {
+      return [...this.dossiers]
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        .slice(0, 8);
+    },
+  },
   mounted() {
-    axiosInstance
-      .get("/api/getrubriques")
-      .then((response) => {
-        this.rubriques = response.data;
-      })
-      .catch((error) =>
-        this.$message({
-          message: error,
-          type: "error",
-          customClass: "custom-el-message",
-          duration: 1000,
-        })
-      );
+    axiosInstance.get('/api/getrubriques').then((r) => { this.rubriques = r.data; }).catch(() => {});
+    axiosInstance.get('/api/dossiers').then((r) => { this.dossiers = r.data || []; }).catch(() => {});
   },
   methods: {
-    toggleArticles() {
-      this.activeMenu = !this.activeMenu;
+    closeMobile() {
+      this.mobileOpen = false;
+      this.dossiersOpen = false;
     },
-    navigateToRubrique(selectedRubrique){
-      if(selectedRubrique === 'focale'){
-        this.$router.push('/focale')
-      } else {
-        this.$router.push(`/articles/${selectedRubrique}`)
-      }
-    }
+    navigateToRubrique(selectedRubrique) {
+      this.closeMobile();
+      if (selectedRubrique === 'focale') this.$router.push('/focale');
+      else if (selectedRubrique === '') this.$router.push('/articles');
+      else this.$router.push(`/articles/${selectedRubrique}`);
+    },
   },
 };
 </script>
 
 <style scoped>
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.masthead {
+  background: var(--ink);
+  color: #fff;
+  position: relative;
+}
+
+.masthead-inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 0 1rem;
+}
+
+.masthead-left,
+.masthead-right {
+  margin: 0;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  font-weight: 600;
+}
+
+.masthead-right {
+  text-align: right;
+}
+
+.brand {
+  display: block;
+  text-decoration: none;
+}
+
+.brand img {
+  width: min(340px, 58vw);
+  margin: 0 auto;
+  filter: drop-shadow(0 0 0 transparent);
+  transition: transform 0.35s var(--ease-out);
+}
+
+.brand:hover img {
+  transform: scale(1.015);
+}
+
+.nav-bar {
+  background: var(--paper-lift);
+  border-bottom: 2px solid var(--ink);
+  box-shadow: 0 1px 0 var(--rule);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  min-height: 50px;
+}
+
 .nav-list {
   display: flex;
   flex-wrap: wrap;
-}
-
-.navbar {
+  align-items: center;
+  gap: 0.1rem;
   width: 100%;
-  border: 10px solid white;
-  box-sizing: border-box; /* Make the border go inside the div */
-  background-color: black;
-  width: 100%;
-  border: 10px solid white;
-  box-sizing: border-box; /* Make the border go inside the div */
-  background-color: black;
 }
 
-.title {
-  color: white;
-  color: white;
-}
-
-nav {
-  display: flex;
-  /* Use flexbox to create a horizontal layout */
-  justify-content: space-between;
-  /* Evenly space the items */
-  background-color: #ffffff;
-  /* Background color for the navigation bar */
-  padding: 10px;
-  /* Add some padding for spacing */
-  display: flex;
-  /* Use flexbox to create a horizontal layout */
-  justify-content: space-between;
-  /* Evenly space the items */
-  background-color: #ffffff;
-  /* Background color for the navigation bar */
-  padding: 10px;
-  /* Add some padding for spacing */
-}
-.link-select{
+.nav-link,
+.nav-select,
+.dropdown-trigger {
+  appearance: none;
+  background: transparent;
   border: none;
-  background-color: white;
-  color: black;
-  padding: 10px;
-  font: 1em ;
-  font-family: "agrafe" !important;
-  font-weight: bold !important;
-}
-.link-select.expanded {
-  font-size: 2em; /* Increase the font size when expanded */
-}
-.link-select:hover{
-  background-color: rgb(0, 0, 0);
-  color: white;
-}
-
-.routerLink {
-  color: black;}
-.link-select{
-  border: none;
-  background-color: white;
-  color: black;
-  padding: 10px;
-  font: 1em ;
-  font-family: "agrafe" !important;
-  font-weight: bold !important;
-}
-.link-select.expanded {
-  font-size: 2em; /* Increase the font size when expanded */
-}
-.link-select:hover{
-  background-color: rgb(0, 0, 0);
-  color: white;
-}
-
-.routerLink {
-  color: black;
-}
-.routerLink:hover {
-  color: rgb(255, 255, 255);}
-.routerLink:hover {
-  color: rgb(255, 255, 255);
-}
-ul {
-  list-style: none;
-  /* Remove list bullet points */
-  list-style: none;
-  /* Remove list bullet points */
-}
-
-li {
-  color: rgb(0, 0, 0);
-  margin: 0;
-  /* Remove any default margins */
-  padding: 0;
-  /* Remove any default padding */
-  color: rgb(0, 0, 0);
-  margin: 0;
-  /* Remove any default margins */
-  padding: 0;
-  /* Remove any default padding */
-}
-
-a {
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   text-decoration: none;
-  /* Remove underlines from links */
-
-  /* Text color for links */
-  padding: 10px;
-  /* Add padding for spacing between links */
-  text-decoration: none;
-  /* Remove underlines from links */
-
-  /* Text color for links */
-  padding: 10px;
-  /* Add padding for spacing between links */
-}
-.imgDiv {
-  width: 70%;
-  margin: auto;}
-.imgDiv {
-  width: 70%;
-  margin: auto;
-}
-/* Style for when links are hovered over */
-.link:hover {
-  color: #ffffff !important;
-  background-color: #000000;
-  border-radius: 5px;
-  /* Add rounded corners */
-  color: #ffffff !important;
-  background-color: #000000;
-  border-radius: 5px;
-  /* Add rounded corners */
-}
-.innerNav {
-  width: 100%;
-  background-color: white;
-}
-.inner {
-  width: 80%;
-  margin: auto;
+  padding: 0.75rem 0.8rem;
+  min-height: 44px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  position: relative;
 }
 
-/*dropdown styles*/
-.link-article:hover {
-  color: #000000 !important;
-  background-color: #ffffff;
-  border-radius: 5px;
-  font-family: "agrafe" !important;
-  font-weight: bold !important;
+.nav-link::after,
+.dropdown-trigger::after {
+  content: '';
+  position: absolute;
+  left: 0.8rem;
+  right: 0.8rem;
+  bottom: 0.45rem;
+  height: 2px;
+  background: var(--staple);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.nav-link:hover::after,
+.dropdown-trigger:hover::after,
+.nav-link.router-link-active::after {
+  transform: scaleX(1);
+}
+
+.nav-cta {
+  margin-left: auto;
+  background: var(--ink);
+  color: #fff !important;
+  padding-inline: 1rem;
+}
+
+.nav-cta::after {
+  display: none;
+}
+
+.nav-cta:hover {
+  background: var(--staple);
+}
+
+.nav-select {
+  max-width: 170px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 600;
 }
 
 .dropdown {
   position: relative;
-  display: inline-block;
 }
 
-.dropdown-content {
+.dropdown-panel {
   display: none;
   position: absolute;
-  background-color: #000000;
-  min-width: 102px; /*à modif pour que ça fit automatiquement la taille du lien*/
-  box-shadow: 0px 8px 16px 0px rgba(12, 12, 12, 0.2);
-  z-index: 1;
+  top: calc(100% + 2px);
+  left: 0;
+  min-width: 260px;
+  background: var(--ink);
+  z-index: 20;
+  padding: 0.4rem 0;
+  border-top: 3px solid var(--staple);
 }
 
-.dropdown-content a {
-  color: white;
-  padding: 12px 16px;
+.dropdown-panel.open,
+.dropdown:hover .dropdown-panel {
+  display: block;
+}
+
+.dropdown-panel a {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: #fff;
   text-decoration: none;
-  display: block;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
 }
 
-.dropdown-content a:hover {
-  background-color: #ffffff;
-  color: black;
+.dropdown-panel a:hover {
+  background: #fff;
+  color: var(--ink);
 }
 
-.dropdown:hover .dropdown-content {
-  display: block;
-  }
-.innerNav {
-  width: 100%;
-  background-color: white;
-}
-.inner {
-  width: 80%;
-  margin: auto;
+.dropdown-panel em {
+  font-style: normal;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--staple);
+  font-weight: 700;
 }
 
-/*dropdown styles*/
-.link-article:hover {
-  color: #000000 !important;
-  background-color: #ffffff;
-  border-radius: 5px;
-  font-family: "agrafe" !important;
-  font-weight: bold !important;
+.dropdown-panel a:hover em {
+  color: var(--staple);
 }
 
-.dropdown {
-  position: relative;
-  display: inline-block;
+.dropdown-empty {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  color: #aaa;
+  font-size: 0.85rem;
 }
 
-.dropdown-content {
+.burger {
   display: none;
-  position: absolute;
-  background-color: #000000;
-  min-width: 102px; /*à modif pour que ça fit automatiquement la taille du lien*/
-  box-shadow: 0px 8px 16px 0px rgba(12, 12, 12, 0.2);
-  z-index: 1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
 }
 
-.dropdown-content a {
-  color: white;
-  padding: 12px 16px;
-  text-decoration: none;
+.burger span {
   display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--ink);
 }
 
-.dropdown-content a:hover {
-  background-color: #ffffff;
-  color: black;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-@media (max-width: 768px) {
-  .inner {
-    width: 90%;
+@media (max-width: 900px) {
+  .masthead-left,
+  .masthead-right {
+    display: none;
   }
-  .nav-list {
-width: 100%;;
-padding: 0;  }
-.nav-list {
+
+  .masthead-inner {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .burger {
     display: flex;
-    flex-wrap: wrap;
   }
 
-  .nav-list ul {
-  width :40%;
-  padding: 0; /* This will make each <ul> take up 50% of the width of .nav-list */
+  .nav-list {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.5rem 0 1rem;
   }
-  .routerLink {
-    padding: 0;
+
+  .nav-list.open {
+    display: flex;
+  }
+
+  .nav-select,
+  .nav-link,
+  .dropdown-trigger {
+    width: 100%;
+  }
+
+  .nav-cta {
+    margin-left: 0;
+    justify-content: center;
+  }
+
+  .dropdown-panel {
+    position: static;
+    display: none;
+    background: var(--ink);
+  }
+
+  .dropdown-panel.open {
+    display: block;
   }
 }
-
 </style>
