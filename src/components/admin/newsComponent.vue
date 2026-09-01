@@ -88,6 +88,8 @@ export default {
     },
 
     deleteNews(id) {
+      if (confirm("T'es sûr de vouloir supprimer la news ?\n C'est pas prévu d'être réversible, à tes risques et périls fréro")) {
+
       axiosInstance.delete(`/api/deleteNews/${id}`).then(() => {
         this.$message({
           message: 'News deleted successfully',
@@ -104,7 +106,7 @@ export default {
               type: 'error',
               customClass: 'custom-el-message',
               duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
-            })        });
+            })        });}
     },
     setNews() {
       axiosInstance.get('/api/getAllNews').then(response =>

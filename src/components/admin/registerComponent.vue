@@ -80,6 +80,8 @@ export default{
         })
         },
         deleteUser(id){
+            if (confirm("T'es sûr de vouloir supprimer l'utilisateur ?\n C'est pas prévu d'être réversible, à tes risques et périls fréro")) {
+
             axiosInstance.delete(`/api/deleteUser/${id}`).then(
                 () => {
                     this.$message({
@@ -96,7 +98,7 @@ export default{
               type: 'error',
               customClass: 'custom-el-message',
               duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
-            }))
+            }))}
         },
 
         register() {

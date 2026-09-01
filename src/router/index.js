@@ -7,6 +7,8 @@ import AProposView from '../views/AProposView.vue'
 import proposerArticleView from '../views/proposerArticleView.vue'
 import FocaleView from '../views/FocaleView.vue'
 import ArchiveLectureView from '../views/ArchiveLectureView.vue'
+import NewsletterView from '../views/NewsletterView.vue'
+import ReadArticleView from '../views/ReadArticleView.vue'
 import axios from 'axios'
 
 import { useStore } from 'vuex'; // Import useStore from Vuex
@@ -17,7 +19,7 @@ const routes = [
     name: 'home',
     component: menuView,
     meta: {        hideNavigationLinks: false ,
-      title: 'L\'Agrafe - Journal'
+      title: 'L\'agrafe - Journal'
     },
 
 
@@ -27,7 +29,7 @@ const routes = [
     name: 'articles',
     component: ArticleView,
     meta: {        hideNavigationLinks: false,
-      title: 'L\'Agrafe - Articles'
+      title: 'L\'agrafe - Articles'
 
     } // Add a meta field to indicate authentication requirement
   },
@@ -36,15 +38,33 @@ const routes = [
     name: 'articlesRubrique',
     component: ArticleView,
     meta: { hideNavigationLinks: false,
-      title: 'L\'Agrafe - Articles'
+      title: 'L\'agrafe - Articles'
+    } // Add a meta field to indicate authentication requirement
+  },
+  {
+    path: '/article/:articleId',
+    name: 'article',
+    component: ReadArticleView,
+    props: true, // Enable passing route params as props
+    meta: { hideNavigationLinks: false,
+      title: 'L\'agrafe - Articles'
+    } // Add a meta field to indicate authentication requirement
+  },
+  {
+    path: '/articles/',
+    name: 'articlesAll',
+    component: ArticleView,
+    props: true, // Enable passing route params as props
+    meta: { hideNavigationLinks: false,
+      title: 'L\'agrafe - Articles'
     } // Add a meta field to indicate authentication requirement
   },
   {
     path: '/focale',
     name: 'focale',
     component: FocaleView,
-    meta: { hideNavigationLinks: false,
-      title: 'L\'Agrafe - Focale'
+    meta: { hideNavigationLinks: false, 
+      title: 'L\'agrafe - Focale'
     } // Add a meta field to indicate authentication requirement
   },
   {
@@ -52,7 +72,7 @@ const routes = [
     name: 'archives',
     component: ArchiveView,
     meta: {        hideNavigationLinks: false,
-      title: 'L\'Agrafe - Archives'
+      title: 'L\'agrafe - Archives'
     } 
   },
   {
@@ -60,7 +80,7 @@ const routes = [
     name: 'archiveLecture',
     component: ArchiveLectureView,
     meta: {        hideNavigationLinks: false,
-      title: 'L\'Agrafe - Archives'
+      title: 'L\'agrafe - Archives'
     } 
   },
   {
@@ -68,7 +88,7 @@ const routes = [
     name: 'actualite',
     component: ActuView,
     meta: {        hideNavigationLinks: false,
-      title: 'L\'Agrafe - Actualité'
+      title: 'L\'agrafe - Actualité'
     } 
   },
   {
@@ -76,7 +96,7 @@ const routes = [
     name: 'apropos',
     component: AProposView,
     meta: {        hideNavigationLinks: false,
-      title: 'L\'Agrafe - A propos'
+      title: 'L\'agrafe - A propos'
     } 
   },
   {
@@ -84,7 +104,7 @@ const routes = [
     name: 'proposerArticle',
     component: proposerArticleView,
     meta: {        hideNavigationLinks: false,
-      title: 'L\'Agrafe - Proposer un article'
+      title: 'L\'agrafe - Proposer un article'
     } 
   },
   {
@@ -109,6 +129,13 @@ const routes = [
   },
 
  
+
+  
+  {
+    path: '/newsletter',
+    name: 'newsletter',
+    component: NewsletterView,
+  }
 ]
 
 const router = createRouter({

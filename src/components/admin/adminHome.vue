@@ -23,6 +23,7 @@
       <FocalComponent v-if="activeComponent.focal" @componentChanged="setComponent($event)"></FocalComponent>
       <CreateFocalComponent v-if="activeComponent.createFocal" @componentChanged="setComponent($event)"></CreateFocalComponent>
       <propositionArticleComponent v-if="activeComponent.propalArticle" @componentChanged="setComponent($event)"></propositionArticleComponent>
+      <FileUploadComponent  v-if="activeComponent.fichiers" @componentChanged="setComponent($event)"></FileUploadComponent>
     </div>
   </div>
     </div>
@@ -44,8 +45,9 @@ import createArchive from './createArchive.vue';
 import FocalComponent from './focaleComponent.vue';
 import CreateFocalComponent from './createFocaleComponent.vue';
 import propositionArticleComponent from './propositionArticleComponent.vue';
+import FileUploadComponent from './FileUploadComponent.vue';
 export default{
-    components: { propositionArticleComponent, createArchive, rubriquesComponent, newsComponent, NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle, modifyArticle, NewsletterComponent, CreateNewsComponent, DashboardComponent, ArchiveComponent, FocalComponent, CreateFocalComponent },
+    components: { FileUploadComponent, propositionArticleComponent, createArchive, rubriquesComponent, newsComponent, NavbarComponent, MenuComponent, RegisterComponent, ArticlesComponent, CreateArticle, modifyArticle, NewsletterComponent, CreateNewsComponent, DashboardComponent, ArchiveComponent, FocalComponent, CreateFocalComponent },
    
     data(){
         return {
@@ -63,7 +65,8 @@ export default{
                 rubrique : false,
                 focal : false,
                 createFocal : false,
-                propalArticle : false
+                propalArticle : false,
+                fichiers : false,
             },
             articleId : ""
         }

@@ -1,7 +1,7 @@
 <template>
      <div>
    
-        <div class="articleWidget" v-for="archive in archives" :key="archive.id">
+        <div class="articleWidget" v-for="archive in archivesByDate" :key="archive.id">
             <router-link class="routerLink" :to="'/archives/' + archive.id">
                 <archiveWidget :archive="archive"></archiveWidget> 
             </router-link>
@@ -15,6 +15,11 @@ export default {
     components : {
         archiveWidget
     },
+    computed : {
+        archivesByDate (){
+            return [...this.archives].sort((a, b) => new Date(b.date) - new Date(a.date));
+        }
+    },  
     data(){
         return {
             archives : []

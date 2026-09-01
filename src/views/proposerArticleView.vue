@@ -1,6 +1,6 @@
 <template>
     <div class="baseView">
-        <div class="menuGrid">
+        <div class="container">
             <div class="leftColumn">
                 <div id="titre">
                     <p class="titre">Proposer un article</p>
@@ -13,7 +13,7 @@
                             <option v-for="rub in rubriques" :key="rub.id" :value="rub.id">{{ rub.rubrique }}</option>
                         </select>
                         <p class="text">Sélectionne la rubrique pour laquelle tu veux écrire un article.</p>
-                        <p class="text"> sec = signes espaces compris. <a href="https://pornhub.com">Télécharger la charte
+                        <p class="text"> sec = signes espaces compris. <a href="https://drive.google.com/file/d/1GyijNTX6QeJIWjQcm9IdT8TmuiRjc11r/view?usp=drivesdk">Télécharger la charte
                                 de rédation.</a></p>
                         <p class="text" @click="rubriquesShown = !rubriquesShown">
                             Détail des rubriques
@@ -434,14 +434,39 @@ a {
     width: 90%;
     margin: auto;
 }
+.container {
+    gap: 20px; /* Adjust as needed */
 
-.menuGrid {
-    display: grid;
-    grid-template-columns: 70% 30%;
-    /* 70% for the left column, 30% for the right column */
-    column-gap: 20px;
-    /* Adjust the gap as needed */
+  display: flex;
+  flex-wrap: wrap;
 }
+.leftColumn {
+  width : 65%
+  /* Your styles for the left column here */
+}
+
+.rightColumn {
+  width: 30%;
+  /* Your styles for the right column here */
+}
+.article{
+  width: 80%;
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  .leftColumn {
+    width: 100%;
+  }
+  .rightColumn {
+    width: 100%;
+  }
+  .article{
+    width: 100%;
+  }}
 
 .rubriqueInfoList {
     list-style-type: none;

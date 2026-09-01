@@ -1,8 +1,10 @@
 <template>
     <div class="outsideDiv">
         <p>N° {{ archive.numero }}. {{ formatDate(archive.date) }}</p>
-        <img class="innerImage" :src="`${baseUrl}/save/saveArchive/back/${archive.id}.png`"/>
-        
+        <img class="innerImage" :src="`${baseUrl}/api/save/saveArchive/cover/${archive.id}.png`"/>
+        <p>
+            {{ archive.description }}
+        </p>
     </div>
 
 </template>
@@ -46,23 +48,23 @@ export default{
             console.log(typeof month)
 
             switch (month) {
-            case '1':
+            case '01':
             return 'Jan';
-            case '2':
+            case '02':
             return 'Fev';
-            case '3':
+            case '03':
             return 'Mar';
-            case '4':
+            case '04':
             return 'Avr';
-            case '5':
+            case '05':
             return 'Mai';
-            case '6':
+            case '06':
             return 'Juin';
-            case '7':
+            case '07':
             return 'Juil';
-            case '8':
+            case '08':
             return 'Août';
-            case '9':
+            case '09':
             return 'Sep';
             case '10':
             return 'Oct';
@@ -96,5 +98,13 @@ export default{
 .innerImage{
     width: 90%;
     margin: auto;
+}
+
+@media screen and (max-width: 768px) {
+    .outsideDiv{
+    width: 90%;
+    }
+
+    
 }
 </style>

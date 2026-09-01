@@ -21,13 +21,20 @@
                     <!-- Content for the first column -->
                 </div>
                 <div class="column" style="width: 80%;">
-                    <!-- Content for the second column -->
-                    <div style="width:50%">
-                        <pdf :src="`${baseUrl}/save/saveArchive/pdf/${archiveId}.pdf`" :page="currentPage" ref="pdfViewer"></pdf>
-                    </div>
-                    <div style="width:50%">
-                        <pdf :src="`${baseUrl}/save/saveArchive/pdf/${archiveId}.pdf`" :page="currentPage+1"></pdf>
+                    
+                    <div v-if="currentPage==1" style="width:50%; margin: auto; height: 100%;">
                         
+                        <pdf :src="`${baseUrl}/api/save/saveArchive/pdf/${archiveId}.pdf`" :page="currentPage" :key="currentPage" ref="pdfViewer"></pdf>
+                    </div>
+                    <div v-if="currentPage == nbPages" style="width:50%; margin: auto;height: 100%;">
+                        <img :src="`${baseUrl}/api/save/saveArchive/back/${archiveId}.png`" style="width: 100%; ">
+                    </div>
+                    <!-- Content for the second column -->
+                    <div v-if="currentPage!=1 && currentPage != nbPages" style="width:50%">
+                        <pdf :src="`${baseUrl}/api/save/saveArchive/pdf/${archiveId}.pdf`" :page="currentPage" ref="pdfViewer"></pdf>
+                    </div>
+                    <div v-if="currentPage!=1 && currentPage != nbPages" style="width:50%">
+                        <pdf :src="`${baseUrl}/api/save/saveArchive/pdf/${archiveId}.pdf`" :page="currentPage+1"></pdf>
                     </div>
                     
                 </div>
@@ -35,12 +42,20 @@
                     <div class="middleIcon" @click="nextPage()">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-6 h-6">
                             <path fill-rule="evenodd"
-                            d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
-                            clip-rule="evenodd" />
+                                d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
+                                clip-rule="evenodd" />
                         </svg>
-                        
                     </div>
                     <!-- Content for the third column -->
+                    <a  class="bottomLink" style="position: absolute; bottom: 10px;right: 20px;">
+                        <button class="download-button" @click="downloadArchive()">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-2 h-2" style="height: 50px;width: 50px;;">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15M9 12l3 3m0 0 3-3m-3 3V2.25" />
+</svg>
+
+                            Télécharger
+                        </button>
+                    </a>
                 </div>
                 
             </div>
@@ -78,11 +93,27 @@ export default {
     watch: {
         pdfUrl: function () {
             this.fetchPdf()
-        }
+        },
+        currentPage() {
+          try{
+                this.$refs.pdfBack.renderPage(this.currentPage);
+            } catch(error){
+                console.log(error)
+            }
+        },
     },
     methods: {
+    downloadArchive() {
+        let url = this.baseUrl + "/api/save/saveArchive/pdf/" + this.archiveId + ".pdf";
+let link = document.createElement('a');
+link.href = url;
+link.setAttribute('download', this.archiveId + '.pdf'); // provide a default filename
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
+    },
         async fetchPdf() {
-            let url = this.baseUrl+"/save/saveArchive/pdf/"+this.archiveId+".pdf"
+            let url = this.baseUrl+"/api/save/saveArchive/pdf/"+this.archiveId+".pdf"
 
             axiosInstance.get('/api/getArchivePublic/'+this.archiveId).then((response) => {
                 this.currentArchive = response.data
@@ -111,12 +142,16 @@ export default {
 
         },
         lastPage() {
-           if(this.currentPage > 1){
+            if (this.currentPage == 2) {
+                this.currentPage -= 1
+            } else if(this.currentPage > 2){
                this.currentPage -= 2
            }
         },
         nextPage() {
-            if(this.currentPage < this.nbPages){
+            if(this.currentPage == 1){
+                this.currentPage += 1
+            } else if(this.currentPage < this.nbPages){
                this.currentPage += 2
            }
         },
@@ -132,23 +167,23 @@ export default {
                console.log(typeof month)
    
                switch (month) {
-               case '1':
+               case '01':
                return 'Jan';
-               case '2':
+               case '02':
                return 'Fév';
-               case '3':
+               case '03':
                return 'Mars';
-               case '4':
+               case '04':
                return 'Avr';
-               case '5':
+               case '05':
                return 'Mai';
-               case '6':
+               case '06':
                return 'Juin';
-               case '7':
+               case '07':
                return 'Juil';
-               case '8':
+               case '08':
                return 'Août';
-               case '9':
+               case '09':
                return 'Sept';
                case '10':
                return 'Oct';
@@ -165,6 +200,22 @@ export default {
 }
 </script>
 <style scoped>
+.download-button {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+  background-color: white;
+  color: black;
+}
 .subText {
     font-size: larger;
     margin-top: 20px;
@@ -223,6 +274,7 @@ letter-spacing: 2px; /* Adjust the value to change the space between letters */
 }
 
 .column {
+    position: relative;
     display: flex;
     width: 100%;
     justify-content: center;

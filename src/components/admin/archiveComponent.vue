@@ -24,14 +24,14 @@
       </thead>
       <tbody>
         <tr v-for="(archive, index) in archives" :key="index">
-          <td><button class="button" @click.stop="deleteArchive(archive.id)">Supprimer</button></td>
+          <td><button class="button" style="background-color: red;" @click.stop="deleteArchive(archive.id)">Supprimer</button></td>
           <td>{{ archive.titre }}</td>
           <td>{{ archive.description }}</td>
           <td>
-            <img style="max-width: 100%;" :src="`${baseUrl}/save/saveArchive/cover/${archive.id}.png`">
+            <img style="max-width: 100%;" :src="`${baseUrl}/api/save/saveArchive/cover/${archive.id}.png`">
           </td>
           <td>
-            <img style="max-width: 100%;" :src="`${baseUrl}/save/saveArchive/back/${archive.id}.png`">
+            <img style="max-width: 100%;" :src="`${baseUrl}/api/save/saveArchive/back/${archive.id}.png`">
           </td>
           <td>{{ archive.numero}}</td>
           <td>{{ archive.date }}</td>
@@ -86,6 +86,8 @@ export default{
       },
 
         deleteArchive(id){
+          if (confirm("T'es sûr de vouloir supprimer l'archive ?\n C'est pas prévu d'être réversible, à tes risques et périls fréro")) {
+
           axiosInstance.delete(`/api/deleteArchive/${id}`).then(() => {
             this.$message({
               message: 'Article deleted successfully',
@@ -102,7 +104,7 @@ export default{
               customClass: 'custom-el-message',
               duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
             });
-          });
+          });}
         },
         setArchives(){
           

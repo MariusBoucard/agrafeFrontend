@@ -3,17 +3,24 @@
         <div class="innerFooter">
             <div class ="bandeau">
                 <p>© 2023</p>
-                <p class="agrafe">l'agrafe.</p>
-                <p>Journal étudiant associatif à l'université de Rennes 2</p>
+                <p class="agrafe">L'agrafe.</p>
+                <p>Journal étudiant associatif à l'université Rennes 2</p>
             </div>
             <div class="bandeau">
                 <a href="MentionsLegales">Mentions légales</a>
             </div>
             <div class="social">
                 <p>Suis-nous sur les réseaux sociaux :</p>
-                <img  src="../assets/social/Instagram_white.svg"/>
-                <img src="../assets/social/Envelopper_white.svg"/>
-                <img src="../assets/social/Facebook_white.svg"/>
+                <a href="https://www.instagram.com/lagrafejournal/">
+
+                    <img class="imgSocial" src="../assets/social/Instagram_white.svg"/>
+                </a>
+                <a href="mailto:lagrafejournal@protonmail.com?subject=Mail depuis le site de l'agrafe">
+                <img class="imgSocial" src="../assets/social/Envelopper_white.svg"/>
+                </a>
+                <a href="https://www.facebook.com/lagrafejournal">
+                    <img class="imgSocial" src="../assets/social/Facebook_white.svg"/>
+                </a>
 
             </div>
         </div>
@@ -50,7 +57,7 @@
 .social{
     display: flex;
 }
-.social > img{
+.imgSocial{
     width : 30px;
     margin-left: 20px ;
 }

@@ -8,15 +8,12 @@
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import NavbarComponent from "./components/navbarComponent.vue";
 import FooterComponent from "./components/footerComponent.vue";
-// import { auth0, isAuthenticated } from './router/Auth0.js'; // Adjust the path to your Auth0.js file
 export default {
   computed: {
     ...mapGetters("auth", ["isAuthenticated"]),
     ...mapGetters("app", ["showNavigationLinks"]),
     // Use computed property to check if the user is authenticated
-    isAuthenticatedComp() {
-      return this.$auth0.isAuthenticated;
-    },
+ 
   },
   watch: {
     $route(to) {
@@ -35,7 +32,6 @@ export default {
   },
   data: function () {
     return {
-      user: this.$auth0.user,
     };
   },
   methods: {
@@ -44,14 +40,8 @@ export default {
     log() {
       this.$store.commit("auth/SET_AUTHENTICATED", true); // Set to true
     },
-    login() {
-      this.$auth0.loginWithRedirect();
-    },
-    logout() {
-      this.$auth0.logout({
-        logoutParams: { returnTo: window.location.origin },
-      });
-    },
+    
+
   },
   components: { NavbarComponent, FooterComponent },
 };
@@ -97,11 +87,20 @@ export default {
   font-style: normal;
 }
 @font-face {
+  font-family: "Bahnschrift";
+  src: local("Bahnschrift"), url("./assets/font/Bahnschrift-Font-Family/BAHNSCHRIFT.TTF") format("truetype");
+}
+@font-face {
   font-family: "agrafeit";
   src: url("./assets/font/ELEPHNTI.TTF") format("ttf");
   /* Add additional formats if necessary */
   font-weight: normal;
   font-style: normal;
+}
+
+@font-face {
+  font-family: "Berlin sans FB demi bold";
+  src: url("./assets/font/berlin-sans-fb-demi-bold-font/BRLNSDB.TTF") format("ttf");
 }
 
 #app {

@@ -1,32 +1,49 @@
 <template>
- <div class="card">
+ <div class="card" @click="redirectUser()">
   <div class="grid-container">
     <div class="left-column">
       <div class="blackDiv">
         N° {{ article.numeroParu }}. {{ formatDate(article.date) }}
       </div>
-    
+      <div>
+        <a :href="`/article/${article.id}`" class="lienArticle">
+  <img class="image-shadow" style="max-width: 70%;margin:auto;margin-top: 20px;margin-bottom: 10px; margin-left: -10px;" :src="`${baseUrl}/api/save/saveArticle/cover/${article.id}.png`" onerror="this.style.display='none'">
+</a>
+     </div>
     </div>
     <div class="right-column"> 
         <div class="haut">
-            <p class="rubrique">
-                {{ getRubrique(article.rubrique) }}
-            </p>
-            <p class="auteur">
-                {{ article.auteur }}
-            </p>
-            <p class="titre">
-                {{ article.titreFront }}
-            </p>
+            <div class="highDiv">
+
+                <p class="rubrique">
+                    {{ getRubrique(article.rubrique) }}
+                </p>
+            </div>
+            <div class="highDivTitle">
+                
+                <p class="titre">
+                    {{ article.titreFront }}
+                </p>
+            </div>
+            <div class="highDiv">
+
+                <p class="auteur">
+                    {{ article.auteur }}
+                </p>
+            </div>
       </div>
-      <div style="margin-bottom: 20px;">
+      <div @click.stop  style="margin-bottom: 20px;">
         <div class="descriptionDiv">
             <p>
-            {{ article.description }}
+            {{ truncatedDescription }}
             </p>
+            <span v-if="isTruncated" class="readMore" @click="expandDescription">...lire plus</span>
+            <span v-if="!isTruncated" class="readMore" @click="expandDescription">...lire moins</span>
+
+
         </div>
         <div class="lienDiv">
-            <a href="caca" class="lienArticle">Lire l'article</a>
+            <a :href="`/article/${article.id}`" class="lienArticle">Lire l'article</a>
         </div>
       </div>
     </div>
@@ -35,12 +52,31 @@
 
 </template>
 <script>
+import  baseUrl  from '../config.js'
 export default {
     props : {
         article : {required : true, type : Object},
         rubriques : { required : true, type : [Object]}
     },
+    data(){
+        return{
+            baseUrl : baseUrl,
+
+            isTruncated: true,
+        }
+    },
+    computed : {
+        truncatedDescription(){
+            if(this.isTruncated){
+                return this.article.description.slice(0, 200)+"..."
+            }
+            return this.article.description
+        }
+    },
     methods : {
+        redirectUser() {
+    this.$router.push(`/article/${this.article.id}`);
+  },
         formatDate(date){
             const year = date.slice(0,4)
             const month = date.slice(5,7)
@@ -58,23 +94,23 @@ export default {
             console.log(typeof month)
 
             switch (month) {
-            case '1':
+            case '01':
             return 'Jan';
-            case '2':
+            case '02':
             return 'Fev';
-            case '3':
+            case '03':
             return 'Mar';
-            case '4':
+            case '04':
             return 'Avr';
-            case '5':
+            case '05':
             return 'Mai';
-            case '6':
+            case '06':
             return 'Juin';
-            case '7':
+            case '07':
             return 'Juil';
-            case '8':
+            case '08':
             return 'Août';
-            case '9':
+            case '09':
             return 'Sep';
             case '10':
             return 'Oct';
@@ -85,11 +121,24 @@ export default {
             default:
             return 'Unknown';
         }
-        }
+        },
+        expandDescription() {
+      this.isTruncated = !this.isTruncated;
+    },
     }
 }
 </script>
 <style>
+.highDivTitle{
+    width: 45%;
+   margin-left:10px;
+    text-align: center;
+}
+.highDiv{
+    width:25%
+}
+
+
 .blackDiv{
     background-color: black;
     width:90%;
@@ -98,6 +147,14 @@ export default {
     padding-bottom: 10px;
 
     margin-top: 10px;
+}
+.image-shadow {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  transition: transform 0.3s ease-in-out; /* Smooth transition */
+}
+
+.image-shadow:hover {
+  transform: rotate(5deg); /* Rotate the image 5 degrees on hover */
 }
 .card {
   display: flex;
@@ -112,6 +169,8 @@ export default {
 }
 
 .left-column {
+    width: 100%;
+    overflow: hidden;
 }
 
 .right-column {
@@ -119,6 +178,8 @@ export default {
 .haut{
     width:100%;
     display: flex;
+    margin-top: 10px;
+    padding-right: 20px; ;
 }
 .rubrique{
     color:rgb(153, 153, 153);
@@ -146,6 +207,14 @@ export default {
     color:black;
 
 }
+.readMore {
+  color: rgb(124, 124, 124);
+  font-family: "Bahnschrift", sans-serif;
+  text-decoration: underline;
+
+  cursor: pointer;
+}
+
 .lienDiv{
     text-align: left;
 }
@@ -153,5 +222,33 @@ export default {
   font-family: "Bahnschrift", sans-serif;
   color:grey;
   /* Additional styles for your links (e.g., color, text-decoration, etc.) */
+}
+
+
+
+
+
+
+
+.highDiv, .highDivTitle {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.rubrique, .titre, .auteur {
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 600px) {
+  .haut {
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .rubrique, .titre, .auteur {
+    font-size: 14px; /* adjust as needed */
+  }
 }
 </style>

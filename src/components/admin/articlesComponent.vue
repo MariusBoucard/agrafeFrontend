@@ -4,6 +4,8 @@
 
       <div class="header">
         <h1>Voila la page des articles</h1>
+        <input type="text" v-model="search" placeholder="Chercher un article..."  style="margin-right:20px ;" class="input-search">
+
         <button class="add-article-button" @click="createArticle()">Add an article</button>
       </div>
     </div>
@@ -21,17 +23,21 @@
             <th>Prive</th>
             <th>Rubrique</th>
             <th>Type</th>
-            <th>Modifier</th>
+            <th>ID</th>
             <!-- Add more table headers for other attributes as needed -->
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(article, index) in articles" :key="index">
-            <td><button class="button" @click.stop="deleteArticle(article.id)">Supprimer</button></td>
+          <tr v-for="(article, index) in filteredArticles" :key="index">
+            <td><button class="button" style="background-color: red;" @click.stop="deleteArticle(article.id)">Supprimer</button></td>
             <td>{{ article.titreFront }}</td>
-            <td>{{ article.description }}</td>
+            <td>{{ cropText(article.description, article.id) }}
+              <button @click="toggleFullDescription(article.id)">
+    {{ showFullDescription[article.id] ? 'afficher moins' : 'afficher plus' }}
+  </button></td>
+
             <td>
-              <img style="max-width: 100%;" :src="`${baseUrl}/save/saveArticle/cover/${article.id}.png`">
+              <img style="max-width: 100%;" :src="`${baseUrl}/api/save/saveArticle/cover/${article.id}.png`">
             </td>
             <td>{{ article.auteur }}</td>
             <td>{{ article.numeroParu }}</td>
@@ -47,6 +53,7 @@
             <td>{{ rubriqueNameFromId(article.rubrique) }}</td>
             <td>{{ article.fileType }}</td>
             <td>
+              {{ article.id }}
               <!-- <button class="button" @click.stop="modifyArticle(article.id)">Modifier</button> -->
             </td>
             <!-- Add more table cells for other attributes as needed -->
@@ -63,11 +70,25 @@ import baseUrl from '../../config';
 export default {
   data() {
     return {
+      search: '',
+
       articles: [],
       rubriques: [],
-      baseUrl: baseUrl
+      baseUrl: baseUrl,
+      showFullDescription: {},
+
     }
   },
+  computed: {
+  filteredArticles() {
+    const searchLower = this.search.toLowerCase();
+    return this.articles.filter(article =>
+      article.titreFront.toLowerCase().includes(searchLower) ||
+      article.description.toLowerCase().includes(searchLower) ||
+      article.id.toLowerCase().includes(searchLower)
+    ).sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+  },
+},
   mounted() {
     this.setArticles()
   },
@@ -98,6 +119,8 @@ export default {
       }
     },
     deleteArticle(id) {
+      if (confirm("T'es sûr de vouloir supprimer l'article ?\n C'est pas prévu d'être réversible, à tes risques et périls fréro")) {
+
       axiosInstance.delete(`/api/deleteArticle/${id}`).then(() => {
         this.$message({
           message: 'Article deleted successfully',
@@ -115,7 +138,8 @@ export default {
             duration: 1000, // Set the duration to 3000 milliseconds (3 seconds)
           });
         });
-    },
+      }
+      },
     setArticles() {
       axiosInstance.get('/api/getrubriques').then(response => {
         this.rubriques = response.data
@@ -134,6 +158,7 @@ export default {
           console.log("on a get les articles",response.data)
 
           this.articles = response.data
+          this.articles = this.articles.reverse()
         })
         .catch(() => {
           this.$message({
@@ -149,7 +174,14 @@ export default {
     },
     createArticle() {
       this.$emit("componentChanged", "createArticle")
-    }
+    },
+    cropText(text, id) {
+    const showFull = this.showFullDescription[id] || false;
+    return showFull ? text : text.substring(0, 100) + '...';
+  },
+  toggleFullDescription(id) {
+    this.showFullDescription[id] = !this.showFullDescription[id];
+  },
   }
 }
 </script>
@@ -164,7 +196,15 @@ export default {
   display: block;
 }
 
-
+.input-search {
+  width: 75%;
+  margin: 0 auto 20px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+}
 
 
 .container {

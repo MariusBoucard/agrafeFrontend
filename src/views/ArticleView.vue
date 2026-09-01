@@ -1,16 +1,39 @@
 <template>
   <div class="baseView">
-    <div class="menuGrid">
+    <div class="container">
       <div class="leftColumn">
-        <div
-          class="articleWidget"
-          v-for="article in articles"
-          :key="article.id"
-        >
-        
-          <articleWidget :article="article" :rubriques="rubriques">
-          </articleWidget>
-        </div>
+<div v-if="normalArticle">
+  <input type="text" v-model="search" placeholder="Chercher un article..." class="input-search">
+  <div 
+  class="articleWidget"
+  v-for="article in paginatedArticles"
+  :key="article.id"
+  >
+  
+  <articleWidget :article="article" :rubriques="rubriques">
+  </articleWidget>
+  
+</div>
+
+</div>
+<div v-if="! normalArticle">
+ <IllustrationComponent></IllustrationComponent>
+</div>
+        <div  v-if=" normalArticle" class="pagination-container">
+    <button class="pagination-button" @click="currentPage--" :disabled="currentPage <= 1">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+  <path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z" clip-rule="evenodd" />
+</svg>
+
+    </button>
+    <p class="pagination-text">{{ currentPage }}/{{ pageCount }}</p>
+    <button class="pagination-button" @click="currentPage++" :disabled="currentPage >= pageCount">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+  <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
+</svg>
+
+    </button>
+  </div>
       </div>
       <div class="rightColumn">
         <ContactComponent></ContactComponent>
@@ -25,20 +48,69 @@ import articleWidget from "@/widgets/articleWidget.vue";
 import BackcoverWidget from "@/widgets/backcoverWidget.vue";
 import ContactComponent from "@/widgets/contactComponent.vue";
 import axiosInstance from "../axios.js";
-
+import IllustrationComponent from "@/components/IllustrationComponent.vue";
 export default {
   name: "ArticleView",
   components: {
     articleWidget,
     BackcoverWidget,
     ContactComponent,
+    IllustrationComponent
   },
+
+  watch: {
+    '$route.params.rubriqueID'(newArticleId) {
+      console.log(newArticleId)
+      this.selectedRubriqueId = newArticleId;
+      this.filterArticles();
+    }
+  },
+  methods : {
+    filterArticles(){
+      this.selectedArticles = this.articles.filter(
+          (article) => article.rubrique == this.selectedRubriqueId
+        );
+        this.selectedArticles.sort((a, b) => new Date(b.date) - new Date(a.date));
+        console.log("Selected articles",this.selectedRubriqueId);
+        if(!this.selectedRubriqueId){
+            this.selectedArticles = this.articles;
+            this.selectedArticles.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+          }
+          this.currentPage = 1;
+          }
+
+         
+  },
+  computed: {
+    filteredArticles() {
+    const searchLower = this.search.toLowerCase();
+    return this.selectedArticles.filter(article =>
+      article.titreFront.toLowerCase().includes(searchLower) ||
+      article.description.toLowerCase().includes(searchLower)
+    );
+  },
+    normalArticle() {
+      console.log("caca",this.selectedRubriqueId === 'LLwDinc4Uh79PDLxLd9sd' ? false: true)
+    return this.selectedRubriqueId === 'LLwDinc4Uh79PDLxLd9sd' ? false: true;
+  },
+  paginatedArticles() {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    return this.filteredArticles.slice(start, end);
+  },
+  pageCount() {
+    return Math.ceil(this.selectedArticles.length / this.itemsPerPage);
+  },
+},
   mounted() {
+    this.selectedRubriqueId = this.$route.params.rubriqueID;
     axiosInstance
       .get("/api/getrecentarticle")
       .then((response) => {
         this.articles = response.data;
-        console.log("Got the articles");
+        console.log("Got the articles",this.articles);
+       this.filterArticles()
       })
       .catch((error) =>
         this.$message({
@@ -64,14 +136,64 @@ export default {
   },
   data() {
     return {
+      search : "",
       articles: [],
       rubriques: [],
+      selectedRubriqueId : "",
+      selectedArticles : [],
+      currentPage: 1,
+    itemsPerPage: 5,
     };
   },
 };
 </script>
 
 <style scoped>
+.input-search {
+  width: 75%;
+  margin-left: 20%;
+  margin-bottom: 30px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+}
+.articleWidget {
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.3); /* Adjust color as needed */
+  width: 80%;
+  margin-left: 20%;;
+}
+
+.articleWidget:hover {
+  transform: scale(1.05); /* Grow the element slightly */
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+.pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.pagination-button {
+  width: 5%;
+  background-color: rgb(0, 0, 0);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  /* Add your styles for the buttons here */
+}
+
+.pagination-text {
+  /* Add your styles for the text here */
+  margin: 0 1em; /* Add some horizontal margin around the text */
+}
 .articleWidget {
   margin-bottom: 30px;
 }
@@ -80,9 +202,45 @@ export default {
   width: 90%;
   margin: auto;
 }
-.menuGrid {
-  display: grid;
-  grid-template-columns: 70% 30%; /* 70% for the left column, 30% for the right column */
-  column-gap: 20px; /* Adjust the gap as needed */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap : 30px;
 }
+
+.leftColumn {
+  width : 65%
+  /* Your styles for the left column here */
+}
+
+.rightColumn {
+  width: 30%;
+  /* Your styles for the right column here */
+}
+.article{
+  width: 80%;
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  .leftColumn {
+    width: 100%;
+  }
+  .rightColumn {
+    width: 100%;
+  }
+  .article{
+    width: 100%;
+  }
+  .articleWidget {
+    width: 100%;
+    margin-left: 0;
+  }
+  .input-search {
+    width: 80%;
+    margin-left: 0;}
+  }
 </style>
