@@ -6,7 +6,7 @@ ARG VUE_APP_API_URL=
 ENV VUE_APP_API_URL=$VUE_APP_API_URL
 
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm install
 
 COPY . .
 RUN npm run build

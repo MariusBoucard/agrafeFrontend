@@ -57,9 +57,10 @@ export default {
 }
 
 .home-lead {
-  margin: 0 0 1.25rem;
-  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  margin: 1rem 0 1.25rem;
+  font-size: clamp(1.25rem, 2vw, 1.25rem);
   color: var(--ink-muted);
+  font-weight: 600;
 }
 
 .section-title {

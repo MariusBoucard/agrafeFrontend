@@ -14,6 +14,8 @@
         <thead>
           <tr>
             <th>Supprimer</th>
+            <th>Modifier</th>
+
             <th>Titre</th>
             <th>Description</th>
             <th>Image</th>
@@ -23,13 +25,14 @@
             <th>Prive</th>
             <th>Rubrique</th>
             <th>Type</th>
-            <th>ID</th>
             <!-- Add more table headers for other attributes as needed -->
           </tr>
         </thead>
         <tbody>
           <tr v-for="(article, index) in filteredArticles" :key="index">
             <td><button class="button" style="background-color: red;" @click.stop="deleteArticle(article.id)">Supprimer</button></td>
+            <td><button class="button" style="background-color: #75A1FF;" @click.stop="modifyArticle(article.id)">Modifier</button></td>
+
             <td>{{ article.titreFront }}</td>
             <td>{{ cropText(article.description, article.id) }}
               <button @click="toggleFullDescription(article.id)">
@@ -52,10 +55,6 @@
             </td>
             <td>{{ rubriqueNameFromId(article.rubrique) }}</td>
             <td>{{ article.fileType }}</td>
-            <td>
-              {{ article.id }}
-              <!-- <button class="button" @click.stop="modifyArticle(article.id)">Modifier</button> -->
-            </td>
             <!-- Add more table cells for other attributes as needed -->
           </tr>
         </tbody>
