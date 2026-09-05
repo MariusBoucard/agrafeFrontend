@@ -1,8 +1,10 @@
 <template>
     <div class="outsideDiv">
         <p>N° {{ archive.numero }}. {{ formatDate(archive.date) }}</p>
-        <img class="innerImage" :src="`${baseUrl}/save/saveArchive/cover/${archive.id}.png`"/>
-        
+        <img class="innerImage" :src="`${baseUrl}/api/save/saveArchive/cover/${archive.id}.png`"/>
+        <p>
+            {{ archive.description }}
+        </p>
     </div>
 
 </template>
@@ -96,5 +98,13 @@ export default{
 .innerImage{
     width: 90%;
     margin: auto;
+}
+
+@media screen and (max-width: 768px) {
+    .outsideDiv{
+    width: 90%;
+    }
+
+    
 }
 </style>

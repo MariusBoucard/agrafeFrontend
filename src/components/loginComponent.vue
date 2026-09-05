@@ -39,12 +39,15 @@ export default{
                     // Example with Axios:
                     axiosInstance.post('/api/login', this.formData)
                         .then(response => {
+                            console.log("rep",response)
                             // Handle the response from the server
                             const token = response.data.token;
                             axiosInstance.defaults.headers.common['Authorization'] = token;
                             sessionStorage.setItem('token', token); // For session-only storage
                             if (response.data.connected === true){
                                  router.push('/admin'); // Replace '/dashboard' with the URL you want to redirect to
+                            } else {
+                                alert("Invalid credentials")
                             }
                         })
                         .catch(error => {

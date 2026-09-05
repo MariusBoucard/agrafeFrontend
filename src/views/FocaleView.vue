@@ -33,10 +33,10 @@
                 <div class="column" style="width: 80%;">
                     <!-- Content for the second column -->
                     <div style="width:50%">
-                        <pdf :src="`${baseUrl}/save/saveFocale/${selectedFocal.id}/1.pdf`"></pdf>
+                        <pdf :src="`${baseUrl}/api/save/saveFocale/${selectedFocal.id}/1.pdf`"></pdf>
                     </div>
                     <div style="width:50%">
-                        <pdf :src="`${baseUrl}/save/saveFocale/${selectedFocal.id}/1.pdf`"></pdf>
+                        <pdf :src="`${baseUrl}/api/save/saveFocale/${selectedFocal.id}/1.pdf`"></pdf>
                         
                     </div>
                     

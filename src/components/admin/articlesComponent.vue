@@ -37,7 +37,7 @@
   </button></td>
 
             <td>
-              <img style="max-width: 100%;" :src="`${baseUrl}/save/saveArticle/cover/${article.id}.png`">
+              <img style="max-width: 100%;" :src="`${baseUrl}/api/save/saveArticle/cover/${article.id}.png`">
             </td>
             <td>{{ article.auteur }}</td>
             <td>{{ article.numeroParu }}</td>
@@ -86,7 +86,7 @@ export default {
       article.titreFront.toLowerCase().includes(searchLower) ||
       article.description.toLowerCase().includes(searchLower) ||
       article.id.toLowerCase().includes(searchLower)
-    );
+    ).sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
   },
 },
   mounted() {

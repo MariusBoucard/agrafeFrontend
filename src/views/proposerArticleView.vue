@@ -13,7 +13,7 @@
                             <option v-for="rub in rubriques" :key="rub.id" :value="rub.id">{{ rub.rubrique }}</option>
                         </select>
                         <p class="text">Sélectionne la rubrique pour laquelle tu veux écrire un article.</p>
-                        <p class="text"> sec = signes espaces compris. <a href="https://pornhub.com">Télécharger la charte
+                        <p class="text"> sec = signes espaces compris. <a href="https://drive.google.com/file/d/1GyijNTX6QeJIWjQcm9IdT8TmuiRjc11r/view?usp=drivesdk">Télécharger la charte
                                 de rédation.</a></p>
                         <p class="text" @click="rubriquesShown = !rubriquesShown">
                             Détail des rubriques

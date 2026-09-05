@@ -2,7 +2,7 @@
     <div>
         <p style="font-size: large;">Dernier numéro</p>
         <div class="backCoverImg">
-            <img class="innerImage" :src="`${baseUrl}/save/saveArchive/cover/${archive.id}.png`"/>
+            <img class="innerImage" :src="`${baseUrl}/api/save/saveArchive/cover/${archive.id}.png`"/>
         </div>
         <div class="partenaires">
                 <div class="logoPartenaire">
@@ -52,13 +52,17 @@ export default{
     width: 100%;
 }
 .backCoverImg{
-    width:100%;
+    width:80%;
+    margin:auto;
+    
 }
 .partenaires {
+    width: 70%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px; /* Adjust the gap as needed */
-  margin-top: 20px;
+  margin : auto;
+  margin-top: 30px;
   margin-bottom: 20px;
 }
 

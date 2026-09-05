@@ -23,7 +23,7 @@
           <!-- Add a preview for the uploaded image (optional) -->
           <img v-if="imagePreview" :src="imagePreview" alt="Uploaded Image">
 
-          <img style="max-width: 100%;" v-if="notModifiedImage" :src="`${baseUrl}/save/saveArticle/cover/${article.id}.png`">
+          <img style="max-width: 100%;" v-if="notModifiedImage" :src="`${baseUrl}/api/save/saveArticle/cover/${article.id}.png`">
         </div>
             <!-- <div class="form-group">
           <label for="imageLogo">Article en pdf :</label>

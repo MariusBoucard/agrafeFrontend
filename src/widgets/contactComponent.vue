@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="mam">
         <ul>
             <li class="listItem">
                 <div class="listDiv">
@@ -52,7 +52,14 @@
 ul {
     list-style: none;
 }
-
+.mam {
+  margin: 0;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+  backdrop-filter: blur(10px); /* Blur the background */
+  border-radius: 10px; /* Optional: round corners */
+  transition: all 0.3s ease-in-out; /* Smooth transition */
+}
 .listDiv {
     display: flex;
 }
@@ -67,4 +74,16 @@ ul {
     margin-right: 0px;
     color: black;
     font-family: "Bahnschrift", sans-serif;
-}</style>
+}
+
+@media (max-width: 768px) {
+    .listText {
+        width: 90%;
+        margin: 0;
+    }
+
+    .mam ul{
+        padding: 0;
+    }
+}
+</style>

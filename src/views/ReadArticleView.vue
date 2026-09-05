@@ -3,17 +3,17 @@
     <div class="left-column">
     
       <!-- Content for the left column -->
-      <ul style="width:80%">
-        <li v-for="item in article.contenu" :key="item.id">
+      <ul class="ull">
+        <li v-for="(item,index) in article.contenu" :style="{ display : displayCitation(index) }"  :key="item.id">
           <div v-if="item.type === 'sousTitre1'"
             style="margin-right: 10px; width: 5%; background-color: black; padding-top: 10px; height: 30%; margin-bottom:0 ;  position: relative;transform: translateY(60%); ">
           </div>
           
           <div v-if="item.type === 'image'">
-            <img style="width: 70%; margin: auto; display: block;" :title="`photographe : ${item.auteur}`" :src="`${baseUrl}/save/saveArticle/images/${article.id}/${item.id}.png`">
-            <p class="paragraphe" style="margin-top:10px" v-html="processText(item.text)"></p>
+            <img style="width: 70%; margin: auto; display: block;" :title="`photographe : ${item.auteur}`" :src="`${baseUrl}/api/save/saveArticle/images/${article.id}/${item.id}.png`">
+            <p class="paragraphe" style="margin-top:10px" v-html="processText(item)"></p>
           </div>
-          <p v-if="item.type !== 'Sources' && item.type !== 'notesBasPage' && item.type !== 'image'" :class="item.type" v-html="processText(item.text)"></p>
+          <p v-if="item.type !== 'Sources' && item.type !== 'notesBasPage' && item.type !== 'image'" :class="item.type" :style="{ display : displayCitation(index) }"  v-html="processText(item,index)"></p>
           
         </li>
       </ul>
@@ -60,6 +60,12 @@ export default {
     contactComponent
   },
   computed: {
+    filteredContenu() {
+      if(this.article.contenu === undefined){
+        return [];
+      }
+      return this.article.contenu.filter((item, index) => !this.displayCitation(index));
+    },
   
     listeSources() {
       const found = this.article.contenu.find(item => item.type === 'Sources');
@@ -112,10 +118,52 @@ export default {
             })      )
   },
   methods : {
-    processText(text){
-      text = text.replace(/\*(\d+)\*/g, '<sup>$1</sup>');
+    /* eslint-disable */
+    processText(item,index){
+        if(index >0 && index < this.article.contenu.length - 2){
+          if(item.type === "paragraphe" && this.article.contenu[index + 1]?.type === "Citation" && this.article.contenu[index + 2]?.type === "paragraphe"){
+            return null;
+          }
+          if(item.type === "Citation" && this.article.contenu[index - 1]?.type === "paragraphe" && this.article.contenu[index + 1]?.type === "paragraphe"){
+            return null;
+
+          }
+          if(item.type === "paragraphe" && this.article.contenu[index - 1]?.type === "Citation" && this.article.contenu[index - 2]?.type === "paragraphe"){
+            // Return catenation of the three text with their styles applied;
+            return `<span class="${this.article.contenu[index - 2].type}" >${this.article.contenu[index - 2].text}</span>` +
+       `<span class="${this.article.contenu[index - 1].type}" style="color: white; background-color: black;">${this.article.contenu[index - 1].text}</span>` +
+       `<span class="${item.type}" >${item.text}</span>`;      }
+
+          // return item.text;
+        }
+        let text = item.text;
+        text = text.replace(/\*(\d+)\*/g, '<sup>$1</sup>');
         return text;
+      
+    
     },
+    displayCitation(i){
+      console.log(i);
+      if(i < this.article.contenu.length - 2 && i > 0){
+        if(this.article.contenu[i].type === "paragraphe" && this.article.contenu[i + 1]?.type === "Citation" && this.article.contenu[i + 2]?.type === "paragraphe"){
+          console.log("display: none");
+          return "none";
+        }
+        if(this.article.contenu[i].type === "Citation" && this.article.contenu[i - 1]?.type === "paragraphe" && this.article.contenu[i + 1]?.type === "paragraphe"){
+          return "none"
+        }
+        return "block";
+      }
+    
+      // Doit dire si on se display ou non : return css
+    },
+    // parseCitations(i){
+    //   // Si fin display tarba
+    //   // Doit dire si on se display ou non : return css
+    //   this.article.contenu[i].type = "paragraph";
+
+    //   this.article.contenu[i].text = this.article.contenu[i].text.replace(/\*(\d+)\*/g, '<sup>$1</sup>');
+    // },
     rubriqueFromId(id){
       const found = this.rubriques.find(rubrique => rubrique.id === id);
       if(found){
@@ -142,6 +190,10 @@ export default {
 
 .right-column {
   width: 25%;
+}
+.ull{
+  width:80%;
+  padding: 0;
 }
 
 .parentDiv {
@@ -240,8 +292,8 @@ li {
 
 .Citation {
   font-family: "Bahnschrift", sans-serif;
-  background-color: black;
-  color: white;
+  background-color: black !important;
+  color: white !important;
 
 
   font-weight: 900;
@@ -265,6 +317,8 @@ li {
   font-weight: light;
   text-align: justify; /* Justify the text */
   font-size: large;
+  /* color : black !important;
+  background-color: white !important; */
   /* Styles for the paragraphe type */
 }
 
@@ -309,4 +363,20 @@ li {
   margin: 0;
   font-family: "Bahnschrift", sans-serif;
   font-size: 13px;
-}</style>
+}
+
+@media (max-width: 600px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .left-column {
+    width: 100%;
+  }
+
+  .right-column {
+    width: 100%;
+  }
+}
+
+</style>

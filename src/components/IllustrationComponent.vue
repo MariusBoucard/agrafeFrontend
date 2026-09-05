@@ -32,7 +32,7 @@
                 </div>
                 <div class="column" style="width: 80%;">
                     <!-- Content for the second column -->
-                   <img :src="`${baseUrl}/save/saveArchive/back/${selectedFocal.id}.png`" style="width:100%; height:100%; object-fit: cover;"/>
+                   <img :src="`${baseUrl}/api/save/saveArchive/back/${selectedFocal.id}.png`" style="width:100%; height:100%; object-fit: cover;"/>
                     
                 </div>
                 <div class="column" style="width: 10%;">

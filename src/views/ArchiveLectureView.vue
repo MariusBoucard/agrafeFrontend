@@ -24,17 +24,17 @@
                     
                     <div v-if="currentPage==1" style="width:50%; margin: auto; height: 100%;">
                         
-                        <pdf :src="`${baseUrl}/save/saveArchive/pdf/${archiveId}.pdf`" :page="currentPage" :key="currentPage" ref="pdfViewer"></pdf>
+                        <pdf :src="`${baseUrl}/api/save/saveArchive/pdf/${archiveId}.pdf`" :page="currentPage" :key="currentPage" ref="pdfViewer"></pdf>
                     </div>
                     <div v-if="currentPage == nbPages" style="width:50%; margin: auto;height: 100%;">
-                        <img :src="`${baseUrl}/save/saveArchive/back/${archiveId}.png`" style="width: 100%; ">
+                        <img :src="`${baseUrl}/api/save/saveArchive/back/${archiveId}.png`" style="width: 100%; ">
                     </div>
                     <!-- Content for the second column -->
                     <div v-if="currentPage!=1 && currentPage != nbPages" style="width:50%">
-                        <pdf :src="`${baseUrl}/save/saveArchive/pdf/${archiveId}.pdf`" :page="currentPage" ref="pdfViewer"></pdf>
+                        <pdf :src="`${baseUrl}/api/save/saveArchive/pdf/${archiveId}.pdf`" :page="currentPage" ref="pdfViewer"></pdf>
                     </div>
                     <div v-if="currentPage!=1 && currentPage != nbPages" style="width:50%">
-                        <pdf :src="`${baseUrl}/save/saveArchive/pdf/${archiveId}.pdf`" :page="currentPage+1"></pdf>
+                        <pdf :src="`${baseUrl}/api/save/saveArchive/pdf/${archiveId}.pdf`" :page="currentPage+1"></pdf>
                     </div>
                     
                 </div>
@@ -104,7 +104,7 @@ export default {
     },
     methods: {
     downloadArchive() {
-        let url = this.baseUrl + "/save/saveArchive/pdf/" + this.archiveId + ".pdf";
+        let url = this.baseUrl + "/api/save/saveArchive/pdf/" + this.archiveId + ".pdf";
 let link = document.createElement('a');
 link.href = url;
 link.setAttribute('download', this.archiveId + '.pdf'); // provide a default filename
@@ -113,7 +113,7 @@ link.click();
 document.body.removeChild(link);
     },
         async fetchPdf() {
-            let url = this.baseUrl+"/save/saveArchive/pdf/"+this.archiveId+".pdf"
+            let url = this.baseUrl+"/api/save/saveArchive/pdf/"+this.archiveId+".pdf"
 
             axiosInstance.get('/api/getArchivePublic/'+this.archiveId).then((response) => {
                 this.currentArchive = response.data
