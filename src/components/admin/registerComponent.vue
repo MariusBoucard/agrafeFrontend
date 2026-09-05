@@ -102,9 +102,6 @@ export default{
         },
 
         register() {
-                    // Send a POST request with the form data to your backend API
-                    // You can use libraries like Axios or the native Fetch API for this
-                    // Example with Axios:
                     axiosInstance.post('/api/registerAdmin  ', this.formData)
                         .then(() => {
                             this.$message({
