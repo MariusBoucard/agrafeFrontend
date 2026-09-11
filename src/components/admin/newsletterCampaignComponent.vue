@@ -10,12 +10,79 @@
 
     <section class="editor-card">
       <h2>{{ editingId ? 'Modifier le brouillon' : 'Nouveau brouillon' }}</h2>
-      <form @submit.prevent="saveCampaign">
-        <label for="subject">Sujet</label>
-        <input id="subject" v-model="subject" placeholder="Sujet de la newsletter" required />
 
-        <label for="htmlBody">Contenu HTML</label>
-        <textarea id="htmlBody" v-model="htmlBody" rows="12" placeholder="<p>Bonjour…</p>" required></textarea>
+      <div class="mode-tabs" role="tablist">
+        <button
+          type="button"
+          role="tab"
+          :class="{ active: mode === 'template' }"
+          :aria-selected="mode === 'template'"
+          @click="setMode('template')"
+        >
+          Modèle
+        </button>
+        <button
+          type="button"
+          role="tab"
+          :class="{ active: mode === 'html' }"
+          :aria-selected="mode === 'html'"
+          @click="setMode('html')"
+        >
+          HTML libre
+        </button>
+      </div>
+
+      <form @submit.prevent="saveCampaign">
+        <template v-if="mode === 'template'">
+          <p class="hint">Choisissez un modèle, remplissez les champs — le HTML est généré automatiquement.</p>
+
+          <div class="template-grid">
+            <button
+              v-for="tpl in templates"
+              :key="tpl.id"
+              type="button"
+              class="template-card"
+              :class="{ selected: selectedTemplateId === tpl.id }"
+              @click="selectTemplate(tpl.id)"
+            >
+              <strong>{{ tpl.label }}</strong>
+              <span>{{ tpl.description }}</span>
+            </button>
+          </div>
+
+          <template v-if="selectedTemplate">
+            <div v-for="field in selectedTemplate.fields" :key="field.key" class="field">
+              <label :for="'f-' + field.key">
+                {{ field.label }}
+                <span v-if="!field.required" class="opt">optionnel</span>
+              </label>
+              <textarea
+                v-if="field.type === 'textarea'"
+                :id="'f-' + field.key"
+                v-model="templateFields[field.key]"
+                rows="5"
+                :placeholder="field.placeholder"
+                :required="field.required"
+              />
+              <input
+                v-else
+                :id="'f-' + field.key"
+                v-model="templateFields[field.key]"
+                :type="field.type === 'url' ? 'url' : 'text'"
+                :placeholder="field.placeholder"
+                :required="field.required"
+              />
+            </div>
+          </template>
+        </template>
+
+        <template v-else>
+          <label for="subject">Sujet</label>
+          <input id="subject" v-model="subject" placeholder="Sujet de la newsletter" required />
+
+          <label for="htmlBody">Contenu HTML</label>
+          <textarea id="htmlBody" v-model="htmlBody" rows="12" placeholder="<p>Bonjour…</p>" required></textarea>
+        </template>
 
         <div class="actions">
           <button type="submit">{{ editingId ? 'Enregistrer les modifications' : 'Créer le brouillon' }}</button>
@@ -27,8 +94,8 @@
       </form>
 
       <div v-if="showPreview" class="preview">
-        <h3>Aperçu — {{ subject || '(sans sujet)' }}</h3>
-        <div class="preview-body" v-html="htmlBody"></div>
+        <h3>Aperçu — {{ previewSubject || '(sans sujet)' }}</h3>
+        <div class="preview-body" v-html="previewHtml"></div>
       </div>
     </section>
 
@@ -68,21 +135,39 @@
 
 <script>
 import axiosInstance from '@/axios';
+import { EMAIL_TEMPLATES, getTemplateById, renderTemplate } from '@/utils/emailTemplates';
 
 export default {
   name: 'NewsletterCampaignComponent',
   data() {
     return {
+      mode: 'template',
+      templates: EMAIL_TEMPLATES,
+      selectedTemplateId: EMAIL_TEMPLATES[0].id,
+      templateFields: { ...EMAIL_TEMPLATES[0].defaults },
       subject: '',
       htmlBody: '',
       campaigns: [],
       editingId: null,
-      showPreview: false,
+      showPreview: true,
       previewModal: null,
       verifiedCount: 0,
     };
   },
   computed: {
+    selectedTemplate() {
+      return getTemplateById(this.selectedTemplateId);
+    },
+    previewSubject() {
+      if (this.mode === 'template') return this.templateFields.subject || '';
+      return this.subject;
+    },
+    previewHtml() {
+      if (this.mode === 'template' && this.selectedTemplate) {
+        return renderTemplate(this.selectedTemplateId, this.templateFields);
+      }
+      return this.htmlBody;
+    },
     sortedCampaigns() {
       return [...this.campaigns].sort((a, b) => {
         const da = new Date(a.created_at || 0).getTime();
@@ -96,6 +181,39 @@ export default {
     this.loadVerifiedCount();
   },
   methods: {
+    setMode(mode) {
+      this.mode = mode;
+      if (mode === 'html' && this.selectedTemplate && !this.htmlBody) {
+        this.subject = this.templateFields.subject || '';
+        this.htmlBody = renderTemplate(this.selectedTemplateId, this.templateFields);
+      }
+    },
+    selectTemplate(id) {
+      const tpl = getTemplateById(id);
+      if (!tpl) return;
+      this.selectedTemplateId = id;
+      this.templateFields = { ...tpl.defaults };
+    },
+    buildPayload() {
+      if (this.mode === 'template') {
+        const tpl = this.selectedTemplate;
+        if (!tpl) return null;
+        for (const field of tpl.fields) {
+          if (field.required && !String(this.templateFields[field.key] || '').trim()) {
+            alert(`Champ requis : ${field.label}`);
+            return null;
+          }
+        }
+        return {
+          subject: this.templateFields.subject.trim(),
+          html_body: renderTemplate(this.selectedTemplateId, this.templateFields),
+        };
+      }
+      return {
+        subject: this.subject,
+        html_body: this.htmlBody,
+      };
+    },
     formatDate(iso) {
       if (!iso) return '—';
       try {
@@ -122,6 +240,7 @@ export default {
     },
     loadCampaign(c) {
       this.editingId = c.id;
+      this.mode = 'html';
       this.subject = c.subject;
       this.htmlBody = c.html_body;
       this.showPreview = true;
@@ -131,18 +250,20 @@ export default {
       this.editingId = null;
       this.subject = '';
       this.htmlBody = '';
-      this.showPreview = false;
+      this.mode = 'template';
+      this.selectTemplate(EMAIL_TEMPLATES[0].id);
+      this.showPreview = true;
     },
     previewCampaign(c) {
       this.previewModal = c;
     },
     saveCampaign() {
+      const payload = this.buildPayload();
+      if (!payload) return;
+
       if (this.editingId) {
         axiosInstance
-          .put(`/api/newsletter/campaigns/${this.editingId}`, {
-            subject: this.subject,
-            html_body: this.htmlBody,
-          })
+          .put(`/api/newsletter/campaigns/${this.editingId}`, payload)
           .then(() => {
             this.$message?.({ message: 'Brouillon mis à jour', type: 'success', duration: 1500 });
             this.cancelEdit();
@@ -154,10 +275,13 @@ export default {
         return;
       }
       axiosInstance
-        .post('/api/newsletter/campaigns', { subject: this.subject, html_body: this.htmlBody })
+        .post('/api/newsletter/campaigns', payload)
         .then(() => {
           this.cancelEdit();
           this.loadCampaigns();
+        })
+        .catch((err) => {
+          alert(err.response?.data?.message || 'Erreur lors de la création');
         });
     },
     sendCampaign(c) {
@@ -207,7 +331,65 @@ export default {
   margin-bottom: 1rem;
 }
 h2 { margin: 0 0 1rem; font-size: 1.1rem; font-family: var(--font-title, agrafe, serif); }
+.mode-tabs {
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+.mode-tabs button {
+  background: #fff;
+  color: #111;
+  border: 1px solid #ccc;
+  min-height: 40px;
+  padding: 0.5rem 1rem;
+}
+.mode-tabs button.active {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+.hint {
+  margin: 0 0 0.85rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+.template-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  text-align: left;
+  background: #fafafa;
+  color: #111;
+  border: 1px solid #ddd;
+  padding: 0.85rem 0.9rem;
+  min-height: auto;
+  height: 100%;
+}
+.template-card.selected {
+  border-color: #111;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #111;
+}
+.template-card strong {
+  font-family: var(--font-title, agrafe, serif);
+  font-size: 0.95rem;
+}
+.template-card span {
+  font-size: 0.8rem;
+  color: #666;
+  line-height: 1.35;
+  font-weight: normal;
+}
+.field { margin-bottom: 0.35rem; }
 label { display: block; font-weight: 600; font-size: 0.85rem; margin: 0.5rem 0 0.25rem; }
+.opt { font-weight: 400; color: #888; font-size: 0.8rem; margin-left: 0.35rem; }
 input, textarea {
   width: 100%;
   padding: 0.7rem 0.75rem;
@@ -238,7 +420,7 @@ button {
 }
 .preview-body {
   border: 1px solid #eee;
-  padding: 1rem;
+  padding: 0;
   background: #fafafa;
   overflow-x: auto;
 }
