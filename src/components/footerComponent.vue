@@ -9,6 +9,7 @@
         <p class="col-title">Parcourir</p>
         <router-link to="/articles">Articles</router-link>
         <router-link to="/archives">Archives</router-link>
+        <router-link to="/auteurs">Nos auteurs</router-link>
         <router-link to="/actualite">L'actu</router-link>
         <router-link to="/newsletter">Newsletter</router-link>
       </div>

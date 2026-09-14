@@ -56,6 +56,12 @@ const MENU_GROUPS = [
     ],
   },
   {
+    title: 'Compte',
+    items: [
+      { key: 'myProfile', label: 'Mon profil' },
+    ],
+  },
+  {
     title: 'Contenu',
     items: [
       { key: 'article', label: 'Articles' },

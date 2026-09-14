@@ -83,11 +83,9 @@
                                     </div>
                                     <div class="hover-trigger">Voir le texte</div>
                                     <div class="hovered-info">{{ element.text }}
-                                      <div v-if="element.type === 'image'">
-                                        Infos :
-                                        <p>Auteur : {{ element.auteur }}</p>
-                                        <p>Copyright : {{ element.copyright }}</p>
-                                        </div>
+                                      <div v-if="element.type === 'image' && element.auteur">
+                                        Photographe : {{ element.auteur }}
+                                      </div>
                                     
                                     </div>
                                 </div>
@@ -147,14 +145,8 @@
                     <img v-if="partToAdd.imagePreview" :src="partToAdd.imagePreview" alt="Uploaded Image">
                   </div>
                   <div class="form-group">
-
-                    <label for="auteurImg" class="label">Auteur</label>
-                    <input type="text" id="auteurImg" v-model="partToAdd.auteur" >
-                  </div>
-                  <div class="form-group">
-
-                    <label for="copyright" class="label">Copyright</label>
-                    <input type="text" id="copyright" v-model="partToAdd.copyright" >
+                    <label for="auteurImg" class="label">Crédit photo</label>
+                    <input type="text" id="auteurImg" v-model="partToAdd.auteur" placeholder="Photographe">
                   </div>
                 </div>
               </div>
@@ -171,6 +163,7 @@
 import { nanoid } from 'nanoid';
 import axiosInstance from '@/axios';
 import { VueDraggableNext } from 'vue-draggable-next'
+import { sanitizeImagePart, sanitizeContenuCredits } from '@/utils/imageCredit';
 export default {
     components: {
         draggable: VueDraggableNext,
@@ -211,7 +204,6 @@ export default {
       partToAdd: {
         type: "",
         text: "",
-        copyright: "",
         image: "",
         auteur: "",
         imagePreview: null
@@ -238,14 +230,19 @@ export default {
 
         // Create a clone of the image File object
         const clonedImage = new File([this.partToAdd.image], this.partToAdd.image.name);
-        const part = { ...this.partToAdd, image: clonedImage };
-        this.article.contenu.push(part)
+        this.article.contenu.push(sanitizeImagePart({
+          id: this.partToAdd.id,
+          type: 'image',
+          text: this.partToAdd.text,
+          auteur: this.partToAdd.auteur,
+          image: clonedImage,
+          imagePreview: this.partToAdd.imagePreview,
+        }))
       }
       else {
         const part = { ...this.partToAdd };
         this.article.contenu.push(part)
         delete part.auteur;
-        delete part.copyright,
         delete part.image
         delete part.imagePreview
       }
@@ -255,8 +252,8 @@ export default {
       // this.partToAdd.type = ''
       this.partToAdd.text = ''
       this.partToAdd.auteur = ''
-      this.partToAdd.copyright = ''
       this.partToAdd.image = null
+      this.partToAdd.imagePreview = null
     },
     deleteElement(id){
       this.article.contenu = this.article.contenu.filter(a =>a.id !== id)
@@ -293,7 +290,7 @@ export default {
     submitForm() {
       if(confirm("T'es sûr que c'est tout bon ??\nAlleyyy, c'est tipar")){
 
-        axiosInstance.post('/api/addArticle', { article: this.article },)
+        axiosInstance.post('/api/addArticle', { article: { ...this.article, contenu: sanitizeContenuCredits(this.article.contenu) } },)
         .then(response => {
           const id = response.data
           

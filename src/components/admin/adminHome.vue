@@ -29,6 +29,7 @@
           @componentChanged="setComponent($event)"
         />
         <RegisterComponent v-if="activeComponent.register" />
+        <MyProfileComponent v-if="activeComponent.myProfile" />
         <ArticlesComponent
           @componentChanged="setComponent($event)"
           @modifyArticle="modifyArticle($event)"
@@ -66,6 +67,7 @@ import CreateArticle from './createArticle.vue';
 import MenuComponent from './menuComponent.vue';
 import NavbarComponent from './navbarComponent.vue';
 import RegisterComponent from './registerComponent.vue';
+import MyProfileComponent from './myProfileComponent.vue';
 import modifyArticle from './modifyArticle.vue';
 import NewsletterComponent from './newsletterComponent.vue';
 import newsComponent from './newsComponent.vue';
@@ -87,6 +89,7 @@ import { canAccessSection, defaultAdminSection } from '@/utils/permissions';
 const EMPTY_ACTIVE = {
   dashboard: false,
   register: false,
+  myProfile: false,
   article: false,
   archive: false,
   createArchive: false,
@@ -116,6 +119,7 @@ export default {
     NavbarComponent,
     MenuComponent,
     RegisterComponent,
+    MyProfileComponent,
     ArticlesComponent,
     CreateArticle,
     modifyArticle,

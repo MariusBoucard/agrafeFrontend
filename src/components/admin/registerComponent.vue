@@ -93,6 +93,17 @@
         <label for="bio">Bio (optionnel)</label>
         <textarea id="bio" v-model="formData.bio" rows="3"></textarea>
 
+        <p class="socials-title">Réseaux sociaux (optionnel)</p>
+        <div v-for="field in socialFields" :key="field.key" class="social-field">
+          <label :for="'social-' + field.key">{{ field.label }}</label>
+          <input
+            :id="'social-' + field.key"
+            type="url"
+            v-model="formData.socials[field.key]"
+            :placeholder="field.placeholder"
+          />
+        </div>
+
         <div class="form-actions">
           <button type="submit">{{ editingId ? 'Enregistrer' : 'Créer le compte' }}</button>
           <button type="button" class="btn-secondary" v-if="editingId" @click="cancelEdit">Annuler</button>
@@ -105,6 +116,7 @@
 <script>
 import axiosInstance from '../../axios.js';
 import { normalizeRole, ROLE_LABELS, ROLE_DESCRIPTIONS } from '@/utils/permissions';
+import { SOCIAL_FIELDS, emptySocials, socialsFromUser } from '@/utils/socials';
 
 export default {
   mounted() {
@@ -113,6 +125,7 @@ export default {
   data() {
     return {
       editingId: null,
+      socialFields: SOCIAL_FIELDS,
       formData: {
         username: '',
         mail: '',
@@ -120,6 +133,7 @@ export default {
         role: 'editor',
         profile_slug: '',
         bio: '',
+        socials: emptySocials(),
       },
       users: [],
       ROLE_DESCRIPTIONS,
@@ -170,6 +184,7 @@ export default {
         role: 'editor',
         profile_slug: '',
         bio: '',
+        socials: emptySocials(),
       };
     },
     startEdit(user) {
@@ -181,6 +196,7 @@ export default {
         role: normalizeRole(user.role || user.type),
         profile_slug: user.profile_slug || '',
         bio: user.bio || '',
+        socials: socialsFromUser(user),
       };
       window.scrollTo({ top: 0, behavior: 'smooth' });
     },
@@ -235,6 +251,7 @@ export default {
           role: this.formData.role,
           profile_slug: this.formData.profile_slug || null,
           bio: this.formData.bio,
+          socials: this.formData.socials,
         };
         if (this.formData.password) payload.password = this.formData.password;
         axiosInstance
@@ -372,6 +389,12 @@ input, select, textarea {
   font-family: inherit;
 }
 .hint { margin: 0 0 0.5rem; font-size: 0.8rem; color: #666; }
+.socials-title {
+  margin: 0.85rem 0 0.15rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.social-field { display: flex; flex-direction: column; gap: 0.25rem; }
 .form-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
 button[type='submit'] {
   background: #111;

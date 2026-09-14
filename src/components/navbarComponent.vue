@@ -61,6 +61,7 @@
           </div>
 
           <router-link class="nav-link" to="/archives" @click="closeMobile">Archives</router-link>
+          <router-link class="nav-link" to="/auteurs" @click="closeMobile">Nos auteurs</router-link>
           <router-link class="nav-link" to="/actualite" @click="closeMobile">L'actu</router-link>
           <router-link class="nav-link" to="/newsletter" @click="closeMobile">Newsletter</router-link>
           <router-link class="nav-link" to="/apropos" @click="closeMobile">À propos</router-link>

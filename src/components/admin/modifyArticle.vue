@@ -104,6 +104,7 @@
                 </div>
                 <div v-if="element.type === 'image'" class="item-image">
                     <img :src="getImageUrl(element.image)" alt="Image Preview">
+                    <p v-if="element.auteur" class="item-credit">Photographe : {{ element.auteur }}</p>
                 </div>
             </div>
           </draggable>
@@ -141,12 +142,8 @@
                     <img v-if="partToAdd.imagePreview" :src="partToAdd.imagePreview" alt="Uploaded Image">
                   </div>
                   <div class="form-group">
-                    <label for="auteurImg" class="label">Auteur</label>
-                    <input type="text" id="auteurImg" v-model="partToAdd.auteur">
-                  </div>
-                  <div class="form-group">
-                    <label for="copyright" class="label">Copyright</label>
-                    <input type="text" id="copyright" v-model="partToAdd.copyright">
+                    <label for="auteurImg" class="label">Crédit photo</label>
+                    <input type="text" id="auteurImg" v-model="partToAdd.auteur" placeholder="Photographe">
                   </div>
                 </div>
               </div>
@@ -167,12 +164,8 @@
               <div v-if="editingPart.type === 'image'" class="image-section">
                 <h4>Infos de l'image</h4>
                 <div class="form-group">
-                  <label for="editAuteur">Auteur de l'image</label>
-                  <input type="text" id="editAuteur" v-model="editingPart.auteur" placeholder="Nom de l'auteur...">
-                </div>
-                <div class="form-group">
-                  <label for="editCopyright">Copyright</label>
-                  <input type="text" id="editCopyright" v-model="editingPart.copyright" placeholder="Infos copyright...">
+                  <label for="editAuteur">Crédit photo</label>
+                  <input type="text" id="editAuteur" v-model="editingPart.auteur" placeholder="Photographe">
                 </div>
                 <div class="form-group" v-if="editingPart.image">
                   <img :src="getImageUrl(editingPart.image)" alt="Image Preview" class="image-preview-edit">
@@ -195,6 +188,7 @@
     import { VueDraggableNext } from 'vue-draggable-next';
     import baseUrl from '../../config.js'
     import axiosInstance from '@/axios';
+    import { sanitizeImagePart, sanitizeContenuCredits } from '@/utils/imageCredit';
     export default{
       components: {
         draggable: VueDraggableNext,
@@ -218,6 +212,7 @@
             {
               this.article = response.data
               if (!this.article.contenu) this.article.contenu = []
+              this.article.contenu = sanitizeContenuCredits(this.article.contenu)
               if (this.article.dossier_id === undefined) this.article.dossier_id = null
               if (!this.article.fileType) this.article.fileType = ''
             }
@@ -261,7 +256,6 @@
           partToAdd: {
             type: "",
             text: "",
-            copyright: "",
             image: "",
             auteur: "",
             imagePreview: null
@@ -287,14 +281,19 @@
           this.partToAdd.id = nanoid();
           if(this.partToAdd.type === 'image'){
             const clonedImage = new File([this.partToAdd.image], this.partToAdd.image.name);
-            const part = { ...this.partToAdd, image: clonedImage };
-            this.article.contenu.push(part)
+            this.article.contenu.push(sanitizeImagePart({
+              id: this.partToAdd.id,
+              type: 'image',
+              text: this.partToAdd.text,
+              auteur: this.partToAdd.auteur,
+              image: clonedImage,
+              imagePreview: this.partToAdd.imagePreview,
+            }))
           }
           else {
             const part = { ...this.partToAdd };
             this.article.contenu.push(part)
             delete part.auteur;
-            delete part.copyright;
             delete part.image;
             delete part.imagePreview;
           }
@@ -303,7 +302,6 @@
         cleanTemp(){
           this.partToAdd.text = ''
           this.partToAdd.auteur = ''
-          this.partToAdd.copyright = ''
           this.partToAdd.image = null
           this.partToAdd.imagePreview = null
           this.partToAdd.type = ''
@@ -339,7 +337,7 @@
           if(!confirm("T'es sûr que c'est tout bon ??\nAlleyyy, c'est tipar")) return;
 
           try {
-            await axiosInstance.post('/api/modifyArticle',{ article : this.article});
+            await axiosInstance.post('/api/modifyArticle',{ article : { ...this.article, contenu: sanitizeContenuCredits(this.article.contenu) }});
 
             const formData = new FormData();
             if(!this.notModifiedImage && this.article.imageLogo instanceof File){
@@ -384,11 +382,11 @@
         },
         editElement(element, index) {
           this.editingIndex = index;
-          this.editingPart = JSON.parse(JSON.stringify(element));
+          this.editingPart = sanitizeImagePart(JSON.parse(JSON.stringify(element)));
         },
         saveEdit() {
           if (this.editingIndex !== null) {
-            this.article.contenu[this.editingIndex] = this.editingPart;
+            this.article.contenu[this.editingIndex] = sanitizeImagePart(this.editingPart);
             this.editingIndex = null;
             this.editingPart = {};
           }
@@ -599,6 +597,11 @@
       max-width: 100%;
       max-height: 150px;
       border-radius: 6px;
+    }
+    .item-credit {
+      margin: 6px 0 0;
+      font-size: 0.85rem;
+      color: #475569;
     }
     .edit-form-container {
       background: #f0f4ff;

@@ -47,6 +47,7 @@ export function hasMinRole(userRole, minRole) {
 export const ADMIN_SECTIONS = {
   dashboard: { minRole: 'admin', label: 'Dashboard' },
   register: { minRole: 'admin', label: 'Utilisateurs' },
+  myProfile: { minRole: 'contributor', label: 'Mon profil' },
   article: { minRole: 'contributor', label: 'Articles' },
   createArticle: { minRole: 'contributor', label: 'Créer un article' },
   modifyArticle: { minRole: 'contributor', label: 'Modifier un article' },

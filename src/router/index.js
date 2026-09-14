@@ -12,6 +12,7 @@ import MentionsLegalesView from '../views/MentionsLegalesView.vue'
 import ReadArticleView from '../views/ReadArticleView.vue'
 import DossierView from '../views/DossierView.vue'
 import EquipeView from '../views/EquipeView.vue'
+import AuteursView from '../views/AuteursView.vue'
 import axios from 'axios'
 
 import { useStore } from 'vuex'; // Import useStore from Vuex
@@ -139,6 +140,12 @@ const routes = [
     name: 'dossier',
     component: DossierView,
     meta: { hideNavigationLinks: false, title: "L'agrafe - Dossier" }
+  },
+  {
+    path: '/auteurs',
+    name: 'auteurs',
+    component: AuteursView,
+    meta: { hideNavigationLinks: false, title: "L'agrafe - Nos auteurs" }
   },
   {
     path: '/equipe/:slug',

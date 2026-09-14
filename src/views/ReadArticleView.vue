@@ -9,9 +9,16 @@
             style="margin-right: 10px; width: 5%; background-color: black; padding-top: 10px; height: 30%; margin-bottom:0 ;  position: relative;transform: translateY(60%); ">
           </div>
           
-          <div v-if="item.type === 'image'">
-            <img style="width: 70%; margin: auto; display: block;" :title="`photographe : ${item.auteur}`" :src="`${baseUrl}/api/save/saveArticle/images/${article.id}/${item.id}.png`">
-            <p class="paragraphe" style="margin-top:10px" v-html="processText(item)"></p>
+          <div v-if="item.type === 'image'" class="article-image">
+            <div class="image-wrap">
+              <img
+                :src="`${baseUrl}/api/save/saveArticle/images/${article.id}/${item.id}.png`"
+                :alt="photoCredit(item) ? `Photo : ${photoCredit(item)}` : ''"
+              >
+              <span v-if="photoCredit(item)" class="image-credit-hover">{{ photoCredit(item) }}</span>
+            </div>
+            <p v-if="photoCredit(item)" class="image-credit">Photo : {{ photoCredit(item) }}</p>
+            <p class="paragraphe image-caption" v-if="item.text" v-html="processText(item)"></p>
           </div>
           <p v-if="item.type !== 'Sources' && item.type !== 'notesBasPage' && item.type !== 'image'" :class="item.type" :style="{ display : displayCitation(index) }"  v-html="processText(item,index)"></p>
           
@@ -61,6 +68,7 @@ import axiosInstance from '@/axios';
 import backcoverWidget from '@/widgets/backcoverWidget';
 import contactComponent from '@/widgets/contactComponent';
 import baseUrl from '../config';
+import { photoCredit as creditFromItem } from '@/utils/imageCredit';
 
 export default {
   name: "ReadArticleView",
@@ -127,6 +135,9 @@ export default {
             })      )
   },
   methods : {
+    photoCredit(item) {
+      return creditFromItem(item);
+    },
     /* eslint-disable */
     processText(item,index){
         if(index >0 && index < this.article.contenu.length - 2){
@@ -276,6 +287,49 @@ li {
 .author-link:hover,
 .portfolio-link:hover {
   opacity: 0.7;
+}
+
+.article-image {
+  width: 100%;
+}
+.image-wrap {
+  position: relative;
+  width: 70%;
+  margin: 0 auto;
+  display: block;
+}
+.image-wrap img {
+  width: 100%;
+  display: block;
+}
+.image-credit-hover {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.55rem 0.75rem;
+  background: rgba(0, 0, 0, 0.72);
+  color: #fff;
+  font-family: var(--font-body, Bahnschrift, sans-serif);
+  font-size: 0.85rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+.image-wrap:hover .image-credit-hover {
+  opacity: 1;
+}
+.image-credit {
+  width: 70%;
+  margin: 0.45rem auto 0;
+  font-family: var(--font-body, Bahnschrift, sans-serif);
+  font-size: 0.85rem;
+  color: #555;
+  text-align: left;
+}
+.image-caption {
+  width: 70%;
+  margin: 0.35rem auto 0;
 }
 
 .title {
