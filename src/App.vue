@@ -1,131 +1,76 @@
 <template>
+  <EphemeralBanner v-if="showNavigationLinks" />
   <navbar-component v-if="showNavigationLinks"></navbar-component>
-
   <router-view />
   <footer-component></footer-component>
 </template>
+
 <script>
-import { mapGetters, mapActions, mapMutations } from "vuex";
-import NavbarComponent from "./components/navbarComponent.vue";
-import FooterComponent from "./components/footerComponent.vue";
+import { mapGetters, mapActions, mapMutations } from 'vuex';
+import NavbarComponent from './components/navbarComponent.vue';
+import FooterComponent from './components/footerComponent.vue';
+import EphemeralBanner from './components/EphemeralBanner.vue';
+
 export default {
+  components: { NavbarComponent, FooterComponent, EphemeralBanner },
   computed: {
-    ...mapGetters("auth", ["isAuthenticated"]),
-    ...mapGetters("app", ["showNavigationLinks"]),
-    // Use computed property to check if the user is authenticated
- 
+    ...mapGetters('auth', ['isAuthenticated']),
+    ...mapGetters('app', ['showNavigationLinks']),
   },
   watch: {
     $route(to) {
-      document.title = to.meta.title || 'L\'Agrafe - Journal';
+      document.title = to.meta.title || "L'Agrafe - Journal";
     },
-  
-    user: {
-      handler: function (newUser) {
-        if (newUser) {
-          this.setConnection(true);
-        } else {
-          this.setConnection(false);
-        }
-      },
-    },
-  },
-  data: function () {
-    return {
-    };
   },
   methods: {
-    ...mapMutations("auth", ["SET_AUTHENTICATED"]),
-    ...mapActions("auth", ["setUser", "clearUser", "setConnection"]),
-    log() {
-      this.$store.commit("auth/SET_AUTHENTICATED", true); // Set to true
-    },
-    
-
+    ...mapMutations('auth', ['SET_AUTHENTICATED']),
+    ...mapActions('auth', ['setUser', 'clearUser', 'setConnection']),
   },
-  components: { NavbarComponent, FooterComponent },
 };
 </script>
+
 <style>
-/* Container for the article page */
+@font-face {
+  font-family: 'agrafe';
+  src: url('./assets/font/ELEPHNT.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bahnschrift';
+  src: local('Bahnschrift'), url('./assets/font/Bahnschrift-Font-Family/BAHNSCHRIFT.TTF') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'agrafeit';
+  src: url('./assets/font/ELEPHNTI.TTF') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Berlin Sans FB';
+  src: url('./assets/font/berlin-sans-fb-demi-bold-font/BRLNSDB.TTF') format('truetype');
+  font-display: swap;
+}
+
 .custom-el-message {
   position: fixed !important;
   top: 20px !important;
   right: 20px !important;
-  background-color: #4caf50 !important;
+  background-color: #0a0a0a !important;
   color: #fff !important;
   padding: 10px 15px !important;
-  border-radius: 4px !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
-  z-index: 8 !important;
-  opacity: 1 !important;
-  transition: opacity 0.3s ease-in-out !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  z-index: 80 !important;
 }
-.el-icon {
-  /* Set the desired font size for the icon */
-  font-size: 5px; /* Adjust the size as needed */
-}
+
 .custom-el-message.success {
-  background-color: #4caf50 !important;
-}
-
-.custom-el-message-enter-active,
-.custom-el-message-leave-active {
-  opacity: 1 !important;
-}
-
-.custom-el-message-enter,
-.custom-el-message-leave-to /* .el-message-leave-active in <2.1.8 */ {
-  opacity: 0 !important;
-}
-
-@font-face {
-  font-family: "agrafe";
-  src: url("./assets/font/ELEPHNT.TTF") format("truetype");
-  /* Add additional formats if necessary */
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Bahnschrift";
-  src: local("Bahnschrift"), url("./assets/font/Bahnschrift-Font-Family/BAHNSCHRIFT.TTF") format("truetype");
-}
-@font-face {
-  font-family: "agrafeit";
-  src: url("./assets/font/ELEPHNTI.TTF") format("ttf");
-  /* Add additional formats if necessary */
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Berlin sans FB demi bold";
-  src: url("./assets/font/berlin-sans-fb-demi-bold-font/BRLNSDB.TTF") format("ttf");
-}
-
-#app {
-  font-family: "agrafe" !important ;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-body {
-  font-family: "Elephant" !important ;
-  margin: 0;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
+  background-color: #0a0a0a !important;
 }
 </style>

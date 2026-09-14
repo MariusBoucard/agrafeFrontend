@@ -2,24 +2,20 @@
 
 import axios from 'axios';
 
-// Create a global Axios instance with a base URL
+function getAuthHeader() {
+  const token = sessionStorage.getItem('token');
+  if (!token) return '';
+  return token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+}
+
+const configuredApiUrl = process.env.VUE_APP_API_URL;
 const axiosInstance = axios.create({
-  baseURL: 'https://lagrafejournal.com', // Replace with your API base URL
-  headers: {
-    'Authorization': '', // Set your default header here
-  },
+  baseURL: configuredApiUrl !== undefined ? configuredApiUrl : 'https://lagrafejournal.com',
 });
 
-// Add a request interceptor
-axiosInstance.interceptors.request.use(config => {
-  // Modify the request configuration here
-  config.headers['Authorization'] = sessionStorage.getItem('token'); // Modify the Authorization header
+axiosInstance.interceptors.request.use((config) => {
+  config.headers['Authorization'] = getAuthHeader();
   return config;
-}, error => {
-  // Handle request errors
-  return Promise.reject(error);
-});
+}, (error) => Promise.reject(error));
 
-// Change this to your backend URL
-// Export the Axios instance to use it throughout your app
 export default axiosInstance;

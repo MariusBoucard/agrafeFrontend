@@ -1,89 +1,81 @@
 <template>
-    <div class="mam">
-        <ul>
-            <li class="listItem">
-                <div class="listDiv">
-                    <p class="listText">Local B302</p>
-                    <img class="listImg" src="../assets/social/Location.svg" />
-                </div>
-            </li>
-            <li class="listItem">
-                <a href="https://www.instagram.com/lagrafejournal/">
-                    <div class="listDiv">
-                        <p class="listText">@lagrafejournal</p>
-                        <img class="listImg" src="../assets/social/Instagram.svg" />
-                    </div>
-                </a>
-            </li>
-            <li class="listItem">
-                <a href="mailto:lagrafejournal@protonmail.com?subject=Mail depuis le site de l'agrafe">
-                    <div class="listDiv">
-                        <p class="listText">lagrafejournal@protonmail.com</p>
-                        <img class="listImg" src="../assets/social/Envelopper.svg" />
-                    </div>
-                </a>
-            </li>
-            <li class="listItem">
-                <router-link class="routerLink" to="/proposerArticle">
-
-
-                    <div class="listDiv">
-                        <p class="listText">Proposer un article</p>
-                        <div style="    padding: 7px;
-    width: 12%;">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" class="w-8 h-8">
-                                <path
-                                    d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
-                                <path
-                                    d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
-                            </svg>
-
-                        </div>
-                    </div>
-                </router-link>
-            </li>
-
-
-        </ul>
-    </div>
+  <div class="contact-panel">
+    <p class="section-kicker">La rédaction</p>
+    <hr class="double-rule" />
+    <ul>
+      <li><span class="label">Local</span> B302</li>
+      <li>
+        <span class="label">Instagram</span>
+        <a href="https://www.instagram.com/lagrafejournal/" target="_blank" rel="noopener noreferrer">@lagrafejournal</a>
+      </li>
+      <li>
+        <span class="label">Mail</span>
+        <a href="mailto:lagrafejournal@protonmail.com?subject=Mail depuis le site de l'agrafe">
+          lagrafejournal@protonmail.com
+        </a>
+      </li>
+    </ul>
+    <router-link to="/proposerArticle" class="propose">Proposer un article →</router-link>
+  </div>
 </template>
 
 <style scoped>
+.contact-panel {
+  padding: 0 0 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
 ul {
-    list-style: none;
-}
-.mam {
-  margin: 0;
+  list-style: none;
+  margin: 0 0 1.15rem;
   padding: 0;
-  background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
-  backdrop-filter: blur(10px); /* Blur the background */
-  border-radius: 10px; /* Optional: round corners */
-  transition: all 0.3s ease-in-out; /* Smooth transition */
-}
-.listDiv {
-    display: flex;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
 }
 
-.listImg {
-    padding: 10px;
-    width: 10%;
+li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.95rem;
 }
 
-.listText {
-    margin: auto;
-    margin-right: 0px;
-    color: black;
-    font-family: "Bahnschrift", sans-serif;
+.label {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  font-weight: 700;
 }
 
-@media (max-width: 768px) {
-    .listText {
-        width: 90%;
-        margin: 0;
-    }
+a {
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  width: fit-content;
+}
 
-    .mam ul{
-        padding: 0;
-    }
+a:hover {
+  border-bottom-color: var(--staple);
+  color: var(--staple);
+}
+
+.propose {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: var(--ink);
+  color: #fff;
+  padding: 0.75rem 1rem;
+  min-height: 44px;
+}
+
+.propose:hover {
+  background: var(--staple);
+  color: #fff;
+  border-bottom: none;
 }
 </style>

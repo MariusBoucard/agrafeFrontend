@@ -21,42 +21,44 @@
   
 <script>
 import axiosInstance from '../axios.js';
-import router from '../router/index'
-export default{
-    data(){
+import router from '../router/index';
+import { mapActions } from 'vuex';
+
+export default {
+    data() {
         return {
             formData: {
-                        username: '',
-                        password: '',
-                        mail : ''
-                    },
-        }
+                username: '',
+                password: '',
+                mail: '',
+            },
+        };
     },
-    methods : {
+    methods: {
+        ...mapActions('auth', ['setUser', 'setConnection']),
         login() {
-                    // Send a POST request with the form data to your backend API
-                    // You can use libraries like Axios or the native Fetch API for this
-                    // Example with Axios:
-                    axiosInstance.post('/api/login', this.formData)
-                        .then(response => {
-                            console.log("rep",response)
-                            // Handle the response from the server
-                            const token = response.data.token;
-                            axiosInstance.defaults.headers.common['Authorization'] = token;
-                            sessionStorage.setItem('token', token); // For session-only storage
-                            if (response.data.connected === true){
-                                 router.push('/admin'); // Replace '/dashboard' with the URL you want to redirect to
-                            } else {
-                                alert("Invalid credentials")
-                            }
-                        })
-                        .catch(error => {
-                            console.log(error)
-                            // Handle any errors
-                        });
-                },
-    }
-}
+            axiosInstance.post('/api/login', this.formData)
+                .then((response) => {
+                    const token = response.data.token;
+                    const bearerToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+                    axiosInstance.defaults.headers.common['Authorization'] = bearerToken;
+                    sessionStorage.setItem('token', bearerToken);
+                    if (response.data.connected === true) {
+                        const role = response.data.role || 'contributor';
+                        sessionStorage.setItem('role', role);
+                        this.setConnection(true);
+                        this.setUser({ role });
+                        router.push('/admin');
+                    } else {
+                        alert('Identifiants invalides');
+                    }
+                })
+                .catch(() => {
+                    alert('Identifiants invalides');
+                });
+        },
+    },
+};
 
 </script>
 <style scoped>

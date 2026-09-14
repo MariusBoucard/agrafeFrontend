@@ -56,31 +56,34 @@ export default {
     };
   },
 
+  mounted() {
+    const token = this.$route.query.confirm;
+    if (token) {
+      axiosInstance.get(`/api/newsletter/confirm/${token}`).then(() => {
+        alert('Inscription confirmée ! Bienvenue dans la newsletter L\'Agrafe.');
+      }).catch(() => alert('Lien de confirmation invalide ou expiré.'));
+    }
+  },
   methods: {
     async inscription() {
       try {
-        if(this.validateEmail(this.user.mail) === false){
-          alert("Veuillez entrer une adresse mail valide");
+        if (this.validateEmail(this.user.mail) === false) {
+          alert('Veuillez entrer une adresse mail valide');
           return;
         }
-
-        const response = await axiosInstance.post("/api/addNewsletter", {
-          user: this.user,
-        });
-        console.log("Inscription réussie", response.data);
+        const response = await axiosInstance.post('/api/addNewsletter', { user: this.user });
+        alert(response.data.message || 'Vérifiez votre boîte mail pour confirmer l\'inscription.');
       } catch (error) {
-        console.error("Erreur lors de l'inscription", error);
+        alert(error.response?.data?.message || 'Erreur lors de l\'inscription');
       }
     },
 
     async desinscription() {
       try {
-        const response = await axiosInstance.delete(
-          `/api/deleteNewsletter/${this.user.mail}`
-        );
-        console.log(response.data);
+        await axiosInstance.delete(`/api/deleteNewsletter/${this.user.mail}`);
+        alert('Désinscription effectuée.');
       } catch (error) {
-        console.error("Erreur lors de la désinscription", error);
+        alert('Erreur lors de la désinscription');
       }
     },
     validateEmail(email) {

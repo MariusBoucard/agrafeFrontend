@@ -9,15 +9,31 @@
             style="margin-right: 10px; width: 5%; background-color: black; padding-top: 10px; height: 30%; margin-bottom:0 ;  position: relative;transform: translateY(60%); ">
           </div>
           
-          <div v-if="item.type === 'image'">
-            <img style="width: 70%; margin: auto; display: block;" :title="`photographe : ${item.auteur}`" :src="`${baseUrl}/api/save/saveArticle/images/${article.id}/${item.id}.png`">
-            <p class="paragraphe" style="margin-top:10px" v-html="processText(item)"></p>
+          <div v-if="item.type === 'image'" class="article-image">
+            <div class="image-wrap">
+              <img
+                :src="`${baseUrl}/api/save/saveArticle/images/${article.id}/${item.id}.png`"
+                :alt="photoCredit(item) ? `Photo : ${photoCredit(item)}` : ''"
+              >
+              <span v-if="photoCredit(item)" class="image-credit-hover">{{ photoCredit(item) }}</span>
+            </div>
+            <p v-if="photoCredit(item)" class="image-credit">Photo : {{ photoCredit(item) }}</p>
+            <p class="paragraphe image-caption" v-if="item.text" v-html="processText(item)"></p>
           </div>
           <p v-if="item.type !== 'Sources' && item.type !== 'notesBasPage' && item.type !== 'image'" :class="item.type" :style="{ display : displayCitation(index) }"  v-html="processText(item,index)"></p>
           
         </li>
       </ul>
-        {{ article.auteur }}
+      <p class="author" v-if="article.auteur">
+        <template v-if="article.authorSlug">
+          par
+          <router-link class="author-link" :to="`/equipe/${article.authorSlug}`">
+            {{ article.auteur }}
+          </router-link>
+          — <router-link class="portfolio-link" :to="`/equipe/${article.authorSlug}`">voir le portfolio</router-link>
+        </template>
+        <template v-else>par {{ article.auteur }}</template>
+      </p>
       <ul style=" width: 80%;">
         <li v-for="item in article.contenu" :key="item.id" style="margin: 0px;">
           <div v-if="item.type === 'Sources'" style="display: flex;">
@@ -52,6 +68,7 @@ import axiosInstance from '@/axios';
 import backcoverWidget from '@/widgets/backcoverWidget';
 import contactComponent from '@/widgets/contactComponent';
 import baseUrl from '../config';
+import { photoCredit as creditFromItem } from '@/utils/imageCredit';
 
 export default {
   name: "ReadArticleView",
@@ -118,6 +135,9 @@ export default {
             })      )
   },
   methods : {
+    photoCredit(item) {
+      return creditFromItem(item);
+    },
     /* eslint-disable */
     processText(item,index){
         if(index >0 && index < this.article.contenu.length - 2){
@@ -254,7 +274,62 @@ li {
   font-family: "Bahnschrift", sans-serif;
   color: rgba(0, 0, 0, 1);
   font-weight: 500;
-  /* Styles for the author class */
+  margin: 1.25rem 0 0.5rem;
+}
+
+.author-link,
+.portfolio-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.author-link:hover,
+.portfolio-link:hover {
+  opacity: 0.7;
+}
+
+.article-image {
+  width: 100%;
+}
+.image-wrap {
+  position: relative;
+  width: 70%;
+  margin: 0 auto;
+  display: block;
+}
+.image-wrap img {
+  width: 100%;
+  display: block;
+}
+.image-credit-hover {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.55rem 0.75rem;
+  background: rgba(0, 0, 0, 0.72);
+  color: #fff;
+  font-family: var(--font-body, Bahnschrift, sans-serif);
+  font-size: 0.85rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+.image-wrap:hover .image-credit-hover {
+  opacity: 1;
+}
+.image-credit {
+  width: 70%;
+  margin: 0.45rem auto 0;
+  font-family: var(--font-body, Bahnschrift, sans-serif);
+  font-size: 0.85rem;
+  color: #555;
+  text-align: left;
+}
+.image-caption {
+  width: 70%;
+  margin: 0.35rem auto 0;
 }
 
 .title {
