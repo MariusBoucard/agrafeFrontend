@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import pdf from 'vue3-pdf';
+import pdf from '@/components/PdfViewer.vue';
 import baseUrl from '../config';
 import axiosInstance from '@/axios';
 export default {

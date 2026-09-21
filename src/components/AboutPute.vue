@@ -6,7 +6,7 @@
     </div>
 </template>
 <script>
-import pdf from 'vue3-pdf';
+import pdf from '@/components/PdfViewer.vue';
 export default {
     components : {
         pdf
