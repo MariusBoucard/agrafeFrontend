@@ -24,6 +24,12 @@
           rel="noopener noreferrer"
           class="dev-credit"
         >Création web — Thibau Lasblei</a>
+        <a
+          href="https://www.linkedin.com/in/marius-boucard-bocciarelli-390793222/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="dev-credit"
+        >Marius Boucard--Bocciarelli</a>
       </div>
       <div class="col social-col">
         <p class="col-title">Suivre</p>
@@ -43,12 +49,21 @@
     <div class="footer-bottom">
       <div class="page-shell bottom-inner">
         <span>© {{ currentYear }} L'Agrafe</span>
-        <a
-          class="dev-credit-bottom"
-          href="https://www.lastblei-thibau.fr/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >Site réalisé par Thibau Lasblei</a>
+        <span class="dev-credits">
+          <a
+            class="dev-credit-bottom"
+            href="https://www.lastblei-thibau.fr/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Site réalisé par Thibau Lasblei</a>
+          <span class="dev-sep" aria-hidden="true">·</span>
+          <a
+            class="dev-credit-bottom"
+            href="https://www.linkedin.com/in/marius-boucard-bocciarelli-390793222/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Marius Boucard--Bocciarelli</a>
+        </span>
         <span class="staples" aria-hidden="true"><i></i><i></i><i></i></span>
       </div>
     </div>
@@ -146,6 +161,18 @@ export default {
   border-bottom-color: rgba(255, 255, 255, 0.45);
 }
 
+.dev-credits {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+  justify-content: center;
+}
+
+.dev-sep {
+  opacity: 0.5;
+}
+
 .social-row {
   display: flex;
   gap: 1rem;
@@ -199,6 +226,12 @@ export default {
   .footer-top {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+  }
+
+  .bottom-inner {
+    flex-direction: column;
+    gap: 0.65rem;
+    text-align: center;
   }
 }
 </style>
