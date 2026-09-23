@@ -42,12 +42,22 @@ export default {
                     const token = response.data.token;
                     const bearerToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
                     axiosInstance.defaults.headers.common['Authorization'] = bearerToken;
+                    // Évite de garder un rôle contributeur périmé d'une session précédente
+                    sessionStorage.removeItem('role');
                     sessionStorage.setItem('token', bearerToken);
                     if (response.data.connected === true) {
-                        const role = response.data.role || 'contributor';
-                        sessionStorage.setItem('role', role);
+                        let role = response.data.role;
+                        if (!role) {
+                          try {
+                            const raw = bearerToken.replace(/^Bearer\s+/i, '');
+                            const payload = JSON.parse(atob(raw.split('.')[1]));
+                            role = payload.role;
+                          } catch {
+                            role = 'contributor';
+                          }
+                        }
                         this.setConnection(true);
-                        this.setUser({ role });
+                        this.setUser({ role, name: response.data.name });
                         router.push('/admin');
                     } else {
                         alert('Identifiants invalides');

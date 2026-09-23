@@ -12,13 +12,14 @@ function decodeJwtPayload(token) {
   }
 }
 
-/** Restaure le rôle depuis sessionStorage ou le JWT */
+/** Restaure le rôle : le JWT prime sur un sessionStorage éventuellement périmé */
 export function restoreAuthFromSession() {
   const token = sessionStorage.getItem('token');
   if (!token) return null;
-  const storedRole = sessionStorage.getItem('role');
   const payload = decodeJwtPayload(token);
-  const role = normalizeRole(storedRole || payload?.role || 'contributor');
+  const storedRole = sessionStorage.getItem('role');
+  // Priorité au JWT : un ancien `role=contributor` en session ne doit plus écraser un admin
+  const role = normalizeRole(payload?.role || storedRole || 'contributor');
   sessionStorage.setItem('role', role);
   return { role, token };
 }
@@ -73,8 +74,7 @@ const actions = {
     commit('SET_USER', null);
     commit('SET_AUTHENTICATED', false);
   },
-  hydrateFromSession({ commit, state }) {
-    if (state.user?.role) return;
+  hydrateFromSession({ commit }) {
     const restored = restoreAuthFromSession();
     if (!restored) return;
     commit('SET_USER', { role: restored.role });
