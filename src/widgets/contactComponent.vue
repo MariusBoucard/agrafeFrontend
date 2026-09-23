@@ -23,6 +23,8 @@
 .contact-panel {
   padding: 0 0 1.5rem;
   margin-bottom: 1.75rem;
+  min-width: 0;
+  max-width: 100%;
 }
 
 ul {
@@ -39,6 +41,7 @@ li {
   flex-direction: column;
   gap: 0.15rem;
   font-size: 0.95rem;
+  min-width: 0;
 }
 
 .label {
@@ -53,6 +56,8 @@ a {
   text-decoration: none;
   border-bottom: 1px solid transparent;
   width: fit-content;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 a:hover {

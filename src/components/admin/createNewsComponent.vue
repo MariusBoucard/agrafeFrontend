@@ -212,4 +212,39 @@ input:required::after {
   content: "*";
   color: red;
   margin-left: 4px;
-}</style>
+}
+
+.form-column {
+  min-width: 0;
+}
+
+input[type="text"],
+textarea,
+input[type="file"],
+select {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 700px) {
+  .container {
+    padding: 12px;
+    border-radius: 0;
+  }
+
+  .form-columns {
+    flex-direction: column;
+  }
+
+  .form-column {
+    flex-basis: 100%;
+    width: 100%;
+  }
+
+  .submit-button {
+    width: calc(100% - 40px);
+    margin: 12px 20px;
+  }
+}
+</style>

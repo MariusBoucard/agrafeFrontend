@@ -723,4 +723,50 @@
       max-width: 100%;
       border-radius: 6px;
     }
+
+    @media (max-width: 700px) {
+      .container {
+        padding: 12px;
+        border-radius: 0;
+      }
+
+      .form-columns {
+        flex-direction: column;
+      }
+
+      .form-column {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .item-content {
+        flex-wrap: wrap;
+      }
+
+      .item-actions {
+        width: 100%;
+        flex-wrap: wrap;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .rubrique-card {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .rub-actions {
+        flex-wrap: wrap;
+        width: 100%;
+      }
+
+      .hovered-info {
+        left: 0;
+        right: 0;
+        width: auto;
+        max-width: 100%;
+      }
+    }
     </style>

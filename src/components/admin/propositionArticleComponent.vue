@@ -1,11 +1,10 @@
 <template>
-  <div>
-    <div>
+  <div class="container">
+    <div class="header">
         <h1>Propositions d'articles</h1>
-
     </div>
 
-    <div id="tableArticles">
+    <div id="tableArticles" class="table-scroll">
       <table>
         <thead>
           <tr>
@@ -16,7 +15,6 @@
             <th>Rubrique</th>
             <th>Télécharger</th>
             <th>Supprimer</th>
-            <!-- Add more table headers for other attributes as needed -->
           </tr>
         </thead>
         <tbody>
@@ -25,11 +23,9 @@
             <td>{{ article.auteur }}</td>
             <td>{{ article.contact }}</td>
             <td>{{ article.commentaire }}</td>
-            <th>{{ rubriqueName(article.rubriqueId) }}</th>
+            <td>{{ rubriqueName(article.rubriqueId) }}</td>
             <td><button class="button" @click.stop="telechargerArticle(article.id)">Télécharger</button></td>
-            <td><button class="button" @click.stop="deleteArticle(article.id)">Supprimer</button></td>
-
-            <!-- Add more table cells for other attributes as needed -->
+            <td><button class="button button-danger" @click.stop="deleteArticle(article.id)">Supprimer</button></td>
           </tr>
         </tbody>
       </table>
@@ -111,6 +107,74 @@ export default {
 }}
 </script>
 
-<style>
-/* Add your styles here */
+<style scoped>
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.header {
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: clamp(1.15rem, 4vw, 1.5rem);
+  margin: 0;
+  color: black;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th,
+td {
+  padding: 10px;
+  max-width: 200px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+  word-break: break-word;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.button {
+  background-color: lightgreen;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  min-height: 40px;
+}
+
+.button-danger {
+  background-color: #ef4444;
+  color: #fff;
+}
+
+@media (max-width: 700px) {
+  .container {
+    padding: 12px;
+    border-radius: 0;
+  }
+}
 </style>

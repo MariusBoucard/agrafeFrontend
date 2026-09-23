@@ -138,6 +138,7 @@ export default {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 8px;
+  flex-wrap: wrap;
 }
 
 .section-edit input,

@@ -4,12 +4,12 @@
 
       <div class="header">
         <h1>Voila la page des articles</h1>
-        <input type="text" v-model="search" placeholder="Chercher un article..."  style="margin-right:20px ;" class="input-search">
+        <input type="text" v-model="search" placeholder="Chercher un article..." class="input-search">
 
         <button class="add-article-button" @click="createArticle()">Add an article</button>
       </div>
     </div>
-    <div id="tableArticles">
+    <div id="tableArticles" class="table-scroll">
       <table>
         <thead>
           <tr>
@@ -47,7 +47,7 @@
             <td>{{ article.date }}</td>
             <td class="vertical-align-middle">
               <div class="content">
-                <p style="padding: 20px;">
+                <p class="private-label">
                   {{ isPrivate(article.private) }}
                 </p>
                 <button class="button" @click.stop="privateArticle(article.id)">privé</button>
@@ -195,17 +195,6 @@ export default {
   display: block;
 }
 
-.input-search {
-  width: 75%;
-  margin: 0 auto 20px;
-  padding: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-
 .container {
   width: 100%;
   display: block;
@@ -217,32 +206,37 @@ export default {
   box-sizing: border-box;
 }
 
-/* Header styles */
 .header {
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
   position: relative;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
 
-/* Page title */
 h1 {
-
-  font-size: 24px;
+  font-size: clamp(1.15rem, 4vw, 1.5rem);
   color: black;
   margin: 0;
-  /* Remove margin to center the title */
+  flex: 1 1 160px;
 }
 
-
-/* Page title */
-h1 {
-  font-size: 24px;
-  color: black;
+.input-search {
+  flex: 1 1 180px;
+  min-width: 0;
+  max-width: 100%;
+  width: auto;
+  margin: 0;
+  padding: 10px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
 }
 
-/* Button styles */
 .add-article-button {
   background-color: lightgreen;
   border: none;
@@ -250,16 +244,18 @@ h1 {
   cursor: pointer;
   font-size: 16px;
   border-radius: 8px;
+  min-height: 44px;
+  flex: 0 0 auto;
 }
 
-/* Button styles */
 .button {
   background-color: lightgreen;
   border: none;
-  padding: 5px 10px;
+  padding: 8px 12px;
   cursor: pointer;
   font-size: 16px;
   border-radius: 8px;
+  min-height: 40px;
 }
 
 .button:hover {
@@ -270,9 +266,15 @@ h1 {
   background-color: #4caf50;
 }
 
-/* Table styles */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
 table {
   width: 100%;
+  min-width: 720px;
   border-collapse: collapse;
   margin-bottom: 20px;
 }
@@ -283,10 +285,34 @@ td {
   max-width: 200px;
   text-align: left;
   border-bottom: 1px solid #ccc;
+  word-break: break-word;
 }
 
 th {
   background-color: #f2f2f2;
   font-weight: bold;
+  white-space: nowrap;
+}
+
+.private-label {
+  padding: 0;
+  margin: 0 0 0.35rem;
+}
+
+@media (max-width: 700px) {
+  .container {
+    padding: 12px;
+    border-radius: 0;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .input-search,
+  .add-article-button {
+    width: 100%;
+  }
 }
 </style>

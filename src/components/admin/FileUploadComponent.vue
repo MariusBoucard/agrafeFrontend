@@ -2,22 +2,21 @@
     <div class="codeDiv">
   
   <nav class="navbar">
-    <p style="margin-left: 10px;">Envoi de fichiers</p>
+    <p class="navbar-label">Envoi de fichiers</p>
     
-    <div style="display: flex;">
-        <button @click="reload">Reload</button>
-
+    <div class="navbar-actions">
+        <button type="button" @click="reload">Reload</button>
     </div>
 
   </nav>
-  <input type="text" placeholder="path" v-model="foreignPath">
+  <input class="path-input" type="text" placeholder="path" v-model="foreignPath">
   <div class="fileDisplay">
     <li class="return" @click="returnOne()">../</li>
     <ul>
     <li v-for="file in files" :key="file" @click="file.type === 'directory' && openDirectory(file.name)">
         <img class="listimage" v-if="file.type === 'directory'" src="../../assets/utils/folder.png" alt="Directory Logo">
         <img class="listimage" v-else src="../../assets/utils/document.png" alt="File Logo">
-        <p>
+        <p class="filename">
             {{ file.name }}
 
         </p>
@@ -31,10 +30,10 @@
   <div class="inputDiv">
 
     
-    <input class="inButton" type="file" @change="onFileChange">
+    <input class="inButton file-input" type="file" @change="onFileChange">
     
     
-    <button  class="inButton" @click="uploadFile">Upload file</button>
+    <button type="button" class="inButton" @click="uploadFile">Upload file</button>
   </div>
 
 </div>
@@ -319,5 +318,74 @@ export default{
     /* Glowy green background on hover */
     color: #32CD32;
     /* Dark text on hover */
+  }
+
+  .navbar-label {
+    margin: 0 0 0 10px;
+  }
+
+  .navbar-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .path-input {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 0.75rem 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .filename {
+    margin: 0;
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow-wrap: anywhere;
+  }
+
+  .file-input {
+    max-width: 100%;
+  }
+
+  @media (max-width: 700px) {
+    .codeDiv {
+      margin: 8px;
+      padding: 12px;
+    }
+
+    nav {
+      padding: 12px;
+    }
+
+    .navbar {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .navbar select,
+    .navbar button {
+      margin: 0;
+    }
+
+    .inputDiv {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+    }
+
+    .fileDisplay ul li {
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      align-items: center;
+    }
+
+    .removebutton {
+      margin-left: 0;
+      margin-right: 0;
+    }
   }
   </style>

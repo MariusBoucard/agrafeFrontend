@@ -184,20 +184,20 @@ export default {
 
 <style scoped>
 .rubriques-admin { padding: 20px; }
-.grid { display: grid; grid-template-columns: 1fr 420px; gap: 20px; align-items: start; }
+.grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 420px); gap: 20px; align-items: start; }
 .list h2 { margin-top: 0; }
 .cards { display: flex; flex-direction: column; gap: 10px; }
 .card { background: #fff; border: 1px solid #e6eef9; padding: 12px; border-radius: 8px; }
-.card-main { display:flex; justify-content:space-between; gap:12px; }
-.card-title { font-weight:700; color:#0f172a; }
+.card-main { display:flex; justify-content:space-between; gap:12px; flex-wrap: wrap; }
+.card-title { font-weight:700; color:#0f172a; min-width: 0; word-break: break-word; }
 .card-desc { color:#475569; margin-top:6px; }
-.card-meta { color:#64748b; font-size:0.85rem; margin-top:8px }
-.card-actions { display:flex; gap:8px; align-items:center }
-.btn { padding:6px 10px; border-radius:6px; border:none; cursor:pointer }
+.card-meta { color:#64748b; font-size:0.85rem; margin-top:8px; overflow-wrap: anywhere; }
+.card-actions { display:flex; gap:8px; align-items:center; flex-wrap: wrap; }
+.btn { padding:6px 10px; border-radius:6px; border:none; cursor:pointer; min-height: 40px; }
 .btn-edit { background:#3b82f6; color:white }
 .btn-delete { background:#ef4444; color:white }
 .btn[disabled] { opacity:0.5; cursor:not-allowed }
-.forms { display:flex; flex-direction:column; gap:12px }
+.forms { display:flex; flex-direction:column; gap:12px; min-width: 0; }
 .form-card { background:#fff; border:1px solid #e6eef9; padding:12px; border-radius:8px }
 .form { display:flex; flex-direction:column; gap:8px }
 label { font-weight:600; color:#0f172a }
@@ -207,7 +207,15 @@ label { font-weight:600; color:#0f172a }
   /* Prevent numeric input from overflowing its container */
   input[type="number"] { -moz-appearance: textfield; }
   input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-.form-actions { display:flex; gap:8px; margin-top:8px }
+.form-actions { display:flex; gap:8px; margin-top:8px; flex-wrap: wrap; }
 .btn-primary { background:#10b981; color:white; border:none; padding:8px 12px; border-radius:6px }
-code { background:#f1f5f9; padding:2px 6px; border-radius:4px }
+code { background:#f1f5f9; padding:2px 6px; border-radius:4px; word-break: break-all; }
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .rubriques-admin { padding: 12px; }
+}
 </style>

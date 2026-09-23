@@ -243,4 +243,15 @@ ul {
   font-size: 0.8rem;
   opacity: 1;
 }
+
+@media (max-width: 900px) {
+  .menu {
+    min-height: 100%;
+    padding-bottom: 3rem;
+  }
+
+  .menu-legend {
+    display: none;
+  }
+}
 </style>

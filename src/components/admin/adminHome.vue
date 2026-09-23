@@ -210,7 +210,8 @@ export default {
   flex: 1;
   min-width: 0;
   background: #f4f4f4;
-  overflow-x: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 @media (max-width: 900px) {
@@ -240,10 +241,23 @@ export default {
     z-index: 50;
     transform: translateX(-105%);
     transition: transform 0.2s ease;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.25);
   }
 
   .left-column.open {
     transform: translateX(0);
+  }
+
+  .right-column {
+    width: 100%;
+    padding-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu-toggle {
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
   }
 }
 </style>

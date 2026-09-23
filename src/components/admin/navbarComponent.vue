@@ -34,11 +34,16 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
   padding: 0 1rem;
 }
 
 .navbar-title {
   font-size: 18px;
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .logout-button {
@@ -54,9 +59,22 @@ export default {
   min-height: 44px;
   display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .logout-button:hover {
   background-color: #d32f2f;
+}
+
+@media (max-width: 600px) {
+  .navbar-title {
+    font-size: 0.95rem;
+    line-height: 1.3;
+  }
+
+  .logout-button {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+  }
 }
 </style>
