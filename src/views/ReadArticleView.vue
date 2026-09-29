@@ -407,6 +407,16 @@ li {
   color: rgba(0, 0, 0, 0.5);
 }
 
+.interTitre {
+  font-family: "Berlin Sans FB", sans-serif;
+  font-size: clamp(1.45rem, 4.5vw, 1.9rem);
+  font-weight: 700;
+  color: black;
+  line-height: 1.2;
+  margin-top: 1.75rem;
+  margin-bottom: 0.65rem;
+}
+
 .Citation {
   font-family: "Bahnschrift", sans-serif;
   background-color: black !important;

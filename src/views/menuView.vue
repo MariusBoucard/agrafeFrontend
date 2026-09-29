@@ -4,7 +4,7 @@
       <header class="home-intro anim-fade-up">
         <p class="section-kicker">Journal associatif · Rennes 2</p>
         <h1 class="home-title">L'Agrafe</h1>
-        <p class="home-lead">Le journal qui agrafe les idées</p>
+        <p class="home-lead">D’encres et d’idées</p>
         <hr class="double-rule" />
       </header>
 

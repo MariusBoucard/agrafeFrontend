@@ -26,7 +26,7 @@
             <td>{{ neww.titre }}</td>
             <td>{{ neww.description }}</td>
             <td>
-              <img style="max-width: 100%;" :src="`${baseUrl}/save/newsImage/${neww.id}.png`">
+              <img style="max-width: 100%;" :src="`${baseUrl}/api/save/newsImage/${neww.id}.png`">
             </td>
 
             <td>{{ neww.date }}</td>

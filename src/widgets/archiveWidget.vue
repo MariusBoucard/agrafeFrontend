@@ -94,6 +94,9 @@ export default{
 }
 .outsideDiv > p {
     color: white;
+    text-align: center;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 .innerImage{
     width: 90%;
