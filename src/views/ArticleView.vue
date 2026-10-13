@@ -14,7 +14,7 @@
           />
           <div class="feed">
             <articleWidget
-              v-for="article in paginatedArticles"
+              v-for="article in articles"
               :key="article.id"
               :article="article"
               :rubriques="rubriques"
@@ -59,66 +59,55 @@ export default {
   watch: {
     '$route.params.rubriqueID'(newArticleId) {
       this.selectedRubriqueId = newArticleId;
-      this.filterArticles();
+      if (this.currentPage === 1) this.fetchArticles();
+      else this.currentPage = 1;
     },
     search() {
-      this.currentPage = 1;
+      clearTimeout(this.searchTimer);
+      this.searchTimer = setTimeout(() => {
+        if (this.currentPage === 1) this.fetchArticles();
+        else this.currentPage = 1;
+      }, 250);
+    },
+    currentPage() {
+      this.fetchArticles();
     },
   },
-  methods : {
-    filterArticles(){
-      this.selectedArticles = this.articles.filter(
-          (article) => article.rubrique == this.selectedRubriqueId
-        );
-        this.selectedArticles.sort((a, b) => new Date(b.date) - new Date(a.date));
-        console.log("Selected articles",this.selectedRubriqueId);
-        if(!this.selectedRubriqueId){
-            this.selectedArticles = this.articles;
-            this.selectedArticles.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-          }
-          this.currentPage = 1;
-          }
-
-         
-  },
   computed: {
-    filteredArticles() {
-    const searchLower = this.search.toLowerCase();
-    return this.selectedArticles.filter(article =>
-      article.titreFront.toLowerCase().includes(searchLower) ||
-      article.description.toLowerCase().includes(searchLower)
-    );
-  },
     normalArticle() {
-    return this.selectedRubriqueId !== 'LLwDinc4Uh79PDLxLd9sd';
+      return this.selectedRubriqueId !== 'LLwDinc4Uh79PDLxLd9sd';
+    },
   },
-  paginatedArticles() {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    const end = start + this.itemsPerPage;
-    return this.filteredArticles.slice(start, end);
+  methods: {
+    fetchArticles() {
+      if (!this.normalArticle) return;
+      const params = {
+        page: this.currentPage,
+        pageSize: this.itemsPerPage,
+      };
+      if (this.selectedRubriqueId) params.rubrique = this.selectedRubriqueId;
+      if (this.search.trim()) params.search = this.search.trim();
+
+      axiosInstance
+        .get("/api/publicArticles", { params })
+        .then((response) => {
+          this.articles = response.data.articles || [];
+          this.pageCount = response.data.pageCount || 1;
+          this.total = response.data.total || 0;
+        })
+        .catch((error) =>
+          this.$message({
+            message: error,
+            type: "error",
+            customClass: "custom-el-message",
+            duration: 1000,
+          })
+        );
+    },
   },
-  pageCount() {
-    return Math.max(1, Math.ceil(this.filteredArticles.length / this.itemsPerPage));
-  },
-},
   mounted() {
     this.selectedRubriqueId = this.$route.params.rubriqueID;
-    axiosInstance
-      .get("/api/getrecentarticle")
-      .then((response) => {
-        this.articles = response.data;
-        console.log("Got the articles",this.articles);
-       this.filterArticles()
-      })
-      .catch((error) =>
-        this.$message({
-          message: error,
-          type: "error",
-          customClass: "custom-el-message",
-          duration: 1000,
-        })
-      );
+    this.fetchArticles();
     axiosInstance
       .get("/api/getrubriques")
       .then((response) => {
@@ -133,15 +122,20 @@ export default {
         })
       );
   },
+  beforeUnmount() {
+    clearTimeout(this.searchTimer);
+  },
   data() {
     return {
-      search : "",
+      search: "",
+      searchTimer: null,
       articles: [],
       rubriques: [],
-      selectedRubriqueId : "",
-      selectedArticles : [],
+      selectedRubriqueId: "",
       currentPage: 1,
-    itemsPerPage: 5,
+      itemsPerPage: 5,
+      pageCount: 1,
+      total: 0,
     };
   },
 };

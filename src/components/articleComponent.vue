@@ -1,13 +1,13 @@
 <template>
   <div class="article-feed">
     <articleWidget
-      v-for="(article, index) in paginatedArticles"
+      v-for="(article, index) in articles"
       :key="article.id"
       :article="article"
       :rubriques="rubriques"
       :reverse="index % 2 === 1"
     />
-    <p v-if="!paginatedArticles.length" class="empty">Aucun article à afficher</p>
+    <p v-if="!articles.length" class="empty">Aucun article à afficher</p>
     <PaginationControls
       :current-page="currentPage"
       :page-count="pageCount"
@@ -30,39 +30,39 @@ export default {
     return {
       articles: [],
       rubriques: [],
-      sortedArticles: [],
       currentPage: 1,
       itemsPerPage: 5,
+      pageCount: 1,
     };
-  },
-  computed: {
-    filteredArticles() {
-      if (!this.excludeId) return this.sortedArticles;
-      return this.sortedArticles.filter((a) => a.id !== this.excludeId);
-    },
-    paginatedArticles() {
-      const start = (this.currentPage - 1) * this.itemsPerPage;
-      return this.filteredArticles.slice(start, start + this.itemsPerPage);
-    },
-    pageCount() {
-      return Math.max(1, Math.ceil(this.filteredArticles.length / this.itemsPerPage));
-    },
   },
   watch: {
     excludeId() {
-      this.currentPage = 1;
+      if (this.currentPage === 1) this.fetchArticles();
+      else this.currentPage = 1;
+    },
+    currentPage() {
+      this.fetchArticles();
+    },
+  },
+  methods: {
+    fetchArticles() {
+      const params = {
+        page: this.currentPage,
+        pageSize: this.itemsPerPage,
+      };
+      if (this.excludeId) params.excludeId = this.excludeId;
+
+      axiosInstance
+        .get('/api/publicArticles', { params })
+        .then((response) => {
+          this.articles = response.data.articles || [];
+          this.pageCount = response.data.pageCount || 1;
+        })
+        .catch(() => {});
     },
   },
   mounted() {
-    axiosInstance
-      .get('/api/getrecentarticle')
-      .then((response) => {
-        this.articles = response.data || [];
-        this.sortedArticles = [...this.articles].sort(
-          (a, b) => new Date(b.date) - new Date(a.date)
-        );
-      })
-      .catch(() => {});
+    this.fetchArticles();
 
     axiosInstance
       .get('/api/getrubriques')
