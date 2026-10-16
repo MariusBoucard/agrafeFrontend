@@ -223,7 +223,7 @@ export default {
     },
     methods: {
         handleFileUpload(evt) {
-            const MAX_SIZE_MB = 50; // Set your maximum size in MB here
+            const MAX_SIZE_MB = 200; // Limite alignée avec le backend / nginx (200 Mo)
             const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024; // Convert to bytes
             const files = evt.target.files;
             const MAX_FILES = 30; // Set your maximum number of files here

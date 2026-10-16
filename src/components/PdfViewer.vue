@@ -33,12 +33,19 @@ export default {
   position: relative;
   display: block;
   width: 100%;
+  max-width: 100%;
+  background: #fff;
+}
+
+:deep(.vue-pdf-embed__page) {
+  margin: 0 auto;
 }
 
 :deep(canvas) {
-  display: inline-block;
+  display: block !important;
   width: 100% !important;
   height: auto !important;
+  max-width: 100%;
   vertical-align: top;
 }
 </style>

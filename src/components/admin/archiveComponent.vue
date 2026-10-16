@@ -110,7 +110,9 @@ export default{
           
             axiosInstance.get('/api/getAllArchives').then(
                response => {
-                            this.archives = response.data
+                            this.archives = [...(response.data || [])].sort(
+                              (a, b) => new Date(b.date) - new Date(a.date)
+                            );
                         })
                         .catch(() => {
                           this.$message({

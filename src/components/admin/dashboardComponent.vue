@@ -197,7 +197,9 @@ export default {
     async setArchives() {
       try {
         const response = await axiosInstance.get('/api/getAllArchives');
-        this.archives = response.data || [];
+        this.archives = [...(response.data || [])].sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
       } catch {
         this.$message({
           message: 'Erreur récupération des archives',
