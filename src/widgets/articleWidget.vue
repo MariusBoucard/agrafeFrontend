@@ -17,12 +17,16 @@
       <h3 class="title">{{ article.titreFront }}</h3>
       <p class="author" v-if="article.auteur">
         par
-        <router-link
-          v-if="article.authorSlug"
-          class="author-link"
-          :to="`/equipe/${article.authorSlug}`"
-          @click.stop
-        >{{ article.auteur }}</router-link>
+        <template v-if="articleAuthors.length">
+          <template v-for="(a, i) in articleAuthors" :key="a.slug + i">
+            <span v-if="i > 0">{{ i === articleAuthors.length - 1 ? ' et ' : ', ' }}</span>
+            <router-link
+              class="author-link"
+              :to="`/equipe/${a.slug}`"
+              @click.stop
+            >{{ a.name }}</router-link>
+          </template>
+        </template>
         <span v-else>{{ article.auteur }}</span>
       </p>
       <p class="excerpt"><span class="drop" aria-hidden="true">{{ dropLetter }}</span>{{ excerptRest }}</p>
@@ -46,6 +50,15 @@ export default {
     return { baseUrl };
   },
   computed: {
+    articleAuthors() {
+      if (Array.isArray(this.article.authors) && this.article.authors.length) {
+        return this.article.authors.filter((a) => a?.slug && a?.name);
+      }
+      if (this.article.authorSlug && this.article.auteur) {
+        return [{ name: this.article.auteur, slug: this.article.authorSlug }];
+      }
+      return [];
+    },
     rubriqueLabel() {
       const found = this.rubriques.find((rub) => rub.id === this.article.rubrique);
       return found ? found.rubrique : '';

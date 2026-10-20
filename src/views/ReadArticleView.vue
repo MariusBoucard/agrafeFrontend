@@ -21,12 +21,12 @@
         </li>
       </ul>
       <p class="author" v-if="article.auteur">
-        <template v-if="article.authorSlug">
+        <template v-if="articleAuthors.length">
           par
-          <router-link class="author-link" :to="`/equipe/${article.authorSlug}`">
-            {{ article.auteur }}
-          </router-link>
-          — <router-link class="portfolio-link" :to="`/equipe/${article.authorSlug}`">voir le portfolio</router-link>
+          <template v-for="(a, i) in articleAuthors" :key="a.slug + i">
+            <span v-if="i > 0">{{ i === articleAuthors.length - 1 ? ' et ' : ', ' }}</span>
+            <router-link class="author-link" :to="`/equipe/${a.slug}`">{{ a.name }}</router-link>
+          </template>
         </template>
         <template v-else>par {{ article.auteur }}</template>
       </p>
@@ -72,6 +72,15 @@ export default {
     contactComponent
   },
   computed: {
+    articleAuthors() {
+      if (Array.isArray(this.article.authors) && this.article.authors.length) {
+        return this.article.authors.filter((a) => a?.slug && a?.name);
+      }
+      if (this.article.authorSlug && this.article.auteur) {
+        return [{ name: this.article.auteur, slug: this.article.authorSlug }];
+      }
+      return [];
+    },
     filteredContenu() {
       if(this.article.contenu === undefined){
         return [];
@@ -312,15 +321,13 @@ li {
   line-height: 1.45;
 }
 
-.author-link,
-.portfolio-link {
+.author-link {
   color: inherit;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
-.author-link:hover,
-.portfolio-link:hover {
+.author-link:hover {
   opacity: 0.7;
 }
 
