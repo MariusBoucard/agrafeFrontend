@@ -94,7 +94,7 @@
                 <div class="item-content">
                   <div class="item-header">
                     <div class="item-type">{{ element.type }}</div>
-                    <div class="item-preview">{{ element.text.substring(0, 50) }}{{ element.text.length > 50 ? '...' : '' }}</div>
+                    <div class="item-preview">{{ (element.text || '').substring(0, 50) }}{{ (element.text || '').length > 50 ? '...' : '' }}</div>
                   </div>
                   <div class="item-actions" @click.stop>
                     <button @click="deleteElement(element.id || index)" class="btn-delete" title="Supprimer">
@@ -103,7 +103,7 @@
                   </div>
                 </div>
                 <div v-if="element.type === 'image'" class="item-image">
-                    <img :src="getImageUrl(element.image)" alt="Image Preview">
+                    <img v-if="getImageUrl(element)" :src="getImageUrl(element)" alt="Image Preview">
                     <p v-if="element.auteur" class="item-credit">Photographe : {{ element.auteur }}</p>
                 </div>
             </div>
@@ -167,8 +167,8 @@
                   <label for="editAuteur">Crédit photo</label>
                   <input type="text" id="editAuteur" v-model="editingPart.auteur" placeholder="Photographe">
                 </div>
-                <div class="form-group" v-if="editingPart.image">
-                  <img :src="getImageUrl(editingPart.image)" alt="Image Preview" class="image-preview-edit">
+                <div class="form-group" v-if="getImageUrl(editingPart)">
+                  <img :src="getImageUrl(editingPart)" alt="Image Preview" class="image-preview-edit">
                 </div>
               </div>
               <div class="button-group">
@@ -188,7 +188,7 @@
     import { VueDraggableNext } from 'vue-draggable-next';
     import baseUrl from '../../config.js'
     import axiosInstance from '@/axios';
-    import { sanitizeImagePart, sanitizeContenuCredits } from '@/utils/imageCredit';
+    import { sanitizeImagePart, serializeContenuForSave, articleImagePreviewUrl } from '@/utils/imageCredit';
     export default{
       components: {
         draggable: VueDraggableNext,
@@ -212,7 +212,7 @@
             {
               this.article = response.data
               if (!this.article.contenu) this.article.contenu = []
-              this.article.contenu = sanitizeContenuCredits(this.article.contenu)
+              this.article.contenu = this.article.contenu.map((part) => sanitizeImagePart(part))
               if (this.article.dossier_id === undefined) this.article.dossier_id = null
               if (!this.article.fileType) this.article.fileType = ''
             }
@@ -270,12 +270,8 @@
         enableAddPart(){
           this.enableAdd = !this.enableAdd
         },
-        getImageUrl(file) {
-          if (!file) return 'default-image.jpg';
-          if (typeof file === 'string') {
-            return `${this.baseUrl}/api/save/saveArticle/images/${this.article.id}/${file}.png`;
-          }
-          return URL.createObjectURL(file);
+        getImageUrl(part) {
+          return articleImagePreviewUrl(part, this.article.id, this.baseUrl);
         },
         addPart(){
           this.partToAdd.id = nanoid();
@@ -337,7 +333,7 @@
           if(!confirm("T'es sûr que c'est tout bon ??\nAlleyyy, c'est tipar")) return;
 
           try {
-            await axiosInstance.post('/api/modifyArticle',{ article : { ...this.article, contenu: sanitizeContenuCredits(this.article.contenu) }});
+            await axiosInstance.post('/api/modifyArticle',{ article : { ...this.article, contenu: serializeContenuForSave(this.article.contenu) }});
 
             const formData = new FormData();
             if(!this.notModifiedImage && this.article.imageLogo instanceof File){

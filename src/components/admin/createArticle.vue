@@ -79,7 +79,7 @@
                                     <div class="number">{{ index }}</div>
                                     <div class="title">{{ element.type }}</div>
                                     <div v-if="element.type === 'image'" class="image">
-                                        <img :src="getImageUrl(element.image)" alt="Image Preview">
+                                        <img v-if="getImageUrl(element)" :src="getImageUrl(element)" alt="Image Preview">
                                     </div>
                                     <div class="hover-trigger">Voir le texte</div>
                                     <div class="hovered-info">{{ element.text }}
@@ -163,7 +163,7 @@
 import { nanoid } from 'nanoid';
 import axiosInstance from '@/axios';
 import { VueDraggableNext } from 'vue-draggable-next'
-import { sanitizeImagePart, sanitizeContenuCredits } from '@/utils/imageCredit';
+import { sanitizeImagePart, serializeContenuForSave, articleImagePreviewUrl } from '@/utils/imageCredit';
 export default {
     components: {
         draggable: VueDraggableNext,
@@ -218,12 +218,9 @@ export default {
     enableAddPart(){
       this.enableAdd = !this.enableAdd
     },  
-    getImageUrl(file) {
-            if (file) {
-                return URL.createObjectURL(file);
-            }
-            return 'default-image.jpg';
-        },
+    getImageUrl(part) {
+      return articleImagePreviewUrl(part, null, '');
+    },
     addPart(){
       this.partToAdd.id = nanoid();
       if(this.partToAdd.type === 'image'){
@@ -290,7 +287,7 @@ export default {
     submitForm() {
       if(confirm("T'es sûr que c'est tout bon ??\nAlleyyy, c'est tipar")){
 
-        axiosInstance.post('/api/addArticle', { article: { ...this.article, contenu: sanitizeContenuCredits(this.article.contenu) } },)
+        axiosInstance.post('/api/addArticle', { article: { ...this.article, contenu: serializeContenuForSave(this.article.contenu) } },)
         .then(response => {
           const id = response.data
           
